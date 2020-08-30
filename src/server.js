@@ -23,7 +23,7 @@ mongoose.connection.on('connected', () => {
 //Parse every single json / urlencoded coming in
 //makes it so that the router can access the data
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({extended: false}));
 
 //HTTP request logger
 app.use(morgan('tiny'));

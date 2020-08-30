@@ -27,17 +27,12 @@ export default class App extends Component {
   //gapi initialization and log in check. Google listener set up to determine if authorization is set up.
   //If anything changes to the isSignedIn listener, this.handleAuthChange will be executed.
   initializeGapi = () => {
-    console.log('apiKey: ', process.env.REACT_APP_API_KEY);
-    console.log('clientId: ', process.env.CLIENT_ID);
-    console.log('discoveryDocs: ', process.env.DISCOVERY_DOCS);
-    console.log('scope: ', process.env.SCOPES);
-    console.log('prod: ', process.env.NODE_ENV);
     window.gapi.client
       .init({
-        apiKey: process.env.API_KEY,
-        clientId: process.env.CLIENT_ID,
-        discoveryDocs: [process.env.DISCOVERY_DOCS],
-        scope: process.env.SCOPES,
+        apiKey: process.env.REACT_APP_API_KEY,
+        clientId: process.env.REACT_APP_CLIENT_ID,
+        discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
+        scope: process.env.REACT_APP_SCOPES,
       })
       .then(() => {
         this.auth = window.gapi.auth2.getAuthInstance();
@@ -143,13 +138,11 @@ export default class App extends Component {
   };
 
   randomButton = async () => {
-    var test = await process.env.REACT_APP_API_KEY;
     console.log('Prod', process.env.NODE_ENV);
     console.log('apiKey: ', process.env.REACT_APP_API_KEY);
     console.log('clientId: ', process.env.REACT_APP_CLIENT_ID);
     console.log('discoveryDocs: ', process.env.REACT_APP_DISCOVERY_DOCS);
-    console.log('scope: ', process.env.SCOPES);
-    console.log('test: ', test);
+    console.log('scope: ', process.env.REACT_APP_SCOPES);
   };
 
   render() {
