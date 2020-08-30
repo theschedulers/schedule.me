@@ -137,14 +137,6 @@ export default class App extends Component {
     this.auth.signIn();
   };
 
-  randomButton = async () => {
-    console.log('Prod', process.env.NODE_ENV);
-    console.log('apiKey: ', process.env.REACT_APP_API_KEY);
-    console.log('clientId: ', process.env.REACT_APP_CLIENT_ID);
-    console.log('discoveryDocs: ', process.env.REACT_APP_DISCOVERY_DOCS);
-    console.log('scope: ', process.env.REACT_APP_SCOPES);
-  };
-
   render() {
     return (
       <Router>
@@ -160,7 +152,6 @@ export default class App extends Component {
               <h2>{this.state.name}</h2>
             </div>
             <div>{this.renderAuthButton()}</div>
-            <Button onClick={this.randomButton}>Test</Button>
           </div>
         </div>
       </Router>
