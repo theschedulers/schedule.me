@@ -8,5 +8,9 @@
 }
 
 .list-text {
-  color: white;
+  color: grey;
+}
+
+.list-text:hover {
+  color: #3f3f3f;
 }

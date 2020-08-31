@@ -1,0 +1,46 @@
+.LoginPage {
+  min-height: 91vh;
+  position: relative;
+}
+
+/* .blogPage .card {
+  width: 50vh;
+  margin: 10px;
+} */
+
+.LoginPage .jumbotron-position {
+  position: relative;
+  margin: auto;
+}
+
+/* #blogForm-button {
+  background-color: #0055a2;
+  border-color: #001b34;
+  color: white;
+}
+
+#blogForm-button:hover:enabled {
+  background-color: #002d57;
+  border-color: #000e1b;
+} */
+
+.LoginPage .content-container {
+  margin: auto;
+  width: 100%;
+  padding: 30px;
+  background: #eaeaeb;
+  /* align-items: center; */
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.LoginPage .component-container {
+  background: #fdfdfd;
+  border: 1px dashed rgb(196, 196, 196);
+  padding: 3%;
+  text-align: center;
+}
+
+/* .blogPage .spacing-below-button {
+  margin-bottom: 30px;
+} */

@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Jumbotron } from "reactstrap";
+import React, {Component} from 'react';
+import {Jumbotron} from 'reactstrap';
 export default class HomePage extends Component {
   render() {
     return (

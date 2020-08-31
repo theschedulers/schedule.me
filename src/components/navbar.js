@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Collapse,
   Navbar,
@@ -7,27 +7,24 @@ import {
   Nav,
   NavItem,
   NavLink,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
 } from 'reactstrap';
 import './navbar.css';
 
 export default function SiteNavbar(props) {
-  const [collapsed, setCollapsed] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
 
-  const toggleNavbar = () => setCollapsed(!collapsed);
   return (
     <div>
-      <Navbar color="dark" dark>
-        <NavbarBrand href="/" className="mr-auto">
-          <div className="title-text">page-title</div>
-        </NavbarBrand>
-        <NavbarToggler onClick={toggleNavbar} className="mr-2" />
-        <Collapse isOpen={!collapsed} navbar>
-          <Nav navbar>
-            <NavItem>
-              <NavLink href="/">
-                <div className="list-text">Home</div>
-              </NavLink>
-            </NavItem>
+      <Navbar color="light" light expand="md">
+        <NavbarBrand href="/">schedule.me</NavbarBrand>
+        <NavbarToggler onClick={toggle} />
+        <Collapse isOpen={isOpen} navbar>
+          <Nav className="mr-auto" navbar>
             <NavItem>
               <NavLink href="/other-page/">
                 <div className="list-text">Other Page</div>
@@ -38,7 +35,26 @@ export default function SiteNavbar(props) {
                 <div className="list-text">Blog Page</div>
               </NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/login/">
+                <div className="list-text">Login Page</div>
+              </NavLink>
+            </NavItem>
+            <UncontrolledDropdown nav inNavbar>
+              <DropdownToggle nav caret>
+                Options
+              </DropdownToggle>
+              <DropdownMenu right>
+                <DropdownItem>Option 1</DropdownItem>
+                <DropdownItem>Option 2</DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem>Reset</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
           </Nav>
+          <NavLink href="/login">
+            <div className="list-text">{props.name}</div>
+          </NavLink>
         </Collapse>
       </Navbar>
     </div>

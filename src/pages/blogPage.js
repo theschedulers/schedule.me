@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import BlogForm from '../components/blogForm';
-import { Button, Card, CardTitle, CardText, Jumbotron } from 'reactstrap';
+import {Button, Card, CardTitle, CardText, Jumbotron} from 'reactstrap';
 import './blogPage.css';
 const axios = require('axios');
 
@@ -20,11 +20,11 @@ export default class BlogPost extends Component {
 
   getBlogPosts = () => {
     axios
-      .get('/api')
+      .get('/api/blog')
       .then((response) => {
         const data = response.data;
         console.log('Data retrieved: ', response.data);
-        this.setState({ posts: data });
+        this.setState({posts: data});
       })
       .catch((error) => {
         console.log('error: ', error);
@@ -39,12 +39,12 @@ export default class BlogPost extends Component {
 
   updateTitle = (e) => {
     // console.log("update title", e);
-    this.setState({ title: e });
+    this.setState({title: e});
   };
 
   updateBody = (e) => {
     // console.log("update data", e);
-    this.setState({ body: e });
+    this.setState({body: e});
   };
 
   isFilled = () => {
@@ -57,10 +57,10 @@ export default class BlogPost extends Component {
       title: this.state.title,
       body: this.state.body,
     };
-    axios({ url: '/api/save', method: 'POST', data: payload })
+    axios({url: '/api/save', method: 'POST', data: payload})
       .then(() => {
         console.log('data SENT!');
-        this.setState({ title: '', body: '' });
+        this.setState({title: '', body: ''});
         this.getBlogPosts();
       })
       .catch(() => {
