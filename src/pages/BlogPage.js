@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import BlogForm from '../components/blogForm';
 import {Button, Card, CardTitle, CardText, Jumbotron} from 'reactstrap';
-import './blogPage.css';
+import './BlogPage.css';
 const axios = require('axios');
 
 export default class BlogPost extends Component {
