@@ -67,6 +67,7 @@ export default function App(props) {
     </Router>
   );
 }
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

@@ -1,3 +1,8 @@
+## About the Project
+
+The mern-google-api-web-app is a step up from the original mern-stack-template. While the mern-stack-template was only a multi-page web app built with MongoDB, Express.js, React, and Node.js that could be deployed to Heroku quickly, the mern-google-api-web-app supports functions from the Google API such as sign in (authentication) and adding events to your personal Google Calendar.
+
+
 ## About the Template
 
 The mern-stack-template is a template made for when I need to make a new web application. Most connections are already set up, all that's needed are some config variables. This repository does work on its own, however. <br /><br />Link is provided in the description or navigate to it <a href="https://jz-mern-stack-template.herokuapp.com/">here</a>. Note that it takes about 30 seconds to load up if left inactive for too long due to Heroku restrictions.
