@@ -11,7 +11,7 @@ import OtherPage from './pages/OtherPage';
 import BlogPage from './pages/BlogPage';
 import LoginPage from './pages/LoginPage';
 import Navbar from './components/navbar';
-// import {CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES} from './config/config.json';
+import {CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES} from './config/config.json';
 
 //Main class, where all the different pages are rendered
 export default function App(props) {
@@ -32,14 +32,14 @@ export default function App(props) {
   function initializeGapi() {
     window.gapi.client
       .init({
-        apiKey: process.env.REACT_APP_API_KEY,
-        clientId: process.env.REACT_APP_CLIENT_ID,
-        discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
-        scope: process.env.REACT_APP_SCOPES,
-        // apiKey: API_KEY,
-        // clientId: CLIENT_ID,
-        // discoveryDocs: [DISCOVERY_DOCS],
-        // scope: SCOPES,
+        // apiKey: process.env.REACT_APP_API_KEY,
+        // clientId: process.env.REACT_APP_CLIENT_ID,
+        // discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
+        // scope: process.env.REACT_APP_SCOPES,
+        apiKey: API_KEY,
+        clientId: CLIENT_ID,
+        discoveryDocs: [DISCOVERY_DOCS],
+        scope: SCOPES,
       })
       .then(() => {
         console.log('Initialized');

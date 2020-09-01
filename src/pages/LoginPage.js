@@ -2,12 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {Button} from 'reactstrap';
 import {useHistory} from 'react-router-dom';
 import './LoginPage.css';
-// import {
-//   CLIENT_ID,
-//   API_KEY,
-//   DISCOVERY_DOCS,
-//   SCOPES,
-// } from '../config/config.json';
+import {
+  CLIENT_ID,
+  API_KEY,
+  DISCOVERY_DOCS,
+  SCOPES,
+} from '../config/config.json';
 
 export default function LoginPage(props) {
   //Vars. useHistory is used for button redirects (logout, redirect to other page)
@@ -29,14 +29,14 @@ export default function LoginPage(props) {
     console.log('initialize Login');
     window.gapi.client
       .init({
-        apiKey: process.env.REACT_APP_API_KEY,
-        clientId: process.env.REACT_APP_CLIENT_ID,
-        discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
-        scope: process.env.REACT_APP_SCOPES,
-        // apiKey: API_KEY,
-        // clientId: CLIENT_ID,
-        // discoveryDocs: [DISCOVERY_DOCS],
-        // scope: SCOPES,
+        // apiKey: process.env.REACT_APP_API_KEY,
+        // clientId: process.env.REACT_APP_CLIENT_ID,
+        // discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
+        // scope: process.env.REACT_APP_SCOPES,
+        apiKey: API_KEY,
+        clientId: CLIENT_ID,
+        discoveryDocs: [DISCOVERY_DOCS],
+        scope: SCOPES,
       })
       .then(() => {
         auth = window.gapi.auth2.getAuthInstance();
