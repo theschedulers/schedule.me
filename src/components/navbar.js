@@ -26,18 +26,23 @@ export default function SiteNavbar(props) {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NavLink href="/other-page/">
+              <NavLink href="/other-page">
                 <div className="list-text">Other Page</div>
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/blog-page/">
+              <NavLink href="/blog-page">
                 <div className="list-text">Blog Page</div>
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/login/">
+              <NavLink href="/login">
                 <div className="list-text">Login Page</div>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/dashboard">
+                <div className="list-text">Dashboard</div>
               </NavLink>
             </NavItem>
             <UncontrolledDropdown nav inNavbar>

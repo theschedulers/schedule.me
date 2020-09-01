@@ -6,17 +6,21 @@ import './App.css';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import PrivateRoute from './routes/PrivateRoute';
 import HomePage from './pages/HomePage';
 import OtherPage from './pages/OtherPage';
 import BlogPage from './pages/BlogPage';
 import LoginPage from './pages/LoginPage';
+import Dashboard from './pages/Dashboard';
 import Navbar from './components/navbar';
-import {CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES} from './config/config.json';
+// import {CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES} from './config/config.json';
 
 //Main class, where all the different pages are rendered
 export default function App(props) {
   //Some variables
   const [name, setName] = useState();
+  const [isAuthenticated, setIsAuthenticated] = useState();
+  const [isInitialized, setIsInitialized] = useState(false);
   var auth = undefined;
 
   //ComponentDidMount() but for function .js file
@@ -32,23 +36,28 @@ export default function App(props) {
   function initializeGapi() {
     window.gapi.client
       .init({
-        // apiKey: process.env.REACT_APP_API_KEY,
-        // clientId: process.env.REACT_APP_CLIENT_ID,
-        // discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
-        // scope: process.env.REACT_APP_SCOPES,
-        apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: [DISCOVERY_DOCS],
-        scope: SCOPES,
+        apiKey: process.env.REACT_APP_API_KEY,
+        clientId: process.env.REACT_APP_CLIENT_ID,
+        discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
+        scope: process.env.REACT_APP_SCOPES,
+        // apiKey: API_KEY,
+        // clientId: CLIENT_ID,
+        // discoveryDocs: [DISCOVERY_DOCS],
+        // scope: SCOPES,
       })
       .then(() => {
-        console.log('Initialized');
+        // console.log('Initialized');
+        // console.log(auth.isSignedIn.get());
         auth = window.gapi.auth2.getAuthInstance();
-        console.log(auth.isSignedIn.get());
+
         if (auth.isSignedIn.get()) {
           setName(auth.currentUser.get().rt.Ad);
+          setIsAuthenticated(true);
+          setIsInitialized(true);
         } else {
           setName('Login');
+          setIsAuthenticated(false);
+          setIsInitialized(true);
         }
       });
   }
@@ -62,6 +71,12 @@ export default function App(props) {
           <Route path="/other-page" exact component={OtherPage} />
           <Route path="/blog-page" exact component={BlogPage} />
           <Route path="/login" exact component={LoginPage} />
+          <PrivateRoute
+            path="/dashboard"
+            component={Dashboard}
+            authenticated={isAuthenticated}
+            initialized={isInitialized}
+          />
         </Switch>
       </div>
     </Router>
