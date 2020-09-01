@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Button} from 'reactstrap';
-// import {response} from 'express';
 const axios = require('axios');
 
+//Bunch of MongoDB CRUD functions
 export default class OtherPage extends Component {
   //creating sessions
   onCreate = () => {
@@ -42,7 +42,7 @@ export default class OtherPage extends Component {
       .get('/api/session/read')
       .then((response) => {
         const data = response.data;
-        console.log('User Data retrieved: ', response.data);
+        console.log('User Data retrieved: ', data);
         // this.setState({ users: data });
       })
       .catch((error) => {

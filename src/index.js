@@ -1,3 +1,4 @@
+//DEPRECATED: All of this is moved to App.js, but keeping for reference.
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

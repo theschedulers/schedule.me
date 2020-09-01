@@ -1,33 +1,32 @@
 import React, {useState, useEffect} from 'react';
 import {Button} from 'reactstrap';
 import {useHistory} from 'react-router-dom';
+import './LoginPage.css';
 // import {
 //   CLIENT_ID,
 //   API_KEY,
 //   DISCOVERY_DOCS,
 //   SCOPES,
 // } from '../config/config.json';
-import './LoginPage.css';
 
-export default function EventsPage(props) {
+export default function LoginPage(props) {
+  //Vars. useHistory is used for button redirects (logout, redirect to other page)
   const [name, setName] = useState('');
   const [isSignedIn, setIsSignedIn] = useState(null);
-  const history = useHistory();
   var auth = undefined;
+  const history = useHistory();
 
-  const test = () => {
-    let path = '/other-page';
-    history.push(path);
-    window.location.reload();
-  };
-
+  //Loads google api when login page is loaded, used for calendar stuff
   useEffect(() => {
     window.gapi.load('client:auth2', () => {
       initializeGapi();
     });
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  //Comment out corresponding vars in init when doing heroku/local
+  //REACT_APP_... vars are for heroku + Comment out the config import up top
   function initializeGapi() {
+    console.log('initialize Login');
     window.gapi.client
       .init({
         apiKey: process.env.REACT_APP_API_KEY,
@@ -43,12 +42,13 @@ export default function EventsPage(props) {
         auth = window.gapi.auth2.getAuthInstance();
         console.log('Auth: ', auth.isSignedIn.get());
         console.log('Profile: ', auth.currentUser.get());
-
         handleAuthChange();
         auth.isSignedIn.listen(handleAuthChange);
       });
   }
 
+  //Called in initializeGapi(). When google api receives authorization that user
+  //logged in, do some stuff like add name to our site, change isSignedIn var.
   function handleAuthChange() {
     if (auth.isSignedIn.get()) {
       const newName = auth.currentUser.get().rt.Ad;
@@ -59,6 +59,7 @@ export default function EventsPage(props) {
     setIsSignedIn(newIsSignedIn);
   }
 
+  //Used in render to determine which buttons to show (Sign in button or (Sign Out + Add Events buttons))
   function renderAuthButton() {
     if (isSignedIn === null) {
       return null;
@@ -125,7 +126,6 @@ export default function EventsPage(props) {
     });
 
     request.execute((event) => {
-      // console.log(event.htmlLink);
       window.open(event.htmlLink);
     });
   }
@@ -136,7 +136,7 @@ export default function EventsPage(props) {
     auth.signOut().then(() => {
       setName('');
       document.getElementById('name-div').style.display = 'none';
-      test();
+      redirectTo('other-page');
     });
   }
 
@@ -148,6 +148,12 @@ export default function EventsPage(props) {
       window.location.reload();
     });
   }
+
+  //function used to redirect to other pages. path example: '/other-page'
+  const redirectTo = (path) => {
+    history.push(path);
+    window.location.reload();
+  };
 
   return (
     <div className="LoginPage">

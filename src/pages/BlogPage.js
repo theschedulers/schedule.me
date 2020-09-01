@@ -4,7 +4,8 @@ import {Button, Card, CardTitle, CardText, Jumbotron} from 'reactstrap';
 import './BlogPage.css';
 const axios = require('axios');
 
-export default class BlogPost extends Component {
+//Blog Page with some database stuff
+export default class BlogPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,10 +15,13 @@ export default class BlogPost extends Component {
     };
   }
 
+  //Gets blog posts right when page loads
   componentDidMount = () => {
     this.getBlogPosts();
   };
 
+  //Uses axios to get data from a path and then saves it to a state variable
+  //check api.js in routes folder to see what the path does
   getBlogPosts = () => {
     axios
       .get('/api/blog')
@@ -31,6 +35,7 @@ export default class BlogPost extends Component {
       });
   };
 
+  //Used for testing
   checkConsole = () => {
     console.log('------------ Submit ------------');
     console.log('title:', this.state.submittedTitle);
@@ -38,19 +43,20 @@ export default class BlogPost extends Component {
   };
 
   updateTitle = (e) => {
-    // console.log("update title", e);
     this.setState({title: e});
   };
 
   updateBody = (e) => {
-    // console.log("update data", e);
     this.setState({body: e});
   };
 
+  //Used more for the button, disabled until both title and body are filled.
   isFilled = () => {
     return this.state.title !== '' && this.state.body !== '';
   };
 
+  //Post button onClick. Sends data from form to the backend and database
+  //then renders it.
   handleData = (event) => {
     event.preventDefault();
     const payload = {
@@ -68,6 +74,8 @@ export default class BlogPost extends Component {
       });
   };
 
+  //Used in the render. Displays blog posts accordingly (posts is basically a list
+  //of all the posts and it makes a card for each post with Arrays.map function)
   displayBlogPosts = (posts) => {
     if (!posts.length) {
       return null;
@@ -81,19 +89,17 @@ export default class BlogPost extends Component {
       </Card>
     ));
   };
+
   render() {
     return (
       <div className="blogPage">
         <Jumbotron className="jumbotron-spacing">
           <h1>The Blog</h1>
           <p className="lead">
-            This is my only somewhat complete page on the website!
+            Write about your experiences with our product here!
           </p>
           <hr className="my-2" />
-          <p>
-            I was able to do some MERN stack magic to make this blog post page.
-            Leave a comment below (if you feel like it) :)
-          </p>
+          <p>We would love your feedback!</p>
         </Jumbotron>
         <div className="form-container">
           <BlogForm

@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
+//MongoDB schemas for each data type, find them in models folder
 const BlogPost = require('../models/blogPost');
 const Session = require('../models/session');
-//routes. prepended by /api... so no need to add it here
 
+//This file is basically the routes. All paths are
+//prepended by /api... so no need to add it here
+
+//ex: this would be /api/blog in axios functions
 router.get('/blog', (req, res) => {
   BlogPost.find({})
     .then((data) => {
@@ -20,7 +24,7 @@ router.get('/name', (req, res) => {
   res.json(data);
 });
 
-//Main function to save data to db
+//Main function to save blogpost data to db
 router.post('/save', (req, res) => {
   console.log('Request Body: ', req.body);
   const data = req.body;
