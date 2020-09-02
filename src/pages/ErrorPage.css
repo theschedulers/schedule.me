@@ -1,0 +1,31 @@
+.ErrorPage {
+  min-height: 91vh;
+  position: relative;
+}
+
+/* .blogPage .card {
+  width: 50vh;
+  margin: 10px;
+} */
+
+.ErrorPage .jumbotron-position {
+  position: relative;
+  margin: auto;
+}
+
+.ErrorPage .content-container {
+  margin: auto;
+  width: 100%;
+  padding: 30px;
+  background: #eaeaeb;
+  /* align-items: center; */
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.ErrorPage .component-container {
+  background: #fdfdfd;
+  border: 1px dashed rgb(196, 196, 196);
+  padding: 3%;
+  text-align: center;
+}

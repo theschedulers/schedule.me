@@ -12,6 +12,7 @@ import OtherPage from './pages/OtherPage';
 import BlogPage from './pages/BlogPage';
 import LoginPage from './pages/LoginPage';
 import Dashboard from './pages/Dashboard';
+import ErrorPage from './pages/ErrorPage';
 import Navbar from './components/navbar';
 import {CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES} from './config/config.json';
 
@@ -72,11 +73,13 @@ export default function App(props) {
           <Route path="/blog-page" exact component={BlogPage} />
           <Route path="/login" exact component={LoginPage} />
           <PrivateRoute
+            exact
             path="/dashboard"
             component={Dashboard}
             authenticated={isAuthenticated}
             initialized={isInitialized}
           />
+          <Route component={ErrorPage} />
         </Switch>
       </div>
     </Router>
