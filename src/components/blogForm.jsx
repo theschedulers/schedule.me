@@ -1,7 +1,5 @@
-
 import React from 'react';
-import { Form, FormGroup, Input, Label } from 'reactstrap';
-import './blogForm.css';
+import {Form, FormGroup, Input, Label} from 'reactstrap';
 
 export default function BlogForm(props) {
   return (

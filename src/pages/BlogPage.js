@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import BlogForm from '../components/blogForm';
-import {Button, Card, CardTitle, CardText, Jumbotron} from 'reactstrap';
+import BlogCard from '../components/blogCard';
+import {Button, Jumbotron} from 'reactstrap';
 import './BlogPage.css';
 const axios = require('axios');
 
@@ -81,12 +82,7 @@ export default class BlogPage extends Component {
       return null;
     }
     return posts.map((post, index) => (
-      <Card body key={index}>
-        <CardTitle>
-          <strong>{post.title}</strong>
-        </CardTitle>
-        <CardText>{post.body}</CardText>
-      </Card>
+      <BlogCard key={index} title={post.title} body={post.body} />
     ));
   };
 
@@ -101,24 +97,26 @@ export default class BlogPage extends Component {
           <hr className="my-2" />
           <p>We would love your feedback!</p>
         </Jumbotron>
-        <div className="form-container">
-          <BlogForm
-            title={this.state.title}
-            body={this.state.body}
-            updateTitle={this.updateTitle}
-            updateBody={this.updateBody}
-            handleData={this.handleData}
-          />
-          <Button
-            id="blogForm-button"
-            disabled={!this.isFilled()}
-            onClick={this.handleData}
-          >
-            Post
-          </Button>
-        </div>
-        <div className="response-container">
-          {this.displayBlogPosts(this.state.posts)}
+        <div className="content-container">
+          <div className="component-container">
+            <BlogForm
+              title={this.state.title}
+              body={this.state.body}
+              updateTitle={this.updateTitle}
+              updateBody={this.updateBody}
+              handleData={this.handleData}
+            />
+            <div className="post-button spacing-below-button">
+              <Button
+                id="blogForm-button"
+                disabled={!this.isFilled()}
+                onClick={this.handleData}
+              >
+                Post
+              </Button>
+            </div>
+            {this.displayBlogPosts(this.state.posts)}
+          </div>
         </div>
       </div>
     );

@@ -1,5 +1,6 @@
 .blogPage {
   min-height: 91vh;
+  position: relative;
 }
 
 .blogPage .card {
@@ -7,20 +8,21 @@
   margin: 10px;
 }
 
-.blogPage .jumbotron-spacing {
-  margin-top: 1vh;
+.blogPage .jumbotron-position {
+  position: relative;
+  margin: auto;
 }
 
-.blogPage .blog-form-wrapper {
+/* .blogPage .blog-form-wrapper {
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
   align-items: center;
   background-color: #e9ecef;
   padding: 2vh;
   margin-bottom: 2vh;
   margin-top: 2vh;
   width: 100%;
-}
+} */
 
 /* .blog-form-container {
   margin: 0 auto;
@@ -32,20 +34,7 @@
   display: block;
 } */
 
-.blogPage .form-container {
-  margin: 0 auto;
-  margin-bottom: 10px;
-  max-width: 1000px;
-  width: 100%;
-  padding: 20px 0;
-  line-height: 1.6;
-  background: #eaeaeb;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-}
-
-.blogPage .response-container {
+/* .blogPage .form-container {
   margin: 0 auto;
   margin-bottom: 30px;
   max-width: 1000px;
@@ -56,15 +45,52 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-}
+} */
+
+/* .blogPage .response-container {
+  margin: 0 auto;
+  margin-bottom: 30px;
+  max-width: 1000px;
+  width: 100%;
+  padding: 20px 0;
+  line-height: 1.6;
+  background: #eaeaeb;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+} */
 
 #blogForm-button {
-  background-color: #a9e3fd;
-  border-color: #7ad0f8;
-  color: black;
+  background-color: #0055a2;
+  border-color: #001b34;
+  color: white;
 }
 
 #blogForm-button:hover:enabled {
-  background-color: #bee9fd;
-  border-color: #65caf8;
+  background-color: #002d57;
+  border-color: #000e1b;
+}
+
+.blogPage .content-container {
+  margin: auto;
+  width: 100%;
+  padding: 30px;
+  background: #eaeaeb;
+  /* align-items: center; */
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.blogPage .component-container {
+  background: #fdfdfd;
+  border: 1px dashed rgb(196, 196, 196);
+  padding: 3%;
+}
+
+.blogPage .post-button {
+  text-align: center;
+}
+
+.blogPage .spacing-below-button {
+  margin-bottom: 30px;
 }
