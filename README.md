@@ -24,7 +24,7 @@ Make sure that you have Heroku connected to your GitHub account. This will make 
 ## Get your config vars ready
 There are only two config vars necessary to get your web app up and running completely. One is for MongoDB Atlas connection (`MONGODB_URI`) and the other is your env var for production and development (`NODE_ENV`). For the MongoDB Atlas URI, make sure you create a MongoDB atlas account, create a cluster, and there should be a button for you to connect it to your application. Make sure you follow all the steps and you should get a funky looking link to copy into the config vars section in Heroku. The env var has two options, "development" or "production". Usually you just keep it in production. 
 <br />
-# Everything below this is auto-generated from create-react-app
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
