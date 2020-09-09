@@ -1,6 +1,6 @@
 ## About the Project
 
-WORK IN PROGRESS. :)
+A group scheduler app where the calendar is interactive and any changes can be seen on other group members' screens!
 
 ## Node Dependencies to Download
 
