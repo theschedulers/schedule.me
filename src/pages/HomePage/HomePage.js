@@ -62,12 +62,10 @@ export default function HomePage(props) {
   //Used in render to determine which buttons to show (Sign in button or (Sign Out + Add Events buttons))
   function renderAuthButton() {
     if (isSignedIn === null) {
-      return (<div id="home-login-button" onClick={() => { history.push('/dashboard') }}>
-      <img src={require('./img/gotoscheduleme.png')} width="35px" height="35px"/>
-    </div>);
+      return null;
     } else if (isSignedIn) {
       return (
-        <div id="home-login-button">
+        <div id="home-login-button" onClick={() => { history.push('/dashboard') }}>
           <img src={require('./img/gotoscheduleme.png')} width="35px" height="35px"/>
         </div>
       );
