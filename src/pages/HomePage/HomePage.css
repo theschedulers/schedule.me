@@ -1,0 +1,40 @@
+.full-viewport-hv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #222222;
+}
+
+#HomePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 50%;
+}
+
+#home-logo {
+  width: 400px;
+  height: 150px;
+}
+
+#home-login-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  color: #E5C09C;
+  font-size: 0.75em;
+}
+
+#home-login-button > img {
+  margin: 0.5em;
+}
+
+#home-description {
+  color: #E5C09C;
+  width: 600px;
+  text-align: justify;
+  line-height: 2;
+}
+

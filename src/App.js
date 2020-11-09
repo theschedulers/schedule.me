@@ -7,13 +7,9 @@ import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import PrivateRoute from './routes/PrivateRoute';
-import HomePage from './pages/HomePage';
-import OtherPage from './pages/OtherPage';
-import BlogPage from './pages/BlogPage';
-import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage/HomePage';
 import Dashboard from './pages/Dashboard';
 import ErrorPage from './pages/ErrorPage';
-import Navbar from './components/navbar';
 import {CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES} from './config/config.json';
 
 //Main class, where all the different pages are rendered
@@ -66,12 +62,8 @@ export default function App(props) {
   return (
     <Router>
       <div>
-        <Navbar name={name} />
         <Switch>
           <Route path="/" exact component={HomePage} />
-          <Route path="/other-page" exact component={OtherPage} />
-          <Route path="/blog-page" exact component={BlogPage} />
-          <Route path="/login" exact component={LoginPage} />
           <PrivateRoute
             exact
             path="/dashboard"
