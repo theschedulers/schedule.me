@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import {Button} from 'reactstrap';
 import {useHistory} from 'react-router-dom';
-import './LoginPage.css';
+import './HomePage.css';
 import {
   CLIENT_ID,
   API_KEY,
   DISCOVERY_DOCS,
   SCOPES,
-} from '../config/config.json';
+} from '../../config/config.json';
 
-export default function LoginPage(props) {
+export default function HomePage(props) {
   //Vars. useHistory is used for button redirects (logout, redirect to other page)
   const [name, setName] = useState('');
   const [isSignedIn, setIsSignedIn] = useState(null);
@@ -62,31 +62,21 @@ export default function LoginPage(props) {
   //Used in render to determine which buttons to show (Sign in button or (Sign Out + Add Events buttons))
   function renderAuthButton() {
     if (isSignedIn === null) {
-      return null;
+      return (<div id="home-login-button" onClick={() => { history.push('/dashboard') }}>
+      <img src={require('./img/gotoscheduleme.png')} width="35px" height="35px"/>
+    </div>);
     } else if (isSignedIn) {
       return (
-        //signed in, so render an add event button and sign out button
-        //visualize is a css descriptor to make the solid white boxes appear (in App.css)
-        <div className="visualize">
-          <Button color="primary" onClick={handleAddEvent}>
-            Add Event
-          </Button>{' '}
-          <Button color="danger" onClick={handleSignOut}>
-            Sign Out
-          </Button>
+        <div id="home-login-button">
+          <img src={require('./img/gotoscheduleme.png')} width="35px" height="35px"/>
         </div>
       );
     } else {
       //signed out, so render a sign in button
       return (
-        <div className="visualize">
-          <Button
-            color="success"
-            className="center-button"
-            onClick={handleSignIn}
-          >
-            Sign In
-          </Button>
+        <div id="home-login-button" onClick={handleSignIn}>
+          <img src={require('./img/google.png')} width="35px" height="35px"/>
+          <p>login/signup</p>
         </div>
       );
     }
@@ -156,13 +146,14 @@ export default function LoginPage(props) {
   };
 
   return (
-    <div className="LoginPage">
-      <div className="content-container">
-        <div className="component-container">
-          <div id="name-div" style={{display: 'none'}}>
-            <h2>{name}</h2>
-          </div>
+    <div class="full-viewport-hv">
+      <div id="HomePage">
+        <div>
+          <img id="home-logo" src={require('./img/schedulemelogo.png')} />
           {renderAuthButton()}
+        </div>
+        <div id="home-description">
+          <p>Schedule.Me is an elegant and easy to use time planning app for teams! It generates a team schedule that works best for all members. All you do is create or join a team and provide your availability throughout the week and Schedule.Me will handle the rest. Just like that, you will have access to the team’s schedule and quickly know who else you’re working with at any time and day.</p>
         </div>
       </div>
     </div>
