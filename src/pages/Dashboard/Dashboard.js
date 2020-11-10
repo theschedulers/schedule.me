@@ -4,6 +4,10 @@ import './Dashboard.css';
 
 export default class Dashboard extends Component {
 
+  state = {
+    selectedTeam: 0, // this will contain the index of selected team whenever it's changed
+  }
+
   onAddTeamCallback = () => {
     console.log("Show add team popup.");
   }
@@ -22,8 +26,17 @@ export default class Dashboard extends Component {
           <div id="left-sidebar-container">
             <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} />
             <div id="dashboard-teams-container">
-              <ListSelect list={teams} header={"Teams"} onAdd={this.onAddTeamCallback}></ListSelect>
-              <ListSelect list={teams} header={"Members"} onAdd={this.onAddMemberCallback}></ListSelect>
+              <ListSelect list={teams}
+                          header={"Teams"}
+                          onAdd={this.onAddTeamCallback}
+                          selectable={0}
+                          valueUpdated={ selectedTeam => this.setState({ selectedTeam }) }>
+              </ListSelect>
+              <ListSelect list={teams[this.state.selectedTeam].members}
+                          header={"Members"}
+                          onAdd={this.onAddMemberCallback}
+                          selectable={null}>
+              </ListSelect>
             </div>
             <div id="dashboard-members-container">
 
