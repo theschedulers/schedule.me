@@ -1,0 +1,56 @@
+[
+    {
+        "text": "The Schedulers 0",
+        "subtext": "5 members",
+        "photo": "./img/plus.png",
+        "members": [
+            {
+                "name": "Justin Zhu",
+                "photo": "./img/plus.png"
+            },
+            {
+                "name": "Ging Gonzalez",
+                "photo": "./img/plus.png"
+            },
+            {
+                "name": "Dylan Mirandilla",
+                "photo": "./img/plus.png"
+            },
+            {
+                "name": "Jeffery Vong",
+                "photo": "./img/plus.png"
+            },
+            {
+                "name": "Edward Josh Hermano",
+                "photo": "./img/plus.png"
+            }
+        ]
+    },
+    {
+        "text": "The Schedulers 1",
+        "subtext": "4 members",
+        "photo": "./img/plus.png",
+        "members": [
+            {
+                "name": "Justin Zhu",
+                "photo": "./img/plus.png"
+            },
+            {
+                "name": "Ging Gonzalez",
+                "photo": "./img/plus.png"
+            },
+            {
+                "name": "Dylan Mirandilla",
+                "photo": "./img/plus.png"
+            },
+            {
+                "name": "Jeffery Vong",
+                "photo": "./img/plus.png"
+            },
+            {
+                "name": "Edward Josh Hermano",
+                "photo": "./img/plus.png"
+            }
+        ]
+    }
+]

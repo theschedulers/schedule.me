@@ -1,0 +1,68 @@
+#list-select-container {
+    width: 200px;
+    white-space: nowrap;
+}
+
+#list-select-container > #list-select-header {
+    display: flex;
+    background-color: #E5C09C;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 0.5em;
+}
+
+#list-select-container > #list-select-header > h6 {
+    color: #222222;
+    margin: .25em 0.5em .25em 0.5em;
+}
+
+#list-select-container > #list-select-header > #list-select-plus-icon {
+    width: 1em;
+    height: 1em;
+    margin: .25em 0.5em .25em 0.5em;
+    cursor: pointer;
+}
+
+#list-select-container > #list-select-list {
+    margin: 1em 0em;
+}
+
+#list-select-container > #list-select-list > .list-select-item {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5em;
+    border-radius: 0.5em;
+    padding: 0.3em 0.5em 0.3em 0.5em;
+    cursor: pointer;
+}
+
+#list-select-container > #list-select-list > .list-select-item:hover {
+    background-color: rgb(58, 58, 58);
+}
+
+#list-select-container > #list-select-list > .list-select-selected {
+    background-color: #000000;
+}
+
+#list-select-container > #list-select-list > .list-select-selected:hover {
+    background-color: #000000;
+}
+
+#list-select-container > #list-select-list > .list-select-item > img {
+    width: 40px;
+    height: 40px;
+    background-color: #E5C09C;
+    border-radius: 100%;
+    pointer-events: none;
+}
+
+#list-select-container > #list-select-list > .list-select-item > * h6 {
+    margin: .25em 0.5em 0em 0.5em;
+    color: #D7D7D7;
+}
+
+#list-select-container > #list-select-list > .list-select-item > * p {
+    margin: 0em 0.5em .25em 0.5em;
+    color: #D7D7D7;
+    font-size: smaller;
+}
