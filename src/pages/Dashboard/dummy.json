@@ -1,0 +1,56 @@
+[
+    {
+        "text": "The Schedulers 0",
+        "subtext": "5 members",
+        "photo": "./img/defaultprofile.png",
+        "members": [
+            {
+                "text": "Justin Zhu",
+                "subtext": "Leader, & back-end dev",
+                "photo": "./img/defaultprofile.png"
+            },
+            {
+                "text": "Ging Gonzalez",
+                "subtext": "Front-end dev & designer",
+                "photo": "./img/defaultprofile.png"
+            },
+            {
+                "text": "Dylan Mirandilla",
+                "subtext": "Front-end dev",
+                "photo": "./img/defaultprofile.png"
+            },
+            {
+                "text": "Jeffery Vong",
+                "subtext": "Back-end dev",
+                "photo": "./img/defaultprofile.png"
+            },
+            {
+                "text": "Edward Josh Hermano",
+                "subtext": "Back-end dev",
+                "photo": "./img/defaultprofile.png"
+            }
+        ]
+    },
+    {
+        "text": "The Schedulers 1",
+        "subtext": "3 members",
+        "photo": "./img/defaultprofile.png",
+        "members": [
+            {
+                "text": "Dylan Mirandilla",
+                "subtext": "Front-end dev",
+                "photo": "./img/defaultprofile.png"
+            },
+            {
+                "text": "Jeffery Vong",
+                "subtext": "Back-end dev",
+                "photo": "./img/defaultprofile.png"
+            },
+            {
+                "text": "Edward Josh Hermano",
+                "subtext": "Back-end dev",
+                "photo": "./img/defaultprofile.png"
+            }
+        ]
+    }
+]

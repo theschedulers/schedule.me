@@ -51,9 +51,7 @@ export default function HomePage(props) {
   //logged in, do some stuff like add name to our site, change isSignedIn var.
   function handleAuthChange() {
     if (auth.isSignedIn.get()) {
-      const newName = auth.currentUser.get().rt.Ad;
-      setName(newName);
-      document.getElementById('name-div').style.display = 'block';
+      setName(auth.currentUser.get().tt.Ad);
     }
     const newIsSignedIn = auth.isSignedIn.get();
     setIsSignedIn(newIsSignedIn);
@@ -62,13 +60,12 @@ export default function HomePage(props) {
   //Used in render to determine which buttons to show (Sign in button or (Sign Out + Add Events buttons))
   function renderAuthButton() {
     if (isSignedIn === null) {
-      return (<div id="home-login-button" onClick={() => { history.push('/dashboard') }}>
-      <img src={require('./img/gotoscheduleme.png')} width="35px" height="35px"/>
-    </div>);
+      return null;
     } else if (isSignedIn) {
       return (
-        <div id="home-login-button">
+        <div id="home-login-button" onClick={() => { history.push('/dashboard') }}>
           <img src={require('./img/gotoscheduleme.png')} width="35px" height="35px"/>
+          <p>Welcome, {name}</p>
         </div>
       );
     } else {
