@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import DragFillGrid from '../DragFillGrid/DragFillGrid';
 import TabChooser from '../TabChooser/TabChooser';
 import './Calendar.css';
 
@@ -26,6 +27,9 @@ export default class Calendar extends Component {
           <TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ choice => this.setState({ choice }) }></TabChooser>
         </div>
         <div id="calendar-header-spacer"></div>
+      </div>
+      <div id="calendar-grid">
+        <DragFillGrid></DragFillGrid>
       </div>
     </div>
     );
