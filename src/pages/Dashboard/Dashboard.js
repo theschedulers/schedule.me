@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ListSelect from '../../components/ListSelect/ListSelect';
+import Calendar from '../../components/Calendar/Calendar';
 import './Dashboard.css';
 
 export default class Dashboard extends Component {
@@ -39,10 +40,10 @@ export default class Dashboard extends Component {
               </ListSelect>
             </div>
             <div id="dashboard-members-container">
-
             </div>
           </div>
           <div id="calendar-container">
+            <Calendar month={"November"} day={11} year={2020}></Calendar>
           </div>
           <div id="right-sidebar-container">
           </div>

@@ -1,0 +1,39 @@
+#Calendar {
+    color: #D7D7D7;
+}
+
+#Calendar > #calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#Calendar > #calendar-header > #calendar-month-year-container {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
+}
+
+#Calendar > #calendar-header > #calendar-month-year-container > #calendar-month {
+    margin: .25em 0.25em .25em 0.25em;
+}
+
+#Calendar > #calendar-header > #calendar-month-year-container > img {
+    width: 1em;
+    height: 1em;
+    cursor: pointer;
+}
+
+#Calendar > #calendar-header > #calendar-month-year-container > * #calendar-year {
+    font-weight: 200;
+}
+
+#Calendar > #calendar-header > #calendar-chooser-container {
+    flex: 0.5;
+    width: 14em;
+}
+
+#Calendar > #calendar-header > #calendar-header-spacer {
+    flex: 1;
+}

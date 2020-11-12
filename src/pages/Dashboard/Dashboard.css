@@ -31,7 +31,8 @@
 
 #Dashboard > #calendar-container {
   flex: 5;
-  background-color: black;
+  background-color: #222222;
+  margin-top: 2em;;
 }
 
 #Dashboard > #right-sidebar-container {
