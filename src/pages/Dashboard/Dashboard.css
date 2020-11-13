@@ -24,6 +24,7 @@
 #Dashboard > #left-sidebar-container > #dashboard-teams-container {
   margin:1em;
   margin-top: 0em;
+  overflow: auto;
 }
 
 #Dashboard > #left-sidebar-container > #dashboard-members-container {

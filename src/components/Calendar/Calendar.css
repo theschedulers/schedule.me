@@ -1,4 +1,6 @@
 #Calendar {
+    display: flex;
+    flex-direction: column;
     color: #D7D7D7;
 }
 
