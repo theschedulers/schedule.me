@@ -4,7 +4,19 @@
 
 #DragFillGrid > #dragfillgrid-header-titles {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin-left: 3.7em;
+    margin-bottom: 0.5em;
+}
+
+#DragFillGrid > #dragfillgrid-header-titles > span {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+}
+
+#DragFillGrid > #dragfillgrid-header-titles > #dragfill-grid-header-start, #dragfill-grid-header-end {
+    color:#E5C09C;
 }
 
 #DragFillGrid > #dragfillgrid-grid-container {
@@ -50,7 +62,7 @@
     height: 3em;
 }
 
-.calendar-time {
+#DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-side-info > .dragfillgrid-row-headers {
     font-weight: 300;
     margin-bottom: 1.5em;
 }
