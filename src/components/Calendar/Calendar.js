@@ -29,9 +29,9 @@ export default class Calendar extends Component {
     <div id="Calendar">
       <div id="calendar-header">
         <div id="calendar-month-year-container">
-          <img src={require('./img/left_arrow.png')}/>
+          <img src={require('./img/left_arrow.png')} alt=""/>
           <h3 id="calendar-month">{this.state.month} <span id="calendar-year">{this.state.year}</span></h3>
-          <img src={require('./img/right_arrow.png')}/>
+          <img src={require('./img/right_arrow.png')} alt=""/>
         </div>
         <div id="calendar-chooser-container">
           <TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ calendarChoice => this.setState({ calendarChoice }) }></TabChooser>

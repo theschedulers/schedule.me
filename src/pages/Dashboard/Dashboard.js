@@ -22,10 +22,10 @@ export default class Dashboard extends Component {
     let teams = require('./dummy.json');
 
     return (
-      <div class="full-viewport-hv">
+      <div className="full-viewport-hv">
         <div id="Dashboard">
           <div id="left-sidebar-container">
-            <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} />
+            <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} alt="dashboard-logo-alt"/>
             <div id="dashboard-teams-container">
               <ListSelect list={teams}
                           header={"Teams"}

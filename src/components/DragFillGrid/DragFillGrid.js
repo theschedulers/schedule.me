@@ -58,7 +58,7 @@ class DragFillGrid extends Component {
     }
 
     handleScroll = (e) => {
-        if (e.target.getAttribute('id') == "dragfillgrid-grid-div")
+        if (e.target.getAttribute('id') === "dragfillgrid-grid-div")
             document.getElementById("dragfillgrid-grid-side-info").scrollTop = e.target.scrollTop;
     }
     
