@@ -31,7 +31,83 @@
             }
         ],
         "schedule": {
+            "type": "teamschedule",
+            "timeblocks": {
+                "Sun": [
+                    {
+                        "start": 5,
+                        "end": 7,
+                        "members": [
+                            {
+                                "id": "001",
+                                "text": "Justin Zhu",
+                                "subtext": "Starts at 5",
+                                "photo": "./img/defaultprofile.png"
+                            },
+                            {
+                                "id": "002",
+                                "text": "Ging Gonzalez",
+                                "subtext": "Starts at 5",
+                                "photo": "./img/defaultprofile.png"
+                            }
+                        ],
+                        "comment": "These two start working early"
+                    },
+                    {
+                        "start": 7,
+                        "end": 16,
+                        "members": [
+                            {
+                                "id": "001",
+                                "text": "Justin Zhu",
+                                "subtext": "Starts at 5",
+                                "photo": "./img/defaultprofile.png"
+                            },
+                            {
+                                "id": "002",
+                                "text": "Ging Gonzalez",
+                                "subtext": "Starts at 5",
+                                "photo": "./img/defaultprofile.png"
+                            },
+                            {
+                                "id": "003",
+                                "text": "Dylan Mirandilla",
+                                "subtext": "Starts at 7",
+                                "photo": "./img/defaultprofile.png"
+                            },
+                            {
+                                "id": "004",
+                                "text": "Jeffery Vong",
+                                "subtext": "Starts at 7",
+                                "photo": "./img/defaultprofile.png"
+                            }
+                        ],
+                        "comment": "The first two are still working at this point, and last two start at 7"
+                    },
+                    {
+                        "start": 17,
+                        "end": 19,
+                        "members": [
+                            {
+                                "id": "003",
+                                "text": "Dylan Mirandilla",
+                                "subtext": "Starts at 7",
+                                "photo": "./img/defaultprofile.png"
+                            },
+                            {
+                                "id": "004",
+                                "text": "Jeffery Vong",
+                                "subtext": "Starts at 7",
+                                "photo": "./img/defaultprofile.png"
+                            }
+                        ],
+                        "comment": "Since the last two start late, they stay late working"
+                    }
+                ],
+                "Mon": [
 
+                ]
+            }
         }
     },
     {
