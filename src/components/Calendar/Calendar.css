@@ -37,3 +37,7 @@
 #Calendar > #calendar-header > #calendar-header-spacer {
     flex: 1;
 }
+
+#Calendar > #calendar-grid{
+    margin-top: 1em;
+}

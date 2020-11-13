@@ -9,7 +9,7 @@ export default class Calendar extends Component {
     year: this.props.year,
     day: this.props.day,
 
-    choice: null,
+    calendarChoice: null,
 
     rowheaders: ["00:00", "01:00", "02:00", "03:00", "04:00",
                 "05:00", "06:00", "07:00", "08:00", "09:00",
@@ -20,7 +20,7 @@ export default class Calendar extends Component {
   }
   render() {
 
-    // console.log(this.state.choice);
+    // console.log(this.state.calendarChoice);
 
     return (
     <div id="Calendar">
@@ -31,7 +31,7 @@ export default class Calendar extends Component {
           <img src={require('./img/right_arrow.png')}/>
         </div>
         <div id="calendar-chooser-container">
-          <TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ choice => this.setState({ choice }) }></TabChooser>
+          <TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ calendarChoice => this.setState({ calendarChoice }) }></TabChooser>
         </div>
         <div id="calendar-header-spacer"></div>
       </div>
