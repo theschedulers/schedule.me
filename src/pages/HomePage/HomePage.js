@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {Button} from 'reactstrap';
 import {useHistory} from 'react-router-dom';
 import './HomePage.css';
 import {
@@ -64,7 +63,7 @@ export default function HomePage(props) {
     } else if (isSignedIn) {
       return (
         <div id="home-login-button" onClick={() => { history.push('/dashboard') }}>
-          <img src={require('./img/gotoscheduleme.png')} width="35px" height="35px"/>
+          <img src={require('./img/gotoscheduleme.png')} alt="arrow-login-button-alt" width="35px" height="35px"/>
           <p>Welcome, {name}</p>
         </div>
       );
@@ -72,7 +71,7 @@ export default function HomePage(props) {
       //signed out, so render a sign in button
       return (
         <div id="home-login-button" onClick={handleSignIn}>
-          <img src={require('./img/google.png')} width="35px" height="35px"/>
+          <img src={require('./img/google.png')} alt="google-login-button-alt" width="35px" height="35px"/>
           <p>login/signup</p>
         </div>
       );
@@ -146,7 +145,7 @@ export default function HomePage(props) {
     <div class="full-viewport-hv">
       <div id="HomePage">
         <div>
-          <img id="home-logo" src={require('./img/schedulemelogo.png')} />
+          <img id="home-logo" src={require('./img/schedulemelogo.png')} alt="home-logo-alt"/>
           {renderAuthButton()}
         </div>
         <div id="home-description">

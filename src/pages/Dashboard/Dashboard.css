@@ -19,14 +19,15 @@
   width: 250px;
   height: 100px;
   margin: 1em;
+  cursor: pointer;
 }
 
 #Dashboard > #left-sidebar-container > #dashboard-teams-container {
-  margin:1em;
+  margin: 1em;
 }
 
 #Dashboard > #left-sidebar-container > #dashboard-members-container {
-  margin:1em;
+  margin: 1em;
 }
 
 #Dashboard > #calendar-container {
@@ -38,4 +39,3 @@
   flex: 0.5;
   background-color: #222222;
 }
-

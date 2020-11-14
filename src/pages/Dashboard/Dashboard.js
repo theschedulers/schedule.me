@@ -16,15 +16,21 @@ export default class Dashboard extends Component {
     console.log("Show add member popup.");
   }
 
+  //function used to redirect to other pages. path example: '/other-page'
+  redirectToHomePage = () => {
+    this.props.history.push("/");
+    // window.location.reload();
+  };
+
   render() {
 
     let teams = require('./dummy.json');
 
     return (
-      <div class="full-viewport-hv">
+      <div className="full-viewport-hv">
         <div id="Dashboard">
           <div id="left-sidebar-container">
-            <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} />
+            <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} alt="dashboard-logo-alt" onClick={this.redirectToHomePage}/>
             <div id="dashboard-teams-container">
               <ListSelect list={teams}
                           header={"Teams"}
