@@ -67,6 +67,7 @@ export default class Dashboard extends Component {
     this.setState({teamPhoto: e});
   }
 
+  //Dashboard.js > APIFunctions/Team.js > routes/Team.js > server.js handles it
   handleAddTeam = async () =>{
     const reqTeamToAdd = {
       gapi_id: "123test",

@@ -6,6 +6,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+//import new DB collection routes here
 const BlogPostRoutes = require('./routes/BlogPost');
 const TeamRoutes = require('./routes/Team');
 
@@ -19,6 +20,7 @@ const config = require("./config/config.json")
 //   useFindAndModify: false,
 // });
 
+//using this for now as local cloud db
 mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -39,6 +41,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(morgan('tiny'));
 
 //Where I determine which route to put the data in (right now the data is in localhost:8080/api)
+//Add new schemas and collections here
 app.use('/api', BlogPostRoutes);
 app.use('/api', TeamRoutes);
 

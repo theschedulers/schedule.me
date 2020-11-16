@@ -1,5 +1,9 @@
 import axios from 'axios';
 
+//API Functions that we call in our page files
+//Axios will handle all the routing
+//Basically sending this data to/from the page to the routes in routes/Team.js
+
 export async function getTeams(){
   let data;
   await axios
