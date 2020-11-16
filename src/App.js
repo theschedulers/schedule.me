@@ -12,6 +12,10 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import ErrorPage from './pages/ErrorPage';
 import {CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES} from './config/config.json';
 
+//Test DB Functions
+import BlogPage from "./pages/BlogPage/BlogPage";
+import TeamPage from "./pages/Team/TeamPage";
+
 //Main class, where all the different pages are rendered
 export default function App(props) {
   //Some variables
@@ -64,12 +68,15 @@ export default function App(props) {
       <div>
         <Switch>
           <Route path="/" exact component={HomePage} />
+          <Route path="/blog" exact component={BlogPage} />
+          <Route path="/team" exact component={TeamPage} />
           <PrivateRoute
             exact
             path="/dashboard"
             component={Dashboard}
             authenticated={isAuthenticated}
             initialized={isInitialized}
+            name="test"
           />
           <Route component={ErrorPage} />
         </Switch>

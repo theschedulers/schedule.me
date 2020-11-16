@@ -6,10 +6,20 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-const routes = require('./routes/api');
+const BlogPostRoutes = require('./routes/BlogPost');
+const TeamRoutes = require('./routes/Team');
 
+const config = require("./config/config.json")
+
+//Use later
 //connect mongoDB with mongoose
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/template', {
+// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/template', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useFindAndModify: false,
+// });
+
+mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
@@ -29,7 +39,8 @@ app.use(express.urlencoded({extended: false}));
 app.use(morgan('tiny'));
 
 //Where I determine which route to put the data in (right now the data is in localhost:8080/api)
-app.use('/api', routes);
+app.use('/api', BlogPostRoutes);
+app.use('/api', TeamRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('./build'));

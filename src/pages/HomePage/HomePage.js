@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
+import {Button} from "reactstrap";
 import './HomePage.css';
 import {
   CLIENT_ID,
@@ -62,9 +63,14 @@ export default function HomePage(props) {
       return null;
     } else if (isSignedIn) {
       return (
-        <div id="home-login-button" onClick={() => { history.push('/dashboard') }}>
-          <img src={require('./img/gotoscheduleme.png')} alt="arrow-login-button-alt" width="35px" height="35px"/>
-          <p>Welcome, {name}</p>
+        <div>
+          <div id="home-login-button" onClick={() => { history.push('/dashboard') }}>
+            <img src={require('./img/gotoscheduleme.png')} alt="arrow-login-button-alt" width="35px" height="35px"/>
+            <p>Welcome, {name}</p>
+          </div>
+          <div id="home-login-button">
+            <Button onClick={handleSignOut}>Sign Out</Button>
+          </div>
         </div>
       );
     } else {
