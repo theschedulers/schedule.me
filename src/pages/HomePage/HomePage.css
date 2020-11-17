@@ -1,16 +1,10 @@
-.full-viewport-hv {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: #222222;
-}
-
 #HomePage {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   height: 50%;
+  margin-top: 10em;
 }
 
 #home-logo {
