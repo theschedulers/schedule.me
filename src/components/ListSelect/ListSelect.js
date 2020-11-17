@@ -30,7 +30,7 @@ export default class ListSelect extends Component {
             {this.props.list && this.props.list.map((item, index) => {
               return <div key={index}
                           item-index={index}
-                          className={this.state.selected === index ? "list-select-item list-select-selected" : "list-select-item"}
+                          className={this.state.selected == index ? "list-select-item list-select-selected" : "list-select-item"}
                           onClick={this.updateSelected}>
                 <img className="list-select-item-img" src={require('./img/defaultprofile.png')}  alt="list-select-item-img-alt"/>
                 <div item-index={index}>

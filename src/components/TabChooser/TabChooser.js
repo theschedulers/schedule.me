@@ -19,8 +19,8 @@ export default class TabChooser extends Component {
     render() {
         return (
         <div id="TabChooser">
-        <div id="tabchooser-first" item-index={0} className={this.state.selected === 0 ? "tabchooser-selected": ""} onClick={this.updateSelected}><span item-index={0}>{this.props.left}</span></div>
-        <div id="tabchooser-last" item-index={1} className={this.state.selected === 1 ? "tabchooser-selected": ""} onClick={this.updateSelected}><span item-index={1}>{this.props.right}</span></div>
+        <div id="tabchooser-first" item-index={0} className={this.state.selected == 0 ? "tabchooser-selected": ""} onClick={this.updateSelected}><span item-index={0}>{this.props.left}</span></div>
+        <div id="tabchooser-last" item-index={1} className={this.state.selected == 1 ? "tabchooser-selected": ""} onClick={this.updateSelected}><span item-index={1}>{this.props.right}</span></div>
         </div>
         );
     }
