@@ -124,7 +124,7 @@ export default class Dashboard extends Component {
             </Calendar>
           </div>
           <div id="right-sidebar-container">
-            <Button id="btn" onClick={this.handleSignOut}>Sign Out</Button>
+            <p id="btn" style={{ "color": "#E5C09C", "font-size": "0.75em", "cursor": "pointer"}}onClick={this.handleSignOut}>Sign Out</p>
           </div>
         </div>
       </div>

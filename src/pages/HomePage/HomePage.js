@@ -69,7 +69,7 @@ export default function HomePage(props) {
             <p>Welcome, {name}</p>
           </div>
           <div id="home-login-button">
-            <Button onClick={handleSignOut}>Sign Out</Button>
+            <p onClick={handleSignOut}>Sign Out</p>
           </div>
         </div>
       );
