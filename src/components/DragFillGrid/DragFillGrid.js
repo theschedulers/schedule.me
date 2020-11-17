@@ -7,13 +7,22 @@ class DragFillGrid extends Component {
         colnum: this.props.colnum,
         rowheaders: this.props.rowheaders,
         colheaders: this.props.colheaders,
+        blockedcells: this.getBlockedCells(),
+    }
+
+    getBlockedCells() {
+        // Process the input here and and generate the coordinates of blocked cells
+        return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: "#FFC0C0"})));
     }
 
     getRowCol = (e) => {
         var row = e.target.getAttribute("row");
-        var col = e.target.getAttribute("column")
-        console.log(row);
-        console.log(col);
+        var col = e.target.getAttribute("column");
+
+        var blockedcells = this.state.blockedcells;
+        blockedcells[row][col].blocked = 1;
+
+        this.setState({ blockedcells: blockedcells });
     }
 
     // Source: https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
@@ -27,8 +36,9 @@ class DragFillGrid extends Component {
         for (let i = 0; i < rows; i++) {
             let children = []
             
-            for (let j = 0; j < cols; j++) {  
-                children.push(<td key={"rc" + i + "" + j} row={i} column={j} onClick={this.getRowCol}></td>)
+            for (let j = 0; j < cols; j++) {
+                var cellcolor = this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? this.state.blockedcells[i][j].color : "");
+                children.push(<td key={"rc" + i + "" + j} row={i} column={j} style={{"background-color": cellcolor}} onClick={this.getRowCol}></td>)
             }
             table.push(<tr key={"r" + i}>{children}</tr>)
         }
