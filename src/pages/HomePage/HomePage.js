@@ -148,7 +148,7 @@ export default function HomePage(props) {
   };
 
   return (
-    <div class="full-viewport-hv">
+    <div className="full-viewport-hv">
       <div id="HomePage">
         <div>
           <img id="home-logo" src={require('./img/schedulemelogo.png')} alt="home-logo-alt"/>

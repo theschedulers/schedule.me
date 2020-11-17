@@ -1,0 +1,34 @@
+#TabChooser {
+    display: flex;
+    color: #D7D7D7;
+}
+
+#TabChooser > #tabchooser-first {
+    flex: 1;
+    border: solid white 1px;
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+    padding: 0.20em;
+    cursor: pointer;
+}
+
+#TabChooser > * span {
+    display: block;
+    text-align: center;
+    font-size: 1em;
+}
+
+#TabChooser > #tabchooser-last {
+    flex: 1;
+    border: solid white 1px;
+    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
+    border-left: none;
+    padding: 0.20em;
+    cursor: pointer;
+}
+
+#TabChooser > *.tabchooser-selected {
+    background-color: #D7D7D7;
+    color: #222222
+}

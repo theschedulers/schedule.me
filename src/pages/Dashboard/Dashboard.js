@@ -3,6 +3,7 @@ import ListSelect from '../../components/ListSelect/ListSelect';
 import AddTeamModal from "../../components/AddTeam/AddTeamModal";
 import {Button} from "reactstrap";
 import {getTeams, addTeam, deleteTeam} from "../../APIFunctions/Team";
+import Calendar from '../../components/Calendar/Calendar';
 import './Dashboard.css';
 
 export default class Dashboard extends Component {
@@ -114,10 +115,13 @@ export default class Dashboard extends Component {
               />
             </div>
             <div id="dashboard-members-container">
-
             </div>
           </div>
           <div id="calendar-container">
+            <Calendar month={"November"} day={11} year={2020}
+                      timeblocks={teams[0].schedule.timeblocks}
+                      >
+            </Calendar>
           </div>
           <div id="right-sidebar-container">
             <Button id="btn" onClick={this.handleSignOut}>Sign Out</Button>

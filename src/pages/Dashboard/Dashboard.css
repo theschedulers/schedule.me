@@ -23,7 +23,9 @@
 }
 
 #Dashboard > #left-sidebar-container > #dashboard-teams-container {
-  margin: 1em;
+  margin:1em;
+  margin-top: 0em;
+  overflow: auto;
 }
 
 #Dashboard > #left-sidebar-container > #dashboard-members-container {
@@ -32,7 +34,8 @@
 
 #Dashboard > #calendar-container {
   flex: 5;
-  background-color: black;
+  background-color: #222222;
+  margin-top: 2em;;
 }
 
 #Dashboard > #right-sidebar-container {
