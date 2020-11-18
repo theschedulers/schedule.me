@@ -16,7 +16,7 @@ export default function PrivateRoute({
         ) : !initialized ? (
           ''
         ) : (
-          <Redirect to="/login" />
+          <Redirect to="/" />
         )
       }
     />

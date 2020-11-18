@@ -75,7 +75,6 @@ export default function App(props) {
             component={Dashboard}
             authenticated={isAuthenticated}
             initialized={isInitialized}
-            name="test"
           />
           <Route component={ErrorPage} />
         </Switch>
