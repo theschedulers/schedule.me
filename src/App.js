@@ -50,9 +50,8 @@ export default function App(props) {
         // console.log('Initialized');
         // console.log(auth.isSignedIn.get());
         auth = window.gapi.auth2.getAuthInstance();
-
         if (auth.isSignedIn.get()) {
-          setName(auth.currentUser.get().tt.Ad);
+          setName(auth.currentUser.get().wt.Ad);
           setIsAuthenticated(true);
           setIsInitialized(true);
         } else {

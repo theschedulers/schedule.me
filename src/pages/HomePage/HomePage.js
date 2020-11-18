@@ -51,7 +51,7 @@ export default function HomePage(props) {
   //logged in, do some stuff like add name to our site, change isSignedIn var.
   function handleAuthChange() {
     if (auth.isSignedIn.get()) {
-      setName(auth.currentUser.get().tt.Ad);
+      setName(auth.currentUser.get().wt.Ad);
     }
     const newIsSignedIn = auth.isSignedIn.get();
     setIsSignedIn(newIsSignedIn);
