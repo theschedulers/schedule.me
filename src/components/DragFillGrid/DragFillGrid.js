@@ -20,7 +20,7 @@ class DragFillGrid extends Component {
         var col = e.target.getAttribute("column");
 
         var blockedcells = this.state.blockedcells;
-        blockedcells[row][col].blocked = 1;
+        blockedcells[row][col].blocked = blockedcells[row][col].blocked == 0 ? 1 : 0;
 
         this.setState({ blockedcells: blockedcells });
     }
@@ -38,7 +38,7 @@ class DragFillGrid extends Component {
             
             for (let j = 0; j < cols; j++) {
                 var cellcolor = this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? this.state.blockedcells[i][j].color : "");
-                children.push(<td key={"rc" + i + "" + j} row={i} column={j} style={{"background-color": cellcolor}} onClick={this.getRowCol}></td>)
+                children.push(<td key={"rc" + i + "" + j} row={i} column={j} style={{"backgroundColor": cellcolor}} onClick={this.getRowCol}></td>)
             }
             table.push(<tr key={"r" + i}>{children}</tr>)
         }
