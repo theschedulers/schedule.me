@@ -23,7 +23,7 @@ export default class Calendar extends Component {
   render() {
 
     // console.log(this.state.calendarChoice);
-    console.log(this.state.timeblocks);
+    // console.log(this.state.timeblocks);
 
     return (
     <div id="Calendar">

@@ -13,11 +13,16 @@ export default class ListSelect extends Component {
 
   // Select the clicked item
   updateSelected = (e) => {
+    const selectedIndex = e.target.getAttribute("item-index");
     if (this.state.selectable != null) {
       this.setState({ selected: e.target.getAttribute("item-index") });
       this.state.valueUpdated(e.target.getAttribute("item-index"));
     }
+    console.log("Selected: ", this.props.list[selectedIndex]);
   }
+
+  //temp
+  //require('./img/defaultprofile.png')
 
   render() {
     return (
@@ -30,9 +35,9 @@ export default class ListSelect extends Component {
             {this.props.list && this.props.list.map((item, index) => {
               return <div key={index}
                           item-index={index}
-                          className={this.state.selected == index ? "list-select-item list-select-selected" : "list-select-item"}
+                          className={this.state.selected === index ? "list-select-item list-select-selected" : "list-select-item"}
                           onClick={this.updateSelected}>
-                <img className="list-select-item-img" src={require('./img/defaultprofile.png')}  alt="list-select-item-img-alt"/>
+                <img className="list-select-item-img" src={item.photo || ""}  alt="list-select-item-img-alt"/>
                 <div item-index={index}>
                   <h6 item-index={index}>{item.text}</h6>
                   <p item-index={index}>{item.subtext}</p>

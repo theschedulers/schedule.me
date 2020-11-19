@@ -19,16 +19,27 @@ export default class TeamPage extends Component {
   }
 
   addTheTeams = async () =>{
+    const test1 = {
+      memberName: "Test"
+    }
+    const test2 = {
+      memberName: "Test2"
+    }
+    const test3 = {
+      memberName: "Test3"
+    }
+    const reqMembersToAdd = [test1, test2, test3];
+    console.log(reqMembersToAdd);
     const reqTeamToAdd = {
-      gapi_id: "testData",
-      teamName: "Team23",
-      teamMembers: 2,
-      teamPhoto: "https://Bobthebuilder.com"
+      gapi_id: "ttt",
+      teamName: "Team69",
+      teamPhoto: "https://Bobthebuilder.com",
+      teamMembers: reqMembersToAdd
     }
     console.log("Add Team", reqTeamToAdd);
     const res = await addTeam(reqTeamToAdd);
     console.log("res: ", res);
-    window.location.reload();
+    // window.location.reload();
   }
 
   deleteTheTeams = async () =>{

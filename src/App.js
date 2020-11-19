@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import ReactDOM from 'react-dom';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
-import * as serviceWorker from './serviceWorker';
 import './App.css';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,7 +17,7 @@ import TeamPage from "./pages/Team/TeamPage";
 //Main class, where all the different pages are rendered
 export default function App(props) {
   //Some variables
-  const [name, setName] = useState();
+  // const [name, setName] = useState();
   const [isAuthenticated, setIsAuthenticated] = useState();
   const [isInitialized, setIsInitialized] = useState(false);
   var auth = undefined;
@@ -51,11 +49,11 @@ export default function App(props) {
         // console.log(auth.isSignedIn.get());
         auth = window.gapi.auth2.getAuthInstance();
         if (auth.isSignedIn.get()) {
-          setName(auth.currentUser.get().tt.Ad);
+          // setName(auth.currentUser.get().wt.Ad);
           setIsAuthenticated(true);
           setIsInitialized(true);
         } else {
-          setName('Login');
+          // setName('Login');
           setIsAuthenticated(false);
           setIsInitialized(true);
         }
@@ -82,15 +80,3 @@ export default function App(props) {
     </Router>
   );
 }
-
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();

@@ -14,15 +14,20 @@ export default function AddTeamModal(props){
         <ModalBody>
           <AddTeamForm
             teamName = {props.teamName}
-            teamMembers = {props.teamMembers}
             teamPhoto = {props.teamPhoto}
+            userName = {props.userName}
+            userDescription = {props.userDescription}
+            userPhoto = {props.userPhoto}
             updateTeamName = {props.updateTeamName}
-            updateTeamMembers = {props.updateTeamMembers}
             updateTeamPhoto = {props.updateTeamPhoto}
+            updateUserName = {props.updateUserName}
+            updateUserPhoto = {props.updateUserPhoto}
+            updateUserDescription = {props.updateUserDescription}
+            checkUrlValid = {props.checkUrlValid}
           />
         </ModalBody>
         <ModalFooter>
-          <Button color="primary" onClick={handleConfirmation}>Confirm</Button>
+          <Button color="primary" onClick={handleConfirmation} disabled={props.checkTeamFormEmpty()}>Confirm</Button>
           <Button color="danger" onClick={props.setToggle}>Cancel</Button>
         </ModalFooter>
       </Modal>

@@ -3,18 +3,35 @@ const Schema = mongoose.Schema;
 
 const TeamSchema = new Schema (
   {
-    gapi_id: {
-      type: String,
-    },
     teamName: {
       type: String,
-    },
-    teamMembers: {
-      type: Number
     },
     teamPhoto: {
       type: String
     },
+    teamMembers: {
+      type: Array,
+      member: {
+        gapi_id: {
+          unique: true,
+          type: String
+        },
+        memberEmail: {
+          unique: true,
+          type: String
+        },
+        memberName: {
+          type: String
+        }, 
+        memberDescription: {
+          type: String
+        },
+        memberPhoto: {
+          type: String
+        }
+      }
+    },
+
   },
   { collection: 'Team' }
 );

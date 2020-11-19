@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
-import {Button} from "reactstrap";
 import './HomePage.css';
 import {
   CLIENT_ID,
@@ -51,7 +50,7 @@ export default function HomePage(props) {
   //logged in, do some stuff like add name to our site, change isSignedIn var.
   function handleAuthChange() {
     if (auth.isSignedIn.get()) {
-      setName(auth.currentUser.get().tt.Ad);
+      setName(auth.currentUser.get().wt.Ad);
     }
     const newIsSignedIn = auth.isSignedIn.get();
     setIsSignedIn(newIsSignedIn);
@@ -127,7 +126,7 @@ export default function HomePage(props) {
     auth = window.gapi.auth2.getAuthInstance();
     auth.signOut().then(() => {
       setName('');
-      document.getElementById('name-div').style.display = 'none';
+      // document.getElementById('name-div').style.display = 'none';
       redirectTo('/');
     });
   }

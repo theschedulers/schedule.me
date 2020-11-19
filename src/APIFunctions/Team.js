@@ -9,7 +9,7 @@ export async function getTeams(){
   await axios
     .get('/api/getTeams')
     .then(res => {
-      console.log("res.data received: ", res.data);
+      // console.log("res.data received: ", res.data);
       data = res.data;
     })
     .catch(err => {
@@ -21,20 +21,39 @@ export async function getTeams(){
 export async function addTeam(reqTeamToAdd){
   let data;
   const teamToAdd = {
-    gapi_id: reqTeamToAdd.gapi_id,
     teamName: reqTeamToAdd.teamName,
+    teamPhoto: reqTeamToAdd.teamPhoto,
     teamMembers: reqTeamToAdd.teamMembers, 
-    teamPhoto: reqTeamToAdd.teamPhoto
-  }
+  };
   await axios
     .post('/api/addTeam', teamToAdd)
     .then(res => {
-      console.log("API Functions", teamToAdd);
+      // console.log("API Functions", teamToAdd);
       data = res.data;
     })
     .catch(err => {
       return err;
+    });
+    return data;
+}
+
+export async function editTeam(reqTeamToEdit){
+  let data;
+  const teamToEdit = {
+    _id: reqTeamToEdit._id,
+    teamName: reqTeamToEdit.teamName,
+    teamPhoto: reqTeamToEdit.teamPhoto,
+    teamMembers: reqTeamToEdit.teamMembers, 
+  };
+  await axios
+    .post('/api/editTeam', teamToEdit)
+    .then(res => {
+      // console.log("API Functions", teamToEdit);
+      data = res.data;
     })
+    .catch(err => {
+      return err;
+    });
     return data;
 }
 
@@ -43,12 +62,12 @@ export async function deleteTeam(reqTeamToDelete){
   await axios
     .post('/api/deleteTeam', reqTeamToDelete)
     .then(res => {
-      console.log("sending data", res.data);
+      // console.log("sending data", res.data);
       data = res.data;
     })
     .catch(err => {
       return err;
-    })
+    });
     return data;
 
 }
