@@ -7,6 +7,7 @@ class DragFillGrid extends Component {
         colnum: this.props.colnum,
         rowheaders: this.props.rowheaders,
         colheaders: this.props.colheaders,
+        draggable: this.props.draggable,
         timeBlocksUpdated: this.props.timeBlocksUpdated,
         blockedcells: this.getBlockedCells(),
         dragging: 0,
@@ -75,7 +76,7 @@ class DragFillGrid extends Component {
         var row = parseInt(e.target.getAttribute("row"));
         var col = parseInt(e.target.getAttribute("column"));
         var blockedcells = this.state.blockedcells;
-        blockedcells[row][col].blocked = !blockedcells[row][col].blocked;
+        blockedcells[row][col].blocked = blockedcells[row][col].blocked == 1 ? 0 : 1;
         this.setState({ blockedcells: blockedcells,
                         dragging: 1,
                         dragcol: col,
@@ -95,7 +96,8 @@ class DragFillGrid extends Component {
     endDrag = () => {
         var blockedcells = this.state.blockedcells;
         for (let i = 0; i < this.state.rownum; i++) {
-            blockedcells[i][this.state.dragcol].currentdrag = 0;
+            if (blockedcells[i][this.state.dragcol] != null)
+                blockedcells[i][this.state.dragcol].currentdrag = 0;
         }
         this.setState({ blockedcells: blockedcells,
                         dragcol: null,
@@ -124,9 +126,9 @@ class DragFillGrid extends Component {
                 
                 children.push(<td key={"rc" + i + "" + j} row={i} column={j} draggable="false"
                                 style={cellstyle}
-                                onMouseDown={(e) => {this.startDrag(e); this.drag(e)}}
-                                onMouseEnter={(e) => { if (this.state.dragging == 1) this.drag(e) }}
-                                onMouseUp={this.endDrag}></td>)
+                                onMouseDown={(e) => {if (this.props.draggable == true) { this.startDrag(e); this.drag(e)}} }
+                                onMouseEnter={(e) => { if (this.state.dragging == 1 && this.props.draggable == true) this.drag(e) }}
+                                onMouseUp={(e) => { if (this.props.draggable == true) this.endDrag()}}></td>)
             }
             table.push(<tr key={"r" + i}>{children}</tr>)
         }

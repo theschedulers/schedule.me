@@ -10,9 +10,10 @@ export default class TabChooser extends Component {
 
     // Select the clicked item
     updateSelected = (e) => {
-        this.setState({ selected: e.target.getAttribute("item-index") });
+        var selected = parseInt(e.target.getAttribute("item-index"));
+        this.setState({ selected: selected });
         if (this.state.valueUpdated != null) {
-            this.state.valueUpdated(e.target.getAttribute("item-index"));
+            this.state.valueUpdated(selected);
         }
     }
 

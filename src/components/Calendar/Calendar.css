@@ -40,6 +40,11 @@
     flex: 1;
 }
 
+#Calendar > #calendar-header > #calendar-chooser-container > #cleandar-header-title {
+    font-weight: 200;
+    text-align: center;
+}
+
 #Calendar > #calendar-grid{
     margin-top: 1em;
 }
