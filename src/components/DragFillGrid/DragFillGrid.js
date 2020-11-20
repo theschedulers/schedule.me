@@ -17,6 +17,10 @@ class DragFillGrid extends Component {
         dragmaxendrow: null,
     }
 
+    /* Important props
+        blockcellsinput
+    */
+
     // https://css-tricks.com/snippets/javascript/lighten-darken-color/
     lightenDarkenColor(col, amt) {
         var usePound = false;
@@ -46,10 +50,20 @@ class DragFillGrid extends Component {
     }
 
     getBlockedCells() {
-        var color = "#B7DEFA";
-        var darkColor = this.lightenDarkenColor(color, -60);
-        // Process the input here and and generate the coordinates of blocked cells
-        return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: color, darkColor: darkColor, currentdrag: 0})));
+        /* TODO: Allow multiple layers
+            for not this.props.blockcellsinput[0] is used because there's only one layer (and this is what's supported atm)
+        */
+        if (this.props.blockcellsinput != null) {
+            var color = this.props.blockcellsinput[0].color;
+            var darkColor = this.lightenDarkenColor(color, -60);
+            var cells = this.props.blockcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ "blocked": cell.blocked , color: color, darkColor, currentdrag: 0}))));
+            return cells;
+        }
+        else {
+            var color = "#B7DEFA";
+            var darkColor = this.lightenDarkenColor(color, -60);
+            return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: color, darkColor: darkColor, currentdrag: 0})));
+        }
     }
 
     blockCells = (col, startrow, endrow) => {
@@ -104,7 +118,7 @@ class DragFillGrid extends Component {
                         dragging: 0,
                         dragstartrow: null,
                         dragendrow: null },
-                        () => { this.state.timeBlocksUpdated(this.state.blockedcells); });
+                        () => { this.state.timeBlocksUpdated(this.state.blockedcells.map((row) => (row.map((cell) => ({ "blocked": cell.blocked }))))); });
     }
 
     // Source: https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778

@@ -31,6 +31,29 @@ export default class Calendar extends Component {
       return (<TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ calendarChoice => this.setState({ calendarChoice }) }></TabChooser>);
   }
 
+  // getDragFillGrid() {
+  //   if (this.state.calendarChoice == 0) { // Choose team calendar
+  //     return (<DragFillGrid rowheaders={this.state.rowheaders}
+  //               colheaders={this.state.colheaders}
+  //               rownum={24}
+  //               colnum={7}
+  //               timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
+  //               draggable={this.props.inputmode}
+  //               blockcellsinput={[this.state.timeblocksinput[0]]}>
+  //             </DragFillGrid>)
+  //   }
+  //   else { // Choose personal calendar
+  //     return (<DragFillGrid rowheaders={this.state.rowheaders}
+  //               colheaders={this.state.colheaders}
+  //               rownum={24}
+  //               colnum={7}
+  //               timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
+  //               draggable={false}
+  //               blockcellsinput={[this.state.timeblocksinput[1]]}>
+  //             </DragFillGrid>)
+  //   }
+  // }
+
   /* Important props
   {
     inputmode - whether the calendar can drag time blocks
@@ -38,9 +61,6 @@ export default class Calendar extends Component {
   } */
 
   render() {
-
-    // console.log(this.state.timeblocksoutput);
-
     return (
     <div id="Calendar">
       <div id="calendar-header">
@@ -61,7 +81,7 @@ export default class Calendar extends Component {
                       colnum={7}
                       timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                       draggable={this.props.inputmode}
-                      >
+                      blockcellsinput={[this.state.timeblocksinput[0]]}>
         </DragFillGrid>
       </div>
       <div id="calendar-footer" style={{visibility: (this.props.inputmode == true) ? "visible": "hidden" }}>
