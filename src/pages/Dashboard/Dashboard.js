@@ -33,6 +33,8 @@ export default class Dashboard extends Component {
       memberDescription: "",
       memberEmail: "",
       memberPhoto: "",
+      // For Calendar
+      inputmode: true,
     }
   }
 
@@ -260,6 +262,15 @@ export default class Dashboard extends Component {
       !this.checkEmailValid(this.state.memberEmail) || (this.state.memberPhoto === "" ? false : !this.checkUrlValid(this.state.memberPhoto));
   }
 
+  calendarOnSubmitCallback = (timeblocks) => {
+    console.log(timeblocks);
+    this.setState({ inputmode: false });
+  }
+
+  calendarOnCancelCallback = () => {
+    this.setState({ inputmode: false });
+  }
+
   render() {
 
     let teams = require('./dummy.json');
@@ -320,7 +331,11 @@ export default class Dashboard extends Component {
           </div>
           <div id="calendar-container">
             <Calendar month={"November"} day={11} year={2020}
-                      timeblocks={teams[0].schedule.timeblocks}
+                      timeblocksinput={teams[0].schedule.timeblocks}
+                      submitcallback={this.calendarOnSubmitCallback}
+                      cancelcallback={this.calendarOnCancelCallback}
+                      inputmode={this.state.inputmode}
+                      inputmodeheader={(this.state.inputmode == true) ? "Input Availability" : null}
                       >
             </Calendar>
           </div>

@@ -9,9 +9,10 @@ export default class Calendar extends Component {
     year: this.props.year,
     day: this.props.day,
 
-    calendarChoice: null,
+    calendarChoice: 0,
 
-    timeblocks: this.props.timeblocks,
+    timeblocksinput: this.props.timeblocksinput,
+    timeblocksoutput: null, // This will contain the availability inputs
 
     rowheaders: ["00:00", "01:00", "02:00", "03:00", "04:00",
                 "05:00", "06:00", "07:00", "08:00", "09:00",
@@ -19,11 +20,26 @@ export default class Calendar extends Component {
                 "15:00", "16:00", "17:00", "18:00", "19:00",
                 "20:00", "21:00", "22:00", "23:00"],
     colheaders: ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"],
+    submitcallback: this.props.submitcallback,
+    cancelcallback: this.props.cancelcallback,
   }
+
+  getHeader() {
+    if (this.props.inputmode == true)
+      return (<h3 id="cleandar-header-title">{this.props.inputmodeheader}</h3>)
+    else
+      return (<TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ calendarChoice => this.setState({ calendarChoice }) }></TabChooser>);
+  }
+
+  /* Important props
+  {
+    inputmode - whether the calendar can drag time blocks
+    inputmodeheader - the text on top when inputmode is true
+  } */
+
   render() {
 
-    // console.log(this.state.calendarChoice);
-    // console.log(this.state.timeblocks);
+    // console.log(this.state.timeblocksoutput);
 
     return (
     <div id="Calendar">
@@ -34,7 +50,7 @@ export default class Calendar extends Component {
           <img src={require('./img/right_arrow.png')} alt=""/>
         </div>
         <div id="calendar-chooser-container">
-          <TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ calendarChoice => this.setState({ calendarChoice }) }></TabChooser>
+          {this.getHeader()}
         </div>
         <div id="calendar-header-spacer"></div>
       </div>
@@ -43,8 +59,14 @@ export default class Calendar extends Component {
                       colheaders={this.state.colheaders}
                       rownum={24}
                       colnum={7}
+                      timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
+                      draggable={this.props.inputmode}
                       >
         </DragFillGrid>
+      </div>
+      <div id="calendar-footer" style={{visibility: (this.props.inputmode == true) ? "visible": "hidden" }}>
+        <div id="timeblock-cancel-button" onClick={() => { this.state.cancelcallback() }}>Cancel</div>
+        <div id="timeblock-submit-button" onClick={() => { this.state.submitcallback(this.state.timeblocksoutput, this.state.calendarChoice) }}>Submit</div>
       </div>
     </div>
     );

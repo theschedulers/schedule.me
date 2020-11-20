@@ -40,6 +40,34 @@
     flex: 1;
 }
 
+#Calendar > #calendar-header > #calendar-chooser-container > #cleandar-header-title {
+    font-weight: 200;
+    text-align: center;
+}
+
 #Calendar > #calendar-grid{
     margin-top: 1em;
+}
+
+#Calendar > #calendar-footer {
+    display: flex;
+    justify-content: center;
+}
+
+#Calendar > #calendar-footer > #timeblock-submit-button {
+    border: solid #64E4BE 1px;
+    color: #64E4BE;
+    margin: 1em;
+    padding: 0.5em 2em;
+    border-radius: 2em;
+    cursor: pointer;
+}
+
+#Calendar > #calendar-footer > #timeblock-cancel-button {
+    border: solid #E4649A 1px;
+    color: #E4649A;
+    margin: 1em;
+    padding: 0.5em 2em;
+    border-radius: 2em;
+    cursor: pointer;
 }

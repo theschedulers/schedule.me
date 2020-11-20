@@ -7,27 +7,109 @@ class DragFillGrid extends Component {
         colnum: this.props.colnum,
         rowheaders: this.props.rowheaders,
         colheaders: this.props.colheaders,
+        draggable: this.props.draggable,
+        timeBlocksUpdated: this.props.timeBlocksUpdated,
         blockedcells: this.getBlockedCells(),
+        dragging: 0,
+        dragcol: null,
+        dragstartrow: null,
+        dragendrow: null,
+        dragmaxendrow: null,
+    }
+
+    // https://css-tricks.com/snippets/javascript/lighten-darken-color/
+    lightenDarkenColor(col, amt) {
+        var usePound = false;
+      
+        if (col[0] == "#") {
+            col = col.slice(1);
+            usePound = true;
+        }
+     
+        var num = parseInt(col,16);
+        var r = (num >> 16) + amt;
+     
+        if (r > 255) r = 255;
+        else if  (r < 0) r = 0;
+     
+        var b = ((num >> 8) & 0x00FF) + amt;
+     
+        if (b > 255) b = 255;
+        else if  (b < 0) b = 0;
+     
+        var g = (num & 0x0000FF) + amt;
+     
+        if (g > 255) g = 255;
+        else if (g < 0) g = 0;
+     
+        return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
     }
 
     getBlockedCells() {
+        var color = "#B7DEFA";
+        var darkColor = this.lightenDarkenColor(color, -60);
         // Process the input here and and generate the coordinates of blocked cells
-        return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: "#FFC0C0"})));
+        return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: color, darkColor: darkColor, currentdrag: 0})));
     }
 
-    getRowCol = (e) => {
-        var row = e.target.getAttribute("row");
-        var col = e.target.getAttribute("column");
+    blockCells = (col, startrow, endrow) => {
+        if (this.state.dragcol != null && this.state.dragcol == col) {
+            var blockedcells = this.state.blockedcells;
+            for (let i = startrow; i <= endrow; i++) {
+                blockedcells[i][col].blocked = 1;
+                blockedcells[i][col].currentdrag = 1;
+            }
+            this.setState({ blockedcells: blockedcells,
+                            dragendrow: endrow,
+                            dragmaxendrow: (this.state.dragmaxendrow > endrow) ? this.state.dragmaxendrow : endrow },
+                            () => {
+                                var blockedcells = this.state.blockedcells;
+                                for (let i = endrow + 1; i <= this.state.dragmaxendrow; i++) {
+                                    blockedcells[i][col].blocked = 0;
+                                }
+                                this.setState({ blockedcells: blockedcells })
+                            });
+        }
+    }
 
+    startDrag = (e) => {
+        var row = parseInt(e.target.getAttribute("row"));
+        var col = parseInt(e.target.getAttribute("column"));
         var blockedcells = this.state.blockedcells;
-        blockedcells[row][col].blocked = blockedcells[row][col].blocked == 0 ? 1 : 0;
+        blockedcells[row][col].blocked = blockedcells[row][col].blocked == 1 ? 0 : 1;
+        this.setState({ blockedcells: blockedcells,
+                        dragging: 1,
+                        dragcol: col,
+                        dragstartrow: row,
+                        dragmaxendrow: row });
+    }
 
-        this.setState({ blockedcells: blockedcells });
+    drag = (e) => {
+        var row = parseInt(e.target.getAttribute("row"));
+        var col = parseInt(e.target.getAttribute("column"));
+
+        if (this.state.dragging == 1) {
+            this.blockCells(col, this.state.dragstartrow, row);
+        }
+    }
+
+    endDrag = () => {
+        var blockedcells = this.state.blockedcells;
+        for (let i = 0; i < this.state.rownum; i++) {
+            if (blockedcells[i][this.state.dragcol] != null)
+                blockedcells[i][this.state.dragcol].currentdrag = 0;
+        }
+        this.setState({ blockedcells: blockedcells,
+                        dragcol: null,
+                        dragging: 0,
+                        dragstartrow: null,
+                        dragendrow: null },
+                        () => { this.state.timeBlocksUpdated(this.state.blockedcells); });
     }
 
     // Source: https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
     createTable = () => {
-        
+
         let rows = this.props.rownum != null ? this.props.rownum : 5;
         let cols = this.props.colnum != null ? this.props.colnum : 5;
 
@@ -37,8 +119,16 @@ class DragFillGrid extends Component {
             let children = []
             
             for (let j = 0; j < cols; j++) {
-                var cellcolor = this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? this.state.blockedcells[i][j].color : "");
-                children.push(<td key={"rc" + i + "" + j} row={i} column={j} style={{"backgroundColor": cellcolor}} onClick={this.getRowCol}></td>)
+                var cellstyle = {
+                    backgroundColor: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? this.state.blockedcells[i][j].color : ""),
+                    borderLeft: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "solid " + this.state.blockedcells[i][j].darkColor + " 2px" : "")
+                }
+                
+                children.push(<td key={"rc" + i + "" + j} row={i} column={j} draggable="false"
+                                style={cellstyle}
+                                onMouseDown={(e) => {if (this.props.draggable == true) { this.startDrag(e); this.drag(e)}} }
+                                onMouseEnter={(e) => { if (this.state.dragging == 1 && this.props.draggable == true) this.drag(e) }}
+                                onMouseUp={(e) => { if (this.props.draggable == true) this.endDrag()}}></td>)
             }
             table.push(<tr key={"r" + i}>{children}</tr>)
         }
