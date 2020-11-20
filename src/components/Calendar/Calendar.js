@@ -11,7 +11,8 @@ export default class Calendar extends Component {
 
     calendarChoice: null,
 
-    timeblocks: this.props.timeblocks,
+    timeblocksinput: this.props.timeblocksinput,
+    timeblocksoutput: null, // This will contain the availability inputs
 
     rowheaders: ["00:00", "01:00", "02:00", "03:00", "04:00",
                 "05:00", "06:00", "07:00", "08:00", "09:00",
@@ -22,8 +23,7 @@ export default class Calendar extends Component {
   }
   render() {
 
-    // console.log(this.state.calendarChoice);
-    // console.log(this.state.timeblocks);
+    // console.log(this.state.timeblocksoutput);
 
     return (
     <div id="Calendar">
@@ -43,8 +43,13 @@ export default class Calendar extends Component {
                       colheaders={this.state.colheaders}
                       rownum={24}
                       colnum={7}
+                      timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                       >
         </DragFillGrid>
+      </div>
+      <div id="calendar-footer">
+        <div id="timeblock-cancel-button">Cancel</div>
+        <div id="timeblock-submit-button">Submit</div>
       </div>
     </div>
     );

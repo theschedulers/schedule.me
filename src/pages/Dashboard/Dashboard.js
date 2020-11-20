@@ -320,7 +320,7 @@ export default class Dashboard extends Component {
           </div>
           <div id="calendar-container">
             <Calendar month={"November"} day={11} year={2020}
-                      timeblocks={teams[0].schedule.timeblocks}
+                      timeblocksinput={teams[0].schedule.timeblocks}
                       >
             </Calendar>
           </div>

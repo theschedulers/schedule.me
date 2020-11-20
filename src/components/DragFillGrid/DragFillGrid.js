@@ -7,6 +7,7 @@ class DragFillGrid extends Component {
         colnum: this.props.colnum,
         rowheaders: this.props.rowheaders,
         colheaders: this.props.colheaders,
+        timeBlocksUpdated: this.props.timeBlocksUpdated,
         blockedcells: this.getBlockedCells(),
         dragging: 0,
         dragcol: null,
@@ -96,7 +97,12 @@ class DragFillGrid extends Component {
         for (let i = 0; i < this.state.rownum; i++) {
             blockedcells[i][this.state.dragcol].currentdrag = 0;
         }
-        this.setState({ blockedcells: blockedcells, dragcol: null, dragging: 0, dragstartrow: null, dragendrow: null });
+        this.setState({ blockedcells: blockedcells,
+                        dragcol: null,
+                        dragging: 0,
+                        dragstartrow: null,
+                        dragendrow: null },
+                        () => { this.state.timeBlocksUpdated(this.state.blockedcells); });
     }
 
     // Source: https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
