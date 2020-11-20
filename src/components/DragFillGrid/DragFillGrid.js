@@ -8,21 +8,65 @@ class DragFillGrid extends Component {
         rowheaders: this.props.rowheaders,
         colheaders: this.props.colheaders,
         blockedcells: this.getBlockedCells(),
+        dragging: 0,
+        dragcol: null,
+        dragstartrow: null,
+        dragendrow: null,
+        dragmaxendrow: null,
     }
 
     getBlockedCells() {
         // Process the input here and and generate the coordinates of blocked cells
-        return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: "#FFC0C0"})));
+        return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: "#FFC0C0", currentdrag: 0})));
     }
 
-    getRowCol = (e) => {
-        var row = e.target.getAttribute("row");
-        var col = e.target.getAttribute("column");
+    blockCells = (col, startrow, endrow) => {
+        if (this.state.dragcol != null && this.state.dragcol == col) {
+            var blockedcells = this.state.blockedcells;
+            for (let i = startrow; i <= endrow; i++) {
+                blockedcells[i][col].blocked = 1;
+                blockedcells[i][col].currentdrag = 1;
+            }
+            this.setState({ blockedcells: blockedcells,
+                            dragendrow: endrow,
+                            dragmaxendrow: (this.state.dragmaxendrow > endrow) ? this.state.dragmaxendrow : endrow },
+                            () => {
+                                var blockedcells = this.state.blockedcells;
+                                for (let i = endrow + 1; i <= this.state.dragmaxendrow; i++) {
+                                    blockedcells[i][col].blocked = 0;
+                                }
+                                this.setState({ blockedcells: blockedcells })
+                            });
+        }
+    }
 
+    startDrag = (e) => {
+        var row = parseInt(e.target.getAttribute("row"));
+        var col = parseInt(e.target.getAttribute("column"));
         var blockedcells = this.state.blockedcells;
-        blockedcells[row][col].blocked = blockedcells[row][col].blocked == 0 ? 1 : 0;
+        blockedcells[row][col].blocked = !blockedcells[row][col].blocked;
+        this.setState({ blockedcells: blockedcells,
+                        dragging: 1,
+                        dragcol: col,
+                        dragstartrow: row,
+                        dragmaxendrow: row });
+    }
 
-        this.setState({ blockedcells: blockedcells });
+    drag = (e) => {
+        var row = parseInt(e.target.getAttribute("row"));
+        var col = parseInt(e.target.getAttribute("column"));
+
+        if (this.state.dragging == 1) {
+            this.blockCells(col, this.state.dragstartrow, row);
+        }
+    }
+
+    endDrag = () => {
+        var blockedcells = this.state.blockedcells;
+        for (let i = 0; i < this.state.rownum; i++) {
+            blockedcells[i][this.state.dragcol].currentdrag = 0;
+        }
+        this.setState({ blockedcells: blockedcells, dragcol: null, dragging: 0, dragstartrow: null, dragendrow: null });
     }
 
     // Source: https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
@@ -38,7 +82,11 @@ class DragFillGrid extends Component {
             
             for (let j = 0; j < cols; j++) {
                 var cellcolor = this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? this.state.blockedcells[i][j].color : "");
-                children.push(<td key={"rc" + i + "" + j} row={i} column={j} style={{"backgroundColor": cellcolor}} onClick={this.getRowCol}></td>)
+                children.push(<td key={"rc" + i + "" + j} row={i} column={j} draggable="false"
+                                style={{"backgroundColor": cellcolor}}
+                                onMouseDown={(e) => {this.startDrag(e); this.drag(e)}}
+                                onMouseEnter={(e) => { if (this.state.dragging == 1) this.drag(e) }}
+                                onMouseUp={this.endDrag}></td>)
             }
             table.push(<tr key={"r" + i}>{children}</tr>)
         }
