@@ -6,6 +6,7 @@ class DropdownProfile extends Component {
 
   state = {
     userName: this.props.userName,
+    profilePicture: this.props.profilePicture,
     ddOpen: this.props.ddOpen,
     onSignOut: this.props.onSignOut
   };
@@ -13,7 +14,7 @@ class DropdownProfile extends Component {
   toggle = () => {
     console.log("Toggled Profile Dropdown, from " + this.state.ddOpen + " to " + !this.state.ddOpen);
     this.setState((state) => ({
-      ddOpen: !state.ddOpen
+      ddOpen: !this.state.ddOpen
     }));
   }
 
@@ -22,11 +23,11 @@ class DropdownProfile extends Component {
       <div id="profile-icon">
         <Dropdown isOpen={this.state.ddOpen} toggle={this.toggle}>
           <DropdownToggle tag="div">
-            <img id="dashboard-profile-picture" src={require("./img/defaultprofile.png")} alt="Dashboard Profile Picture" />
+            <img id="dashboard-profile-picture" src={this.state.profilePicture} alt="Dashboard Profile Picture" />
           </DropdownToggle>
           <DropdownMenu right>
             <DropdownItem header>
-              <img id="dropdown-profile-picture" src={require("./img/defaultprofile.png")} alt="Dropdown Profile Picture" />
+              <img id="dropdown-profile-picture" src={this.state.profilePicture} alt="Dropdown Profile Picture" />
             </DropdownItem>
             <DropdownItem divider />
             <DropdownItem text id="dropdown-username">{this.props.userName}</DropdownItem>
