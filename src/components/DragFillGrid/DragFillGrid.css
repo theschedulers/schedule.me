@@ -41,7 +41,7 @@
 }
 
 #DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-div > #dragfillgrid-grid {
-    display: flex;
+    /* display: flex; */
     flex: 1;
     flex-direction: column;
     background-color: #FFFFFF;
