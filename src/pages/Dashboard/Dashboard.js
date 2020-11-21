@@ -273,9 +273,10 @@ export default class Dashboard extends Component {
   }
 
   render() {
-
-    let teams = require('./dummy.json');
+    
     let calendardata = require('./calendardatadummy.json');
+
+    // console.log(this.state.selectedTeam)
 
     return (
       <div className="full-viewport-hv">
@@ -334,6 +335,7 @@ export default class Dashboard extends Component {
           <div id="calendar-container">
             <Calendar month={"November"} day={11} year={2020}
                       timeblocksinput={calendardata}
+                      calendarchoice={this.state.selectedTeam}
                       submitcallback={this.calendarOnSubmitCallback}
                       cancelcallback={this.calendarOnCancelCallback}
                       inputmode={this.state.inputmode}

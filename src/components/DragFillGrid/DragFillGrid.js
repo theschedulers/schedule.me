@@ -3,6 +3,7 @@ import './DragFillGrid.css';
 class DragFillGrid extends Component {
 
     state = {
+        id: this.props.id,
         rownum: this.props.rownum,
         colnum: this.props.colnum,
         rowheaders: this.props.rowheaders,
@@ -10,6 +11,7 @@ class DragFillGrid extends Component {
         draggable: this.props.draggable,
         timeBlocksUpdated: this.props.timeBlocksUpdated,
         blockedcells: this.getBlockedCells(),
+        blockedcellsinput: this.props.blockedcellsinput,
         dragging: 0,
         dragcol: null,
         dragstartrow: null,
@@ -18,11 +20,11 @@ class DragFillGrid extends Component {
     }
 
     /* Important props
-        blockcellsinput
+        blockedcellsinput
     */
 
     // https://css-tricks.com/snippets/javascript/lighten-darken-color/
-    lightenDarkenColor(col, amt) {
+    static lightenDarkenColor(col, amt) {
         var usePound = false;
       
         if (col[0] == "#") {
@@ -49,19 +51,36 @@ class DragFillGrid extends Component {
         return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.blockedcellsinput !== prevState.blockedcellsinput) {
+            if (nextProps.blockedcellsinput != null) {
+                var color = nextProps.blockedcellsinput[0].color;
+                var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
+                var cells = nextProps.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ "blocked": cell.blocked , color: color, darkColor: darkColor, currentdrag: 0}))));
+                return {blockedcells: cells};
+            }
+            else {
+                var color = "#B7DEFA";
+                var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
+                return {blockedcells: Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: color, darkColor: darkColor, currentdrag: 0})))};
+            }
+        }
+        return null;
+    }
+
     getBlockedCells() {
         /* TODO: Allow multiple layers
-            for not this.props.blockcellsinput[0] is used because there's only one layer (and this is what's supported atm)
+            for not this.props.blockedcellsinput[0] is used because there's only one layer (and this is what's supported atm)
         */
-        if (this.props.blockcellsinput != null) {
-            var color = this.props.blockcellsinput[0].color;
-            var darkColor = this.lightenDarkenColor(color, -60);
-            var cells = this.props.blockcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ "blocked": cell.blocked , color: color, darkColor, currentdrag: 0}))));
+        if (this.props.blockedcellsinput != null) {
+            var color = this.props.blockedcellsinput[0].color;
+            var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
+            var cells = this.props.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ "blocked": cell.blocked , color: color, darkColor, currentdrag: 0}))));
             return cells;
         }
         else {
             var color = "#B7DEFA";
-            var darkColor = this.lightenDarkenColor(color, -60);
+            var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
             return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: color, darkColor: darkColor, currentdrag: 0})));
         }
     }
@@ -172,8 +191,9 @@ class DragFillGrid extends Component {
     }
 
     handleScroll = (e) => {
+        var string = "";
         if (e.target.getAttribute('id') == "dragfillgrid-grid-div")
-            document.getElementById("dragfillgrid-grid-side-info").scrollTop = e.target.scrollTop;
+            document.getElementById(string.concat("dragfillgrid-grid-side-info-", this.state.id)).scrollTop = e.target.scrollTop;
     }
     
     render() {
@@ -185,7 +205,7 @@ class DragFillGrid extends Component {
             </div>
             <div id="dragfillgrid-grid-container">
                 {/* Collection of cells: 24 * 7 cells */}
-                <div id="dragfillgrid-grid-side-info">
+                <div id={"dragfillgrid-grid-side-info-" + this.state.id + ""} className="dragfillgrid-grid-side-info">
                     {this.createRowHeaders()}
                 </div>
                 <div id="dragfillgrid-grid-div" onScroll={this.handleScroll}>

@@ -9,7 +9,8 @@ export default class Calendar extends Component {
     year: this.props.year,
     day: this.props.day,
 
-    calendarChoice: 0,
+    tabchoice: 0,
+    calendarchoice: this.props.calendarchoice ? this.props.calendarchoice : 0,
 
     timeblocksinput: this.props.timeblocksinput,
     timeblocksoutput: null, // This will contain the availability inputs
@@ -28,31 +29,67 @@ export default class Calendar extends Component {
     if (this.props.inputmode == true)
       return (<h3 id="cleandar-header-title">{this.props.inputmodeheader}</h3>)
     else
-      return (<TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ calendarChoice => this.setState({ calendarChoice }) }></TabChooser>);
+      return (<TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ tabchoice => this.setState({ tabchoice }) }></TabChooser>);
   }
 
-  // getDragFillGrid() {
-  //   if (this.state.calendarChoice == 0) { // Choose team calendar
-  //     return (<DragFillGrid rowheaders={this.state.rowheaders}
-  //               colheaders={this.state.colheaders}
-  //               rownum={24}
-  //               colnum={7}
-  //               timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-  //               draggable={this.props.inputmode}
-  //               blockcellsinput={[this.state.timeblocksinput[0]]}>
-  //             </DragFillGrid>)
-  //   }
-  //   else { // Choose personal calendar
-  //     return (<DragFillGrid rowheaders={this.state.rowheaders}
-  //               colheaders={this.state.colheaders}
-  //               rownum={24}
-  //               colnum={7}
-  //               timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-  //               draggable={false}
-  //               blockcellsinput={[this.state.timeblocksinput[1]]}>
-  //             </DragFillGrid>)
-  //   }
-  // }
+  getDragFillGrid() {
+
+    // console.log(this.props.calendarchoice)
+
+    var team, personal, input;
+    if (this.props.inputmode == 1) {
+      input = "block";
+      team = personal = "none";
+    }
+    else {
+      if (this.state.tabchoice == 0) {
+        team = "block";
+        input = personal = "none";
+      }
+      else if (this.state.tabchoice == 1) {
+        personal = "block";
+        input = team = "none";
+      }
+    }
+      return (<div>
+                <div style={{display: team}}>
+                  <DragFillGrid
+                    id={1}
+                    rowheaders={this.state.rowheaders}
+                    colheaders={this.state.colheaders}
+                    rownum={24}
+                    colnum={7}
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }, () => {console.log(this.state.timeblocksoutput)}) }
+                    draggable={false}
+                    blockedcellsinput={[this.state.timeblocksinput[0][this.props.calendarchoice]]}>
+                  </DragFillGrid>
+                </div>
+                <div style={{display: personal}}>
+                  <DragFillGrid
+                    id={2}
+                    rowheaders={this.state.rowheaders}
+                    colheaders={this.state.colheaders}
+                    rownum={24}
+                    colnum={7}
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }, () => {console.log(this.state.timeblocksoutput)}) }
+                    draggable={false}
+                    blockedcellsinput={[this.state.timeblocksinput[1]]}>
+                  </DragFillGrid>
+                </div>
+                <div style={{display: input}}>
+                  <DragFillGrid
+                    id={1}
+                    rowheaders={this.state.rowheaders}
+                    colheaders={this.state.colheaders}
+                    rownum={24}
+                    colnum={7}
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }, () => {console.log(this.state.timeblocksoutput)}) }
+                    draggable={true}
+                    blockedcellsinput={null}>
+                  </DragFillGrid>
+                </div>
+              </div>);
+  }
 
   /* Important props
   {
@@ -75,18 +112,11 @@ export default class Calendar extends Component {
         <div id="calendar-header-spacer"></div>
       </div>
       <div id="calendar-grid">
-        <DragFillGrid rowheaders={this.state.rowheaders}
-                      colheaders={this.state.colheaders}
-                      rownum={24}
-                      colnum={7}
-                      timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-                      draggable={this.props.inputmode}
-                      blockcellsinput={[this.state.timeblocksinput[0]]}>
-        </DragFillGrid>
+        {this.getDragFillGrid()}
       </div>
       <div id="calendar-footer" style={{visibility: (this.props.inputmode == true) ? "visible": "hidden" }}>
         <div id="timeblock-cancel-button" onClick={() => { this.state.cancelcallback() }}>Cancel</div>
-        <div id="timeblock-submit-button" onClick={() => { this.state.submitcallback(this.state.timeblocksoutput, this.state.calendarChoice) }}>Submit</div>
+        <div id="timeblock-submit-button" onClick={() => { this.state.submitcallback(this.state.timeblocksoutput, this.state.tabchoice) }}>Submit</div>
       </div>
     </div>
     );
