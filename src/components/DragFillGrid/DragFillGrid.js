@@ -57,13 +57,15 @@ class DragFillGrid extends Component {
             if (nextProps.blockedcellsinput != null) {
                 var color = nextProps.blockedcellsinput[0].color;
                 var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
-                var cells = nextProps.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor: darkColor, currentdrag: 0}))));
+                var lightColor = DragFillGrid.lightenDarkenColor(color, 10);
+                var cells = nextProps.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor: darkColor, lightColor: lightColor, currentdrag: 0}))));
                 return {blockedcells: cells, blockedcellsinput: nextProps.blockedcellsinput};
             }
             else {
                 var color = "#B7DEFA";
                 var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
-                return {blockedcells: Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: color, darkColor: darkColor, currentdrag: 0})))};
+                var lightColor = DragFillGrid.lightenDarkenColor(color, 10);
+                return {blockedcells: Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: color, darkColor: darkColor, lightColor: lightColor, currentdrag: 0})))};
             }
         }
         return null;
@@ -76,13 +78,15 @@ class DragFillGrid extends Component {
         if (this.props.blockedcellsinput != null) {
             var color = this.props.blockedcellsinput[0].color;
             var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
-            var cells = this.props.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor, currentdrag: 0}))));
+            var lightColor = DragFillGrid.lightenDarkenColor(color, 10);
+            var cells = this.props.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor: darkColor, lightColor: lightColor, currentdrag: 0}))));
             return cells;
         }
         else {
             var color = "#B7DEFA";
             var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
-            return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: color, darkColor: darkColor, currentdrag: 0})));
+            var lightColor = DragFillGrid.lightenDarkenColor(color, 10);
+            return Array(24).fill().map(() => Array(7).fill().map(() => ({"blocked": 0, color: color, darkColor: darkColor, lightColor: lightColor, currentdrag: 0})));
         }
     }
 
@@ -155,7 +159,8 @@ class DragFillGrid extends Component {
             for (let j = 0; j < cols; j++) {
                 var cellstyle = {
                     backgroundColor: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? this.state.blockedcells[i][j].color : ""),
-                    borderLeft: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "solid " + this.state.blockedcells[i][j].darkColor + " 2px" : "")
+                    borderLeft: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "solid " + this.state.blockedcells[i][j].darkColor + " 2px" : ""),
+                    borderBottom: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "solid " + this.state.blockedcells[i][j].lightColor + " 2px" : "")
                 }
                 
                 children.push(<td key={"rc" + i + "" + j} row={i} column={j} draggable="false"

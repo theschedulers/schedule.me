@@ -5,6 +5,7 @@ import AddMemberModal from "../../components/AddMember/AddMemberModal";
 import {getTeams, addTeam, editTeam, deleteTeam} from "../../APIFunctions/Team";
 import Calendar from '../../components/Calendar/Calendar';
 import './Dashboard.css';
+import CircleIcon from '../../components/CircleIcon/CircleIcon';
 
 export default class Dashboard extends Component {
 
@@ -34,7 +35,7 @@ export default class Dashboard extends Component {
       memberEmail: "",
       memberPhoto: "",
       // For Calendar
-      inputmode: true,
+      inputmode: false,
     }
   }
 
@@ -274,6 +275,11 @@ export default class Dashboard extends Component {
     this.setState({ inputmode: false });
   }
 
+  // For right sidebar
+  editAvailability = () => {
+    this.setState({ inputmode: true});
+  }
+
   render() {
     
     let calendardata = require('./calendardatadummy.json');
@@ -347,6 +353,13 @@ export default class Dashboard extends Component {
           </div>
           <div id="right-sidebar-container">
             <p id="btn" style={{ "color": "#E5C09C", "fontSize": "0.75em", "cursor": "pointer"}}onClick={this.handleSignOut}>Sign Out</p>
+            <div id="circle-icon-container">
+              <CircleIcon width={"3em"} height={"3em"} callback={this.editAvailability} icon={require('./img/addeditav.svg')}></CircleIcon>
+              <CircleIcon width={"3em"} height={"3em"} icon={require('./img/timeoff.svg')}></CircleIcon>
+              <CircleIcon width={"3em"} height={"3em"} icon={require('./img/google.png')}></CircleIcon>
+              <CircleIcon width={"3em"} height={"3em"} icon={require('./img/download.svg')}></CircleIcon>
+              <CircleIcon width={"3em"} height={"3em"} icon={require('./img/pencil.svg')}></CircleIcon>
+            </div>
           </div>
         </div>
       </div>

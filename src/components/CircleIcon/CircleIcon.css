@@ -1,0 +1,11 @@
+#circle-icons-container {
+    display: flex;
+    justify-content: center;
+}
+
+#circle-icons-container > #icon-button {
+    padding: 0.5em;
+    border-radius: 50%;
+    border: solid #e5c09c 2px;
+    margin: 0.5em;
+}

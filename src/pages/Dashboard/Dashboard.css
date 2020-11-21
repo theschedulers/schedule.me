@@ -31,14 +31,20 @@
 #Dashboard > #calendar-container {
   flex: 5;
   background-color: #222222;
-  margin-top: 2em;;
+  margin-top: 2em;
 }
 
 #Dashboard > #right-sidebar-container {
   flex: 0.5;
   background-color: #222222;
+  margin: 1em;
 }
 
 #Dashboard > #right-sidebar-container > #btn {
   margin-left: 40px;
+}
+
+#Dashboard > #right-sidebar-container > #circle-icon-container {
+  display: flex;
+  flex-direction: column;
 }
