@@ -6,6 +6,10 @@
   background: #8eff9a;
 }
 
+#dashboard-profile-picture:hover {
+  cursor: pointer;
+}
+
 #dropdown-profile-picture {
   width: 80px;
   height: 80px;
