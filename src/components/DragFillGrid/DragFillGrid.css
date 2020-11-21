@@ -24,7 +24,7 @@
     height: 45em;
 }
 
-#DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-side-info {
+#DragFillGrid > #dragfillgrid-grid-container > .dragfillgrid-grid-side-info {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -57,12 +57,12 @@
 
 #DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-div > #dragfillgrid-grid > tr > td {
     flex: 1;
-    border-right: solid #222222 0.5px;
-    border-bottom: solid #222222 0.5px;
+    border-left: solid #d3d3d3 2px;
+    border-bottom: solid #d3d3d3 0.5px;
     height: 3em;
 }
 
-#DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-side-info > .dragfillgrid-row-headers {
+#DragFillGrid > #dragfillgrid-grid-container > .dragfillgrid-grid-side-info > .dragfillgrid-row-headers {
     font-weight: 300;
     margin-bottom: 1.5em;
 }

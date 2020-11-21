@@ -34,6 +34,8 @@ export default class Dashboard extends Component {
       memberDescription: "",
       memberEmail: "",
       memberPhoto: "",
+      // For Calendar
+      inputmode: true,
     }
   }
 
@@ -263,9 +265,21 @@ export default class Dashboard extends Component {
       !this.checkEmailValid(this.state.memberEmail) || (this.state.memberPhoto === "" ? false : !this.checkUrlValid(this.state.memberPhoto));
   }
 
-  render() {
+  // Calendar stuff
+  calendarOnSubmitCallback = (timeblocks) => {
+    console.log(timeblocks);
+    this.setState({ inputmode: false });
+  }
 
-    let teams = require('./dummy.json');
+  calendarOnCancelCallback = () => {
+    this.setState({ inputmode: false });
+  }
+
+  render() {
+    
+    let calendardata = require('./calendardatadummy.json');
+
+    // console.log(this.state.selectedTeam)
 
     return (
       <div className="full-viewport-hv">
@@ -323,8 +337,18 @@ export default class Dashboard extends Component {
           </div>
           <div id="calendar-container">
             <Calendar month={"November"} day={11} year={2020}
+<<<<<<< HEAD
               timeblocks={teams[0].schedule.timeblocks}
             >
+=======
+                      timeblocksinput={calendardata}
+                      calendarchoice={this.state.selectedTeam}
+                      submitcallback={this.calendarOnSubmitCallback}
+                      cancelcallback={this.calendarOnCancelCallback}
+                      inputmode={this.state.inputmode}
+                      inputmodeheader={(this.state.inputmode == true) ? "Input Availability" : null}
+                      >
+>>>>>>> master
             </Calendar>
           </div>
           <div id="right-sidebar-container">
