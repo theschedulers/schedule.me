@@ -78,7 +78,7 @@ export default class Calendar extends Component {
                 </div>
                 <div style={{display: input}}>
                   <DragFillGrid
-                    id={1}
+                    id={3}
                     rowheaders={this.state.rowheaders}
                     colheaders={this.state.colheaders}
                     rownum={24}
