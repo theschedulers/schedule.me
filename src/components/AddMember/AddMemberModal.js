@@ -16,7 +16,7 @@ export default function AddTeamModal(props){
   return (
     <React.Fragment>
       <Modal isOpen={props.toggle} toggle={props.setToggle}>
-        <ModalHeader>Add Team</ModalHeader>
+        <ModalHeader>Add Member</ModalHeader>
         <ModalBody>
           <AddMemberForm
             memberName = {props.memberName}

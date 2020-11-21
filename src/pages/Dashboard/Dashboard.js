@@ -135,8 +135,10 @@ export default class Dashboard extends Component {
     this.setState({teamModalToggle: !this.state.teamModalToggle});
   }
 
-  toggleMemberModal = () => {
-    this.setState({memberModalToggle: !this.state.memberModalToggle})
+  toggleMemberModal = () => {    
+    this.state.personalTeams.length === 0 ? 
+      window.alert("Error with adding a member, make sure you have a team selected.") :
+      this.setState({memberModalToggle: !this.state.memberModalToggle});
   }
 
   //Modal Input onChange updaters
