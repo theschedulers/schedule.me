@@ -52,11 +52,11 @@ class DragFillGrid extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.blockedcellsinput !== prevState.blockedcellsinput) {
+        if (JSON.stringify(nextProps.blockedcellsinput) !== JSON.stringify(prevState.blockedcellsinput)) {
             if (nextProps.blockedcellsinput != null) {
                 var color = nextProps.blockedcellsinput[0].color;
                 var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
-                var cells = nextProps.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ "blocked": cell.blocked , color: color, darkColor: darkColor, currentdrag: 0}))));
+                var cells = nextProps.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor: darkColor, currentdrag: 0}))));
                 return {blockedcells: cells};
             }
             else {
@@ -75,7 +75,7 @@ class DragFillGrid extends Component {
         if (this.props.blockedcellsinput != null) {
             var color = this.props.blockedcellsinput[0].color;
             var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
-            var cells = this.props.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ "blocked": cell.blocked , color: color, darkColor, currentdrag: 0}))));
+            var cells = this.props.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor, currentdrag: 0}))));
             return cells;
         }
         else {
