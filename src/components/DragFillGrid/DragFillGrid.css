@@ -24,7 +24,7 @@
     height: 45em;
 }
 
-#DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-side-info {
+#DragFillGrid > #dragfillgrid-grid-container > .dragfillgrid-grid-side-info {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -62,7 +62,7 @@
     height: 3em;
 }
 
-#DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-side-info > .dragfillgrid-row-headers {
+#DragFillGrid > #dragfillgrid-grid-container > .dragfillgrid-grid-side-info > .dragfillgrid-row-headers {
     font-weight: 300;
     margin-bottom: 1.5em;
 }
