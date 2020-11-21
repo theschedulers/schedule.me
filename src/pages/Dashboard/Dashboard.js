@@ -276,7 +276,7 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    
+
     let calendardata = require('./calendardatadummy.json');
 
     // console.log(this.state.selectedTeam)
@@ -337,25 +337,21 @@ export default class Dashboard extends Component {
           </div>
           <div id="calendar-container">
             <Calendar month={"November"} day={11} year={2020}
-<<<<<<< HEAD
-              timeblocks={teams[0].schedule.timeblocks}
+              timeblocksinput={calendardata}
+              calendarchoice={this.state.selectedTeam}
+              submitcallback={this.calendarOnSubmitCallback}
+              cancelcallback={this.calendarOnCancelCallback}
+              inputmode={this.state.inputmode}
+              inputmodeheader={(this.state.inputmode == true) ? "Input Availability" : null}
             >
-=======
-                      timeblocksinput={calendardata}
-                      calendarchoice={this.state.selectedTeam}
-                      submitcallback={this.calendarOnSubmitCallback}
-                      cancelcallback={this.calendarOnCancelCallback}
-                      inputmode={this.state.inputmode}
-                      inputmodeheader={(this.state.inputmode == true) ? "Input Availability" : null}
-                      >
->>>>>>> master
             </Calendar>
           </div>
           <div id="right-sidebar-container">
             <ProfileDropdown
               userName="Dummy Name"
-              ddOpen={false} />
-            <p id="btn" style={{ "color": "#E5C09C", "fontSize": "0.75em", "cursor": "pointer" }} onClick={this.handleSignOut}>Sign Out</p>
+              ddOpen={false}
+              onSignOut={this.handleSignOut}
+            />
           </div>
         </div>
       </div >
