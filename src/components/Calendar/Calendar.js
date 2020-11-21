@@ -59,7 +59,7 @@ export default class Calendar extends Component {
                     colheaders={this.state.colheaders}
                     rownum={24}
                     colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }, () => {console.log(this.state.timeblocksoutput)}) }
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={false}
                     blockedcellsinput={[this.state.timeblocksinput[0][this.props.calendarchoice]]}>
                   </DragFillGrid>
@@ -71,7 +71,7 @@ export default class Calendar extends Component {
                     colheaders={this.state.colheaders}
                     rownum={24}
                     colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }, () => {console.log(this.state.timeblocksoutput)}) }
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={false}
                     blockedcellsinput={[this.state.timeblocksinput[1]]}>
                   </DragFillGrid>
@@ -83,9 +83,9 @@ export default class Calendar extends Component {
                     colheaders={this.state.colheaders}
                     rownum={24}
                     colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }, () => {console.log(this.state.timeblocksoutput)}) }
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={true}
-                    blockedcellsinput={null}>
+                    blockedcellsinput={[this.state.timeblocksinput[1]]}>
                   </DragFillGrid>
                 </div>
               </div>);
