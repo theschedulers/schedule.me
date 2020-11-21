@@ -350,7 +350,6 @@ export default class Dashboard extends Component {
             <ProfileDropdown
               userName={this.getGoogleAuthCredentials().getBasicProfile().getName()}
               profilePicture={this.getGoogleAuthCredentials().getBasicProfile().getImageUrl()}
-              ddOpen={false}
               onSignOut={this.handleSignOut}
             />
           </div>
