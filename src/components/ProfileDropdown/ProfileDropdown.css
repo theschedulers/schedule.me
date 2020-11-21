@@ -1,0 +1,26 @@
+#dashboard-profile-picture {
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  margin: 1em 0em 0em 2em;
+  background: #8eff9a;
+}
+
+#dropdown-profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  background: #8eff9a;
+}
+
+#dropdown-username {
+  text-align: center;
+}
+
+div.dropdown-menu {
+  margin-right: 1em;
+}
+
+h6.dropdown-header {
+  text-align: center;
+}

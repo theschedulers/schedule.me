@@ -1,10 +1,11 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ListSelect from '../../components/ListSelect/ListSelect';
 import AddTeamModal from "../../components/AddTeam/AddTeamModal";
 import AddMemberModal from "../../components/AddMember/AddMemberModal";
-import {getTeams, addTeam, editTeam, deleteTeam} from "../../APIFunctions/Team";
+import { getTeams, addTeam, editTeam, deleteTeam } from "../../APIFunctions/Team";
 import Calendar from '../../components/Calendar/Calendar';
 import './Dashboard.css';
+import ProfileDropdown from '../../components/ProfileDropdown/ProfileDropdown';
 
 export default class Dashboard extends Component {
 
@@ -12,7 +13,7 @@ export default class Dashboard extends Component {
   //   selectedTeam: 0, // this will contain the index of selected team whenever it's changed
   // }
 
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       selectedTeam: 0,
@@ -40,29 +41,31 @@ export default class Dashboard extends Component {
     this.updateAllLists();
   }
 
-  updateAllLists = async () =>{
+  updateAllLists = async () => {
     const res = await getTeams();
     // console.log(res);
     var userTeams = this.filterByUserGapi(res);
-    this.setState({teamDBCollection: userTeams, personalTeams: this.resToPersonalTeamsArr(userTeams), 
-                   personalMembers: this.resToPersonalMembersArr(userTeams)});
+    this.setState({
+      teamDBCollection: userTeams, personalTeams: this.resToPersonalTeamsArr(userTeams),
+      personalMembers: this.resToPersonalMembersArr(userTeams)
+    });
   }
 
   getGoogleAuthCredentials = () => {
     return window.gapi.auth2.getAuthInstance().currentUser.get();
   }
 
-  filterByUserGapi = (res) =>{
+  filterByUserGapi = (res) => {
     const auth = this.getGoogleAuthCredentials();
     var userTeams = [];
     Object.entries(res).forEach((team) => {
       var matchingGapi_id = false;
-      team[1].teamMembers.forEach((member)=>{
-        if(member.gapi_id === auth.Ca){
+      team[1].teamMembers.forEach((member) => {
+        if (member.gapi_id === auth.Ca) {
           matchingGapi_id = true;
         }
       });
-      if(matchingGapi_id){
+      if (matchingGapi_id) {
         userTeams.push(team[1]);
       }
     });
@@ -70,28 +73,28 @@ export default class Dashboard extends Component {
   }
 
   //A filter to return an arr that will be rendered under team's ListSelect
-  resToPersonalTeamsArr = (res) =>{
+  resToPersonalTeamsArr = (res) => {
     var personalTeamsArr = [];
-    Object.entries(res).forEach((team)=>{
+    Object.entries(res).forEach((team) => {
       const teamLength = team[1].teamMembers.length;
       const teamElement = {
         text: team[1].teamName,
-        subtext: teamLength + (teamLength===1?  " member": " members"),
+        subtext: teamLength + (teamLength === 1 ? " member" : " members"),
         photo: team[1].teamPhoto
-      }; 
+      };
       personalTeamsArr.push(teamElement);
     });
     return personalTeamsArr;
   }
 
   //A filter to return an arr that will be rendered under member's ListSelect
-  resToPersonalMembersArr = (res) =>{
+  resToPersonalMembersArr = (res) => {
     var personalMembersArr = [];
-    Object.entries(res).forEach((team)=>{
+    Object.entries(res).forEach((team) => {
       const teamMembers = team[1].teamMembers;
       // console.log(team[1].teamMembers);
       var memberEncapsulation = [];
-      teamMembers.forEach((member)=>{
+      teamMembers.forEach((member) => {
         const memberToModify = {
           text: member.memberName,
           subtext: member.memberDescription,
@@ -130,60 +133,60 @@ export default class Dashboard extends Component {
   };
 
   toggleTeamModal = () => {
-    this.setState({teamModalToggle: !this.state.teamModalToggle});
+    this.setState({ teamModalToggle: !this.state.teamModalToggle });
   }
 
   toggleMemberModal = () => {
-    this.setState({memberModalToggle: !this.state.memberModalToggle})
+    this.setState({ memberModalToggle: !this.state.memberModalToggle })
   }
 
   //Modal Input onChange updaters
   updateTeamName = (e) => {
-    this.setState({teamName: e});
+    this.setState({ teamName: e });
   }
 
   updateTeamPhoto = (e) => {
-    this.setState({teamPhoto: e});
+    this.setState({ teamPhoto: e });
   }
 
   updateUserName = (e) => {
-    this.setState({userName: e});
+    this.setState({ userName: e });
   }
 
   updateUserDescription = (e) => {
-    this.setState({userDescription: e});
-  }  
+    this.setState({ userDescription: e });
+  }
 
   updateUserPhoto = (e) => {
-    this.setState({userPhoto: e});
+    this.setState({ userPhoto: e });
   }
 
   updateMemberName = (e) => {
-    this.setState({memberName: e});
+    this.setState({ memberName: e });
   }
 
   updateMemberDescription = (e) => {
-    this.setState({memberDescription: e});
+    this.setState({ memberDescription: e });
   }
 
   updateMemberEmail = (e) => {
-    this.setState({memberEmail: e});
+    this.setState({ memberEmail: e });
   }
 
   updateMemberPhoto = (e) => {
-    this.setState({memberPhoto: e});
+    this.setState({ memberPhoto: e });
   }
 
   clearTeamModalInputs = () => {
-    this.setState({teamName: "", teamPhoto: "", userName: "", userDescription: "", userPhoto: ""});
+    this.setState({ teamName: "", teamPhoto: "", userName: "", userDescription: "", userPhoto: "" });
   }
 
   clearMemberModalInputs = () => {
-    this.setState({memberName: "", memberDescription: "", memberEmail: "", memberPhoto: ""});
+    this.setState({ memberName: "", memberDescription: "", memberEmail: "", memberPhoto: "" });
   }
 
   //Dashboard.js > APIFunctions/Team.js > routes/Team.js > server.js handles it
-  handleAddTeam = async () =>{
+  handleAddTeam = async () => {
     const auth = this.getGoogleAuthCredentials();
     //Just one member here (yourself)
     const userProfile = {
@@ -209,7 +212,7 @@ export default class Dashboard extends Component {
   }
 
   //Add Member to Team, this function handles the submit in the AddMemberModal form
-  handleAddMember = async () =>{
+  handleAddMember = async () => {
     //get selected team's members
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     let teamMembersArr = currentTeam.teamMembers;
@@ -244,15 +247,15 @@ export default class Dashboard extends Component {
     return re.test(String(email).toLowerCase());
   }
 
-  checkUrlValid = (url) =>{
+  checkUrlValid = (url) => {
     //eslint-disable-next-line
     const re = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
     return re.test(String(url).toLowerCase());
   }
 
   checkTeamFormEmpty = () => {
-    return this.state.teamName === "" || (this.state.teamPhoto===""? false: !this.checkUrlValid(this.state.teamPhoto)) ||
-      this.state.userName === "" || this.state.userDescription === "" || (this.state.userPhoto===""? false: !this.checkUrlValid(this.state.userPhoto));
+    return this.state.teamName === "" || (this.state.teamPhoto === "" ? false : !this.checkUrlValid(this.state.teamPhoto)) ||
+      this.state.userName === "" || this.state.userDescription === "" || (this.state.userPhoto === "" ? false : !this.checkUrlValid(this.state.userPhoto));
   }
 
   checkMemberFormEmpty = () => {
@@ -268,51 +271,51 @@ export default class Dashboard extends Component {
       <div className="full-viewport-hv">
         <div id="Dashboard">
           <div id="left-sidebar-container">
-            <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} alt="dashboard-logo-alt" onClick={this.redirectToHomePage}/>
+            <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} alt="dashboard-logo-alt" onClick={this.redirectToHomePage} />
             <div id="dashboard-teams-container">
               <ListSelect list={this.state.personalTeams}
-                          header={"Teams"}
-                          onAdd={this.onAddTeamCallback}
-                          selectable={0}
-                          valueUpdated={ selectedTeam => this.setState({ selectedTeam }) }
+                header={"Teams"}
+                onAdd={this.onAddTeamCallback}
+                selectable={0}
+                valueUpdated={selectedTeam => this.setState({ selectedTeam })}
               />
               <AddTeamModal
-                toggle = {this.state.teamModalToggle}
-                setToggle = {this.toggleTeamModal}
-                teamName = {this.state.teamName}
-                teamPhoto = {this.state.teamPhoto}
-                userName = {this.state.userName}
-                userDescription = {this.state.userDescription}
-                userPhoto = {this.state.userPhoto}
-                updateTeamName = {this.updateTeamName}
-                updateTeamPhoto = {this.updateTeamPhoto}
-                updateUserName = {this.updateUserName}
-                updateUserDescription = {this.updateUserDescription}
-                updateUserPhoto = {this.updateUserPhoto}
-                handleAddTeam = {this.handleAddTeam}
-                checkUrlValid = {this.checkUrlValid}
-                checkTeamFormEmpty = {this.checkTeamFormEmpty}
+                toggle={this.state.teamModalToggle}
+                setToggle={this.toggleTeamModal}
+                teamName={this.state.teamName}
+                teamPhoto={this.state.teamPhoto}
+                userName={this.state.userName}
+                userDescription={this.state.userDescription}
+                userPhoto={this.state.userPhoto}
+                updateTeamName={this.updateTeamName}
+                updateTeamPhoto={this.updateTeamPhoto}
+                updateUserName={this.updateUserName}
+                updateUserDescription={this.updateUserDescription}
+                updateUserPhoto={this.updateUserPhoto}
+                handleAddTeam={this.handleAddTeam}
+                checkUrlValid={this.checkUrlValid}
+                checkTeamFormEmpty={this.checkTeamFormEmpty}
               />
               <ListSelect list={this.state.personalMembers[this.state.selectedTeam]}
-                          header={"Members"}
-                          onAdd={this.onAddMemberCallback}
-                          selectable={null}
+                header={"Members"}
+                onAdd={this.onAddMemberCallback}
+                selectable={null}
               />
               <AddMemberModal
-                toggle = {this.state.memberModalToggle}
-                setToggle = {this.toggleMemberModal}
-                memberName = {this.state.memberName}
-                memberDescription = {this.state.memberDescription}
-                memberEmail = {this.state.memberEmail}
-                memberPhoto = {this.state.memberPhoto}
-                updateMemberName = {this.updateMemberName}
-                updateMemberDescription = {this.updateMemberDescription}
-                updateMemberEmail = {this.updateMemberEmail}
-                updateMemberPhoto = {this.updateMemberPhoto}
-                handleAddMember = {this.handleAddMember}
-                checkEmailValid = {this.checkEmailValid}
-                checkUrlValid = {this.checkUrlValid}
-                checkMemberFormEmpty = {this.checkMemberFormEmpty}
+                toggle={this.state.memberModalToggle}
+                setToggle={this.toggleMemberModal}
+                memberName={this.state.memberName}
+                memberDescription={this.state.memberDescription}
+                memberEmail={this.state.memberEmail}
+                memberPhoto={this.state.memberPhoto}
+                updateMemberName={this.updateMemberName}
+                updateMemberDescription={this.updateMemberDescription}
+                updateMemberEmail={this.updateMemberEmail}
+                updateMemberPhoto={this.updateMemberPhoto}
+                handleAddMember={this.handleAddMember}
+                checkEmailValid={this.checkEmailValid}
+                checkUrlValid={this.checkUrlValid}
+                checkMemberFormEmpty={this.checkMemberFormEmpty}
               />
             </div>
             <div id="dashboard-members-container">
@@ -320,15 +323,18 @@ export default class Dashboard extends Component {
           </div>
           <div id="calendar-container">
             <Calendar month={"November"} day={11} year={2020}
-                      timeblocks={teams[0].schedule.timeblocks}
-                      >
+              timeblocks={teams[0].schedule.timeblocks}
+            >
             </Calendar>
           </div>
           <div id="right-sidebar-container">
-            <p id="btn" style={{ "color": "#E5C09C", "fontSize": "0.75em", "cursor": "pointer"}}onClick={this.handleSignOut}>Sign Out</p>
+            <ProfileDropdown
+              userName="Dummy Name"
+              ddOpen={false} />
+            <p id="btn" style={{ "color": "#E5C09C", "fontSize": "0.75em", "cursor": "pointer" }} onClick={this.handleSignOut}>Sign Out</p>
           </div>
         </div>
-      </div>
+      </div >
     );
   }
 }
