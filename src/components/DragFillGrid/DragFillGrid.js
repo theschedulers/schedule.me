@@ -52,7 +52,6 @@ class DragFillGrid extends Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-        console.log(JSON.stringify(nextProps.blockedcellsinput) !== JSON.stringify(prevState.blockedcellsinput))
         if (JSON.stringify(nextProps.blockedcellsinput) !== JSON.stringify(prevState.blockedcellsinput)) {
             if (nextProps.blockedcellsinput != null) {
                 var color = nextProps.blockedcellsinput[0].color;
