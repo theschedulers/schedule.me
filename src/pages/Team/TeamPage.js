@@ -15,7 +15,7 @@ export default class TeamPage extends Component {
 
   getTheTeams = async () =>{
     let teamData = await getTeams();
-    console.log("teamData: ", teamData) 
+    console.log("teamData: ", teamData)
   }
 
   addTheTeams = async () =>{
@@ -53,16 +53,25 @@ export default class TeamPage extends Component {
     const res = await deleteTeam(reqTeamToDelete);
     console.log("TeamPage: ", res);
     window.location.reload();
-  }
 
-  render() { 
-    return ( 
+  }
+  addUser = async () =>{
+    const reqTeamToDelete = {
+      gapi_id: "testData",
+      teamName: "Team",
+      teamMembers: 2,
+      teamPhoto: "https://Bobthebuilder.com"
+    }
+    console.log("addUser", );
+  }
+  render() {
+    return (
       <div>
         Hi
         <button onClick={this.addTheTeams}>Hi There</button>
         <button onClick={this.deleteTheTeams}>Bye There</button>
+        <button onClick={this.addUser}>addUser</button>
       </div>
     );
   }
 }
- 

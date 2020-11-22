@@ -282,6 +282,15 @@ export default class Dashboard extends Component {
     this.setState({ inputmode: true });
   }
 
+  // For left sidebar
+  removeTeamCallback = (index) => {
+    console.log("Index of team to be removed", index)
+  }
+
+  removeMemberCallback = (index) => {
+    console.log("Index of member to be removed", index)
+  }
+
   render() {
 
     let calendardata = require('./calendardatadummy.json');
@@ -291,14 +300,16 @@ export default class Dashboard extends Component {
     return (
       <div className="full-viewport-hv">
         <div id="Dashboard">
-          <div id="left-sidebar-container">
-            <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} alt="dashboard-logo-alt" onClick={this.redirectToHomePage} />
+          <div id="left-sidebar-container" className={this.state.inputmode == true ? "blur-div-and-deactivate" : ""}>
+            <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} alt="dashboard-logo-alt" onClick={this.redirectToHomePage}/>
             <div id="dashboard-teams-container">
               <ListSelect list={this.state.personalTeams}
-                header={"Teams"}
-                onAdd={this.onAddTeamCallback}
-                selectable={0}
-                valueUpdated={selectedTeam => this.setState({ selectedTeam })}
+                          header={"Teams"}
+                          onAdd={this.onAddTeamCallback}
+                          selectable={0}
+                          valueUpdated={ selectedTeam => this.setState({ selectedTeam }) }
+                          id={"list-select-teams"}
+                          removeCallback={this.removeTeamCallback}
               />
               <AddTeamModal
                 toggle={this.state.teamModalToggle}
@@ -318,9 +329,11 @@ export default class Dashboard extends Component {
                 checkTeamFormEmpty={this.checkTeamFormEmpty}
               />
               <ListSelect list={this.state.personalMembers[this.state.selectedTeam]}
-                header={"Members"}
-                onAdd={this.onAddMemberCallback}
-                selectable={null}
+                          header={"Members"}
+                          onAdd={this.onAddMemberCallback}
+                          selectable={null}
+                          id={"list-select-members"}
+                          removeCallback={this.removeMemberCallback}
               />
               <AddMemberModal
                 toggle={this.state.memberModalToggle}
@@ -353,6 +366,7 @@ export default class Dashboard extends Component {
             >
             </Calendar>
           </div>
+
           <div id="right-sidebar-container">
             <p id="btn" style={{ "color": "#E5C09C", "fontSize": "0.75em", "cursor": "pointer" }} onClick={this.handleSignOut}>Sign Out</p>
             <div id="circle-icon-container">
