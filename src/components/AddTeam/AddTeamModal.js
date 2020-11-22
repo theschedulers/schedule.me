@@ -6,13 +6,12 @@ export default function AddTeamModal(props){
   function handleConfirmation(){
     props.handleAddTeam();
     props.setToggle();
-    console.log("done");
   }
   return (
     <React.Fragment>
       <Modal isOpen={props.toggle} toggle={props.setToggle} className={"modal-container"}>
         <img src={require('./img/cancel.png')} style={{width: "1em", height: "1em", cursor: "pointer"}} onClick={props.setToggle} />
-        <h4 style={{textAlign: "center"}}>Create Team</h4>
+        <h4 style={{textAlign: "center", marginBottom: "1em"}}>Create Team</h4>
         <AddTeamForm
           teamName = {props.teamName}
           teamPhoto = {props.teamPhoto}

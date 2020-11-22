@@ -50,7 +50,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 1em;
 }
 
 #add-team-modal-profile-container > #add-team-modal-profile-img-container {
