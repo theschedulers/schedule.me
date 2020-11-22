@@ -15,6 +15,7 @@ const UserSchema = new Schema(
   },
   date: {type: String, default: Date.now()},
 }
+  { collection: 'User' }
 );
 
 //Define Data Model (data type in the database... name of schema: BlogPost, actual schema 2nd argument)
