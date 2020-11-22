@@ -24,7 +24,7 @@ export default function AddTeamForm(props){
           </div>
           <label id="add-team-modal-profile-img-input-container">
             <input type="file" onChange={(e) => { props.updateTeamPhoto(e); updateTeamPhoto(e)}}/>
-              Edit/Add Team Profile
+              <span style={{cursor: "pointer"}}>Edit Team Profile</span>
           </label>
         </div>
       </div>

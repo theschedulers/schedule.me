@@ -280,6 +280,15 @@ export default class Dashboard extends Component {
     this.setState({ inputmode: true});
   }
 
+  // For left sidebar
+  removeTeamCallback = (index) => {
+    console.log("Index of team to be removed", index)
+  }
+
+  removeMemberCallback = (index) => {
+    console.log("Index of member to be removed", index)
+  }
+
   render() {
     
     let calendardata = require('./calendardatadummy.json');
@@ -297,6 +306,8 @@ export default class Dashboard extends Component {
                           onAdd={this.onAddTeamCallback}
                           selectable={0}
                           valueUpdated={ selectedTeam => this.setState({ selectedTeam }) }
+                          id={"list-select-teams"}
+                          removeCallback={this.removeTeamCallback}
               />
               <AddTeamModal
                 toggle = {this.state.teamModalToggle}
@@ -319,6 +330,8 @@ export default class Dashboard extends Component {
                           header={"Members"}
                           onAdd={this.onAddMemberCallback}
                           selectable={null}
+                          id={"list-select-members"}
+                          removeCallback={this.removeMemberCallback}
               />
               <AddMemberModal
                 toggle = {this.state.memberModalToggle}
