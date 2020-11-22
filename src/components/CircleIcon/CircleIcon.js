@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./CircleIcon.css";
+import { Tooltip } from '@material-ui/core'
 
 class CircleIcon extends Component {
   state = {
@@ -13,7 +14,9 @@ class CircleIcon extends Component {
   render() {
     return (
       <div id="circle-icons-container" onClick={this.state.callback}>
-        <img id="icon-button" style={{ width: this.state.width, height: this.state.height }} src={this.state.icon || ""}/>
+        <Tooltip title={this.state.title} placement="left" arrow>
+          <img id="icon-button" style={{ width: this.state.width, height: this.state.height }} src={this.state.icon || ""} />
+        </Tooltip>
       </div>
     );
   }
