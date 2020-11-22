@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const TeamSchema = new Schema (
   {
     teamName: {
-      type: String,
+      type: String
     },
     teamPhoto: {
       type: String
@@ -22,7 +22,7 @@ const TeamSchema = new Schema (
         },
         memberName: {
           type: String
-        }, 
+        },
         memberDescription: {
           type: String
         },
