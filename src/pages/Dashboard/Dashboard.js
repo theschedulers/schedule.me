@@ -36,6 +36,8 @@ export default class Dashboard extends Component {
       memberPhoto: "",
       // For Calendar
       inputmode: false,
+      inputmodeheader: "",
+      inputtype: "",
     }
   }
 
@@ -269,7 +271,18 @@ export default class Dashboard extends Component {
 
   // Calendar stuff
   calendarOnSubmitCallback = (timeblocks) => {
-    console.log(timeblocks);
+    switch(this.state.inputtype) {
+      case "availability": {
+        console.log("New Availability", timeblocks);
+        break;
+      }
+      case "manageshift": {
+        console.log("New Shifts", timeblocks);
+        break;
+      }
+      default: break;
+    }
+
     this.setState({ inputmode: false });
   }
 
@@ -279,7 +292,11 @@ export default class Dashboard extends Component {
 
   // For right sidebar
   editAvailability = () => {
-    this.setState({ inputmode: true });
+    this.setState({ inputmode: true, inputtype: "availability", inputmodeheader: "Edit Availability" });
+  }
+
+  manageShifts = () => {
+    this.setState({ inputmode: true, inputtype: "manageshift", inputmodeheader: "Edit Required Shifts" });
   }
 
   // For left sidebar
@@ -362,7 +379,7 @@ export default class Dashboard extends Component {
               submitcallback={this.calendarOnSubmitCallback}
               cancelcallback={this.calendarOnCancelCallback}
               inputmode={this.state.inputmode}
-              inputmodeheader={(this.state.inputmode == true) ? "Input Availability" : null}
+              inputmodeheader={(this.state.inputmode == true) ? this.state.inputmodeheader : null}
             >
             </Calendar>
           </div>
@@ -374,7 +391,7 @@ export default class Dashboard extends Component {
               <CircleIcon title={"Request Time off"} width={"3em"} height={"3em"} icon={require('./img/timeoff.svg')}></CircleIcon>
               <CircleIcon title={"Export to Google Calendar"} width={"3em"} height={"3em"} icon={require('./img/google.png')}></CircleIcon>
               <CircleIcon title={"Export Calendar"} width={"3em"} height={"3em"} icon={require('./img/download.svg')}></CircleIcon>
-              <CircleIcon title={"Manage Shifts"} width={"3em"} height={"3em"} icon={require('./img/pencil.svg')}></CircleIcon>
+              <CircleIcon title={"Manage Shifts"} width={"3em"} height={"3em"} callback={this.manageShifts} icon={require('./img/pencil.svg')}></CircleIcon>
             </div>
           </div>
         </div>
