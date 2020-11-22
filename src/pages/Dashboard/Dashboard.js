@@ -367,7 +367,7 @@ export default class Dashboard extends Component {
             </Calendar>
           </div>
 
-          <div id="right-sidebar-container">
+          <div id="right-sidebar-container" className={this.state.inputmode == true ? "blur-div-and-deactivate" : ""}>
             <p id="btn" style={{ "color": "#E5C09C", "fontSize": "0.75em", "cursor": "pointer" }} onClick={this.handleSignOut}>Sign Out</p>
             <div id="circle-icon-container">
               <CircleIcon title={"Add/Edit Availability"} width={"3em"} height={"3em"} callback={this.editAvailability} icon={require('./img/addeditav.svg')}></CircleIcon>
