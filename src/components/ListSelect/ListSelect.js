@@ -8,7 +8,7 @@ export default class ListSelect extends Component {
     header: this.props.header,
     onAdd: this.props.onAdd,
     selectable: this.props.selectable,
-    selected: this.props.selectable,
+    selected: this.props.id + this.props.selected,
     hovered: null,
     valueUpdated: this.props.valueUpdated,
   }

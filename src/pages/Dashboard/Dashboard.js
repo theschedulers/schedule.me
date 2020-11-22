@@ -324,6 +324,7 @@ export default class Dashboard extends Component {
                           header={"Teams"}
                           onAdd={this.onAddTeamCallback}
                           selectable={0}
+                          selected={this.state.selectedTeam}
                           valueUpdated={ selectedTeam => this.setState({ selectedTeam }) }
                           id={"list-select-teams"}
                           removeCallback={this.removeTeamCallback}
@@ -379,6 +380,7 @@ export default class Dashboard extends Component {
               submitcallback={this.calendarOnSubmitCallback}
               cancelcallback={this.calendarOnCancelCallback}
               inputmode={this.state.inputmode}
+              inputtype={this.state.inputtype}
               inputmodeheader={(this.state.inputmode == true) ? this.state.inputmodeheader : null}
             >
             </Calendar>
