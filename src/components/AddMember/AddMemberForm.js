@@ -3,57 +3,35 @@ import { Form, FormFeedback, FormGroup, FormText, Label, Input } from 'reactstra
 
 export default function AddMemberForm(props){
   return(
-    <Form>
+    <Form className={"modal-form-container"}>
       <FormGroup>
-        <Label>Member Name
-          <FormText color="muted">
-            Enter the name of the member you want to add!
-          </FormText>        
-        </Label>
+        <Label>Member Name</Label>
         <Input
+          className={"modal-form-input"}
           placeholder=""
           value={props.memberName}
           onChange={(e) => props.updateMemberName(e.target.value)}
         />
       </FormGroup>
       <FormGroup>
-        <Label>Member Description
-          <FormText color="muted">
-            Enter the role or a brief description of what they do!
-          </FormText>
-        </Label>
+        <Label>Member Role</Label>
          <Input
+          className={"modal-form-input"}
           placeholder=""
           value={props.memberDescription}
           onChange={(e) => props.updateMemberDescription(e.target.value)}
         />
       </FormGroup>
       <FormGroup>
-        <Label>Member Email
-          <FormText color="muted">
-            Enter the email of this person
-          </FormText>
-        </Label>
+        <Label>Member Email</Label>
          <Input
+          className={"modal-form-input"}
           invalid={props.memberEmail==="" ? false : !props.checkEmailValid(props.memberEmail)}
           placeholder=""
           value={props.memberEmail}
           onChange={(e) => props.updateMemberEmail(e.target.value)}
         />
         <FormFeedback invalid = "true">Please enter a valid email address!</FormFeedback>
-      </FormGroup>
-      <FormGroup>
-        <Label>Member Photo URL
-          <FormText color="muted">
-            URL. Leave it blank for default photo.
-          </FormText>
-        </Label>
-        <Input
-          invalid={props.memberPhoto==="" ? false : !props.checkUrlValid(props.memberPhoto)}
-          placeholder=""
-          value={props.memberPhoto}
-          onChange={(e) => props.updateMemberPhoto(e.target.value)}
-        />
       </FormGroup>
       <FormFeedback invalid = "true">Please enter a valid image address!</FormFeedback>
     </Form>

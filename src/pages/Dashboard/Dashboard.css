@@ -3,6 +3,14 @@
   height: 100%;
 }
 
+.blur-div-and-deactivate {
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  pointer-events: none;
+}
+
 #Dashboard > #left-sidebar-container {
   display: flex;
   flex: 1;
