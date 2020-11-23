@@ -41,7 +41,7 @@ router.post('/editTeam', (req, res) =>{
 });
 
 router.post('/deleteTeam', (req, res) =>{
-  Team.deleteOne({ teamName: req.body.teamName }, (err) => {
+  Team.deleteOne({ _id: req.body._id }, (err, team) => {
     if(err){
       return res.send(err);
     }

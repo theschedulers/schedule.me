@@ -4,7 +4,6 @@ import { Form, FormFeedback, FormGroup, FormText, Label, Input } from 'reactstra
 export default function AddTeamForm(props){
 
   function updateTeamPhoto(e) {
-
     if (e.target.files.length &&  e.target.files.length > 0) {
       // https://www.codegrepper.com/code-examples/html/input+type%3D%22file%22+and+display+image
       var image = document.getElementById('add-team-modal-profile');
@@ -12,11 +11,18 @@ export default function AddTeamForm(props){
     }
   }
 
+  function updatePhotoPreview(e) {
+    if(props.checkUrlValid(e)){
+      var img= document.getElementById('add-team-modal-profile');
+      img.src = e;
+    }
+  }
+
   return(
     <Form className={"modal-form-container"}>
       <div id="add-team-modal-profile-container">
         <section id="add-team-modal-profile-img-container">
-          <img id="add-team-modal-profile" src={require('./img/group.png')}/>
+          <img id="add-team-modal-profile" src={require('./img/group.png')} onError = {(e) =>{e.target.src=require('./img/group.png')}}/>
         </section>
         <div id="add-team-modal-profile-img-input-container-container">
           <div id="edit-icon-container">
@@ -29,6 +35,17 @@ export default function AddTeamForm(props){
         </div>
       </div>
       <FormGroup>
+        <Label>Team Photo</Label>
+         <Input
+          className={"modal-form-input"}
+          placeholder=""
+          value={props.teamPhoto}
+          onChange={(e) => {props.updateTeamPhoto(e.target.value); updatePhotoPreview(e.target.value)}}
+          invalid={props.teamPhoto==="" ? false : !props.checkUrlValid(props.teamPhoto)}
+        />
+        <FormFeedback invalid = "true">Please enter a valid image address!</FormFeedback>
+      </FormGroup>
+      <FormGroup>
         <Label>Team Name</Label>
         <Input
           className={"modal-form-input"}
@@ -38,21 +55,21 @@ export default function AddTeamForm(props){
         />
       </FormGroup>
       <FormGroup>
-        <Label>Team Description</Label>
-         <Input
-          className={"modal-form-input"}
-          placeholder=""
-          value={props.userDescription}
-          onChange={(e) => props.updateUserDescription(e.target.value)}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Team Role</Label>
+        <Label>Your Name</Label>
         <Input
           className={"modal-form-input"} 
           placeholder=""
           value={props.userName}
           onChange={(e) => props.updateUserName(e.target.value)}
+        />
+      </FormGroup>
+      <FormGroup>
+        <Label>Your Role</Label>
+         <Input
+          className={"modal-form-input"}
+          placeholder=""
+          value={props.userDescription}
+          onChange={(e) => props.updateUserDescription(e.target.value)}
         />
       </FormGroup>
     </Form>
