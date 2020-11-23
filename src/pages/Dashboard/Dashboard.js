@@ -199,7 +199,7 @@ export default class Dashboard extends Component {
     const userProfile = {
       gapi_id: auth.Ca,
       memberEmail: auth.wt.cu,
-      memberName: this.state.userName,
+      memberName: auth.wt.Ad,
       memberDescription: this.state.userDescription,
       memberPhoto: this.state.userPhoto || this.state.defaultPhoto
     }

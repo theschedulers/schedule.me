@@ -35,32 +35,12 @@ export default function AddTeamForm(props){
         </div>
       </div>
       <FormGroup>
-        <Label>Team Photo</Label>
-         <Input
-          className={"modal-form-input"}
-          placeholder=""
-          value={props.teamPhoto}
-          onChange={(e) => {props.updateTeamPhoto(e.target.value); updatePhotoPreview(e.target.value)}}
-          invalid={props.teamPhoto==="" ? false : !props.checkUrlValid(props.teamPhoto)}
-        />
-        <FormFeedback invalid = "true">Please enter a valid image address!</FormFeedback>
-      </FormGroup>
-      <FormGroup>
         <Label>Team Name</Label>
         <Input
           className={"modal-form-input"}
           placeholder=""
           value={props.teamName}
           onChange={(e) => props.updateTeamName(e.target.value)}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Your Name</Label>
-        <Input
-          className={"modal-form-input"} 
-          placeholder=""
-          value={props.userName}
-          onChange={(e) => props.updateUserName(e.target.value)}
         />
       </FormGroup>
       <FormGroup>
@@ -71,6 +51,17 @@ export default function AddTeamForm(props){
           value={props.userDescription}
           onChange={(e) => props.updateUserDescription(e.target.value)}
         />
+      </FormGroup>
+      <FormGroup>
+        <Label>Team Photo</Label>
+         <Input
+          className={"modal-form-input"}
+          placeholder=""
+          value={props.teamPhoto}
+          onChange={(e) => {props.updateTeamPhoto(e.target.value); updatePhotoPreview(e.target.value)}}
+          invalid={props.teamPhoto==="" ? false : !props.checkUrlValid(props.teamPhoto)}
+        />
+        <FormFeedback invalid = "true">Invalid image address or file extension (.img, .png, etc.)</FormFeedback>
       </FormGroup>
     </Form>
   );
