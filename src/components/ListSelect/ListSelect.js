@@ -67,8 +67,10 @@ export default class ListSelect extends Component {
                         visibility: this.state.hovered == (id + index) ? "visible" : "hidden"
                       }}
                       />
-                <img className="list-select-item-img" src={item.photo || ""}  alt="list-select-item-img-alt"/>
-                <div item-index={id + index}>
+                <section className="list-select-item-img-container">
+                  <img className="list-select-item-img" src={item.photo || ""}  alt="list-select-item-img-alt"/>
+                </section>
+                <div item-index={id + index} style={{ overflow: "auto" }}>
                   <h6 item-index={id + index}>{item.text}</h6>
                   <p item-index={id + index}>{item.subtext}</p>
                 </div>

@@ -1,5 +1,6 @@
 #list-select-container {
   white-space: nowrap;
+  width: 15em;
 }
 
 #list-select-container > #list-select-header {
@@ -47,12 +48,17 @@
   background-color: #000000;
 }
 
-#list-select-container > #list-select-list > .list-select-item > .list-select-item-img {
-  width: 40px;
-  height: 40px;
+#list-select-container > #list-select-list > .list-select-item > .list-select-item-img-container {
+
+}
+
+#list-select-container > #list-select-list > .list-select-item > .list-select-item-img-container > .list-select-item-img {
+  width: 3em;
+  height: 3em;
   background-color: #e5c09c;
   border-radius: 100%;
   pointer-events: none;
+  object-fit: cover;
 }
 
 #list-select-container > #list-select-list > .list-select-item > .list-select-remove-icon {
