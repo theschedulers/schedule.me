@@ -36,7 +36,18 @@ export default class Calendar extends Component {
 
     // console.log(this.props.calendarchoice)
 
-    var team, personal, input;
+    var team, personal, input, blockedcellsinputinit;
+
+    if (this.props.inputtype == "availability") {
+      blockedcellsinputinit = [this.state.timeblocksinput[this.props.calendarchoice].availability];
+    }
+    else if (this.props.inputtype == "manageshift") {
+      blockedcellsinputinit = [this.state.timeblocksinput[this.props.calendarchoice].shifts];
+    }
+    else {
+      blockedcellsinputinit = null;
+    }
+
     if (this.props.inputmode == 1) {
       input = "block";
       team = personal = "none";
@@ -59,9 +70,9 @@ export default class Calendar extends Component {
                     colheaders={this.state.colheaders}
                     rownum={24}
                     colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }, () => {console.log(this.state.timeblocksoutput)}) }
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={false}
-                    blockedcellsinput={[this.state.timeblocksinput[0][this.props.calendarchoice]]}>
+                    blockedcellsinput={[this.state.timeblocksinput[this.props.calendarchoice].schedule]}>
                   </DragFillGrid>
                 </div>
                 <div style={{display: personal}}>
@@ -71,21 +82,21 @@ export default class Calendar extends Component {
                     colheaders={this.state.colheaders}
                     rownum={24}
                     colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }, () => {console.log(this.state.timeblocksoutput)}) }
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={false}
-                    blockedcellsinput={[this.state.timeblocksinput[1]]}>
+                    blockedcellsinput={[this.state.timeblocksinput[this.props.calendarchoice].personal]}>
                   </DragFillGrid>
                 </div>
                 <div style={{display: input}}>
                   <DragFillGrid
-                    id={1}
+                    id={3}
                     rowheaders={this.state.rowheaders}
                     colheaders={this.state.colheaders}
                     rownum={24}
                     colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }, () => {console.log(this.state.timeblocksoutput)}) }
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={true}
-                    blockedcellsinput={null}>
+                    blockedcellsinput={blockedcellsinputinit}>
                   </DragFillGrid>
                 </div>
               </div>);

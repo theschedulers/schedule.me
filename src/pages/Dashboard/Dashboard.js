@@ -5,7 +5,7 @@ import AddMemberModal from "../../components/AddMember/AddMemberModal";
 import { getTeams, addTeam, editTeam, deleteTeam } from "../../APIFunctions/Team";
 import Calendar from '../../components/Calendar/Calendar';
 import './Dashboard.css';
-import ProfileDropdown from '../../components/ProfileDropdown/ProfileDropdown';
+import CircleIcon from '../../components/CircleIcon/CircleIcon';
 
 export default class Dashboard extends Component {
 
@@ -35,7 +35,9 @@ export default class Dashboard extends Component {
       memberEmail: "",
       memberPhoto: "",
       // For Calendar
-      inputmode: true,
+      inputmode: false,
+      inputmodeheader: "",
+      inputtype: "",
     }
   }
 
@@ -139,7 +141,9 @@ export default class Dashboard extends Component {
   }
 
   toggleMemberModal = () => {
-    this.setState({ memberModalToggle: !this.state.memberModalToggle })
+    this.state.personalTeams.length === 0 ?
+      window.alert("Error with adding a member, make sure you have a team selected.") :
+      this.setState({ memberModalToggle: !this.state.memberModalToggle });
   }
 
   //Modal Input onChange updaters
@@ -267,12 +271,41 @@ export default class Dashboard extends Component {
 
   // Calendar stuff
   calendarOnSubmitCallback = (timeblocks) => {
-    console.log(timeblocks);
+    switch (this.state.inputtype) {
+      case "availability": {
+        console.log("New Availability", timeblocks);
+        break;
+      }
+      case "manageshift": {
+        console.log("New Shifts", timeblocks);
+        break;
+      }
+      default: break;
+    }
+
     this.setState({ inputmode: false });
   }
 
   calendarOnCancelCallback = () => {
     this.setState({ inputmode: false });
+  }
+
+  // For right sidebar
+  editAvailability = () => {
+    this.setState({ inputmode: true, inputtype: "availability", inputmodeheader: "Edit Availability" });
+  }
+
+  manageShifts = () => {
+    this.setState({ inputmode: true, inputtype: "manageshift", inputmodeheader: "Edit Required Shifts" });
+  }
+
+  // For left sidebar
+  removeTeamCallback = (index) => {
+    console.log("Index of team to be removed", index)
+  }
+
+  removeMemberCallback = (index) => {
+    console.log("Index of member to be removed", index)
   }
 
   render() {
@@ -284,14 +317,17 @@ export default class Dashboard extends Component {
     return (
       <div className="full-viewport-hv">
         <div id="Dashboard">
-          <div id="left-sidebar-container">
+          <div id="left-sidebar-container" className={this.state.inputmode == true ? "blur-div-and-deactivate" : ""}>
             <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} alt="dashboard-logo-alt" onClick={this.redirectToHomePage} />
             <div id="dashboard-teams-container">
               <ListSelect list={this.state.personalTeams}
                 header={"Teams"}
                 onAdd={this.onAddTeamCallback}
                 selectable={0}
+                selected={this.state.selectedTeam}
                 valueUpdated={selectedTeam => this.setState({ selectedTeam })}
+                id={"list-select-teams"}
+                removeCallback={this.removeTeamCallback}
               />
               <AddTeamModal
                 toggle={this.state.teamModalToggle}
@@ -314,6 +350,8 @@ export default class Dashboard extends Component {
                 header={"Members"}
                 onAdd={this.onAddMemberCallback}
                 selectable={null}
+                id={"list-select-members"}
+                removeCallback={this.removeMemberCallback}
               />
               <AddMemberModal
                 toggle={this.state.memberModalToggle}
@@ -342,16 +380,21 @@ export default class Dashboard extends Component {
               submitcallback={this.calendarOnSubmitCallback}
               cancelcallback={this.calendarOnCancelCallback}
               inputmode={this.state.inputmode}
-              inputmodeheader={(this.state.inputmode == true) ? "Input Availability" : null}
+              inputtype={this.state.inputtype}
+              inputmodeheader={(this.state.inputmode == true) ? this.state.inputmodeheader : null}
             >
             </Calendar>
           </div>
-          <div id="right-sidebar-container">
-            <ProfileDropdown
-              userName={this.getGoogleAuthCredentials().getBasicProfile().getName()}
-              profilePicture={this.getGoogleAuthCredentials().getBasicProfile().getImageUrl()}
-              onSignOut={this.handleSignOut}
-            />
+
+          <div id="right-sidebar-container" className={this.state.inputmode == true ? "blur-div-and-deactivate" : ""}>
+            <p id="btn" style={{ "color": "#E5C09C", "fontSize": "0.75em", "cursor": "pointer" }} onClick={this.handleSignOut}>Sign Out</p>
+            <div id="circle-icon-container">
+              <CircleIcon title={"Add/Edit Availability"} width={"3em"} height={"3em"} callback={this.editAvailability} icon={require('./img/addeditav.svg')}></CircleIcon>
+              <CircleIcon title={"Request Time off"} width={"3em"} height={"3em"} icon={require('./img/timeoff.svg')}></CircleIcon>
+              <CircleIcon title={"Export to Google Calendar"} width={"3em"} height={"3em"} icon={require('./img/google.png')}></CircleIcon>
+              <CircleIcon title={"Export Calendar"} width={"3em"} height={"3em"} icon={require('./img/download.svg')}></CircleIcon>
+              <CircleIcon title={"Manage Shifts"} width={"3em"} height={"3em"} callback={this.manageShifts} icon={require('./img/pencil.svg')}></CircleIcon>
+            </div>
           </div>
         </div>
       </div >

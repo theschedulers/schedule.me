@@ -1,0 +1,110 @@
+.modal-content {
+    border: solid #E5C09C 1px;
+    background-color: #222222;
+    border-radius: 0.5em;
+    padding: 1em;
+}
+
+.modal-container {
+    color: #E5C09C;
+}
+
+.modal-form-container {
+    color: #E5C09C;
+    padding-left: 3.5em;
+    padding-right: 3.5em;
+}
+
+.modal-form-input {
+    color: #D7D7D7;
+    border: solid #E5C09C 1px;
+    border-color: #E5C09C;
+    background-color: #434343;
+    border-radius: 0.5em;
+}
+
+.modal-form-input:focus {
+    color: #D7D7D7;
+    border: solid #E5C09C 2px;
+    border-color: #E5C09C;
+    background-color: #222222;
+    border-radius: 0.5em;
+}
+
+.modal-submit-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.modal-submit-button {
+    border: solid #64E4BE 1px;
+    color: #64E4BE;
+    padding: 0.5em 2em;
+    margin: 1em;
+    border-radius: 2em;
+    cursor: pointer;
+    text-align: center;
+}
+
+#add-team-modal-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#add-team-modal-profile-container > #add-team-modal-profile-img-container {
+    width: 6em;
+    height: 6em;
+    border-radius: 50%;
+    /* border: solid #E5C09C 1px; */
+    overflow: hidden;
+}
+
+#add-team-modal-profile-container > #add-team-modal-profile-img-container > #add-team-modal-profile {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#add-team-modal-profile-container > * #add-team-modal-profile-img-input-container {
+    font-size: 1em;
+    border: solid #E5C09C 1px;
+    border-radius: 1em;
+    padding-right: 0.5em;
+    padding-left: 1.75em;
+    background-color: #222222;
+}
+
+#add-team-modal-profile-container > * #edit-icon-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    width: 1.5em;
+    height: 1.5em;
+    border: solid #E5C09C 1px;
+    border-radius: 50%;
+    margin-top: 1px;
+    background-color: #222222;
+}
+
+#add-team-modal-profile-container > * #edit-icon-container > #edit-icon {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#add-team-modal-profile-container > #add-team-modal-profile-img-input-container > #add-team-modal-profile-img-input {
+
+}
+
+#add-team-modal-profile-img-input-container > input[type="file"] {
+    display: none;
+}
+
+#add-team-modal-profile-img-input-container-container {
+    position: absolute;
+    margin-top: 4.5em;
+    margin-left: 12em;
+}

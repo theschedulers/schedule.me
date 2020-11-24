@@ -2,72 +2,58 @@ import React from 'react';
 import { Form, FormFeedback, FormGroup, FormText, Label, Input } from 'reactstrap';
 
 export default function AddTeamForm(props){
+
+  function updateTeamPhoto(e) {
+
+    if (e.target.files.length &&  e.target.files.length > 0) {
+      // https://www.codegrepper.com/code-examples/html/input+type%3D%22file%22+and+display+image
+      var image = document.getElementById('add-team-modal-profile');
+      image.src = URL.createObjectURL(e.target.files[0]);
+    }
+  }
+
   return(
-    <Form>
+    <Form className={"modal-form-container"}>
+      <div id="add-team-modal-profile-container">
+        <section id="add-team-modal-profile-img-container">
+          <img id="add-team-modal-profile" src={require('./img/group.png')}/>
+        </section>
+        <div id="add-team-modal-profile-img-input-container-container">
+          <div id="edit-icon-container">
+            <img src={require('./img/edit.png')} id="edit-icon"/>
+          </div>
+          <label id="add-team-modal-profile-img-input-container">
+            <input type="file" onChange={(e) => { props.updateTeamPhoto(e); updateTeamPhoto(e)}}/>
+              <span style={{cursor: "pointer"}}>Edit Team Profile</span>
+          </label>
+        </div>
+      </div>
       <FormGroup>
-        <Label>Team Name
-          <FormText color="muted">
-            Enter your team's desired name!
-          </FormText>        
-        </Label>
+        <Label>Team Name</Label>
         <Input
+          className={"modal-form-input"}
           placeholder=""
           value={props.teamName}
           onChange={(e) => props.updateTeamName(e.target.value)}
         />
       </FormGroup>
       <FormGroup>
-        <Label>Team Profile Photo URL
-          <FormText color="muted">
-            URL. Leave it blank for default photo.
-          </FormText>
-        </Label>
-        <Input
-          invalid={props.teamPhoto==="" ? false : !props.checkUrlValid(props.teamPhoto)}
-          placeholder=""
-          value={props.teamPhoto}
-          onChange={(e) => props.updateTeamPhoto(e.target.value)}
-        />
-        <FormFeedback invalid = "true">Please enter a valid image address!</FormFeedback>
-      </FormGroup>
-      <hr style={{"margin-top":"20px", "border-top": "dashed lightgrey 1px"}}/>
-      <FormGroup>
-        <Label>Your Name
-          <FormText color="muted">
-            Please enter your name, you can add more members after the team is created.
-          </FormText>
-        </Label>
-        <Input 
-          placeholder=""
-          value={props.userName}
-          onChange={(e) => props.updateUserName(e.target.value)}
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label>Your Description
-          <FormText color="muted">
-            Enter your role or a brief description of what you will do!
-          </FormText>
-        </Label>
+        <Label>Team Description</Label>
          <Input
+          className={"modal-form-input"}
           placeholder=""
           value={props.userDescription}
           onChange={(e) => props.updateUserDescription(e.target.value)}
         />
       </FormGroup>
       <FormGroup>
-        <Label>Personal Photo URL
-          <FormText color="muted">
-            URL. Leave it blank for default photo.
-          </FormText>
-        </Label>
+        <Label>Team Role</Label>
         <Input
-          invalid={props.userPhoto==="" ? false : !props.checkUrlValid(props.userPhoto)}
+          className={"modal-form-input"} 
           placeholder=""
-          value={props.userPhoto}
-          onChange={(e) => props.updateUserPhoto(e.target.value)}
+          value={props.userName}
+          onChange={(e) => props.updateUserName(e.target.value)}
         />
-        <FormFeedback invalid = "true">Please enter a valid image address!</FormFeedback>
       </FormGroup>
     </Form>
   );

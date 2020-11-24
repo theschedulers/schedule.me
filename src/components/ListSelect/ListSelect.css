@@ -1,5 +1,6 @@
 #list-select-container {
   white-space: nowrap;
+  width: 15em;
 }
 
 #list-select-container > #list-select-header {
@@ -31,12 +32,12 @@
   align-items: center;
   margin-top: 0.5em;
   border-radius: 0.5em;
-  padding: 0.3em 0.5em 0.3em 0.5em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
   cursor: pointer;
 }
 
 #list-select-container > #list-select-list > .list-select-item:hover {
-  background-color: rgb(58, 58, 58);
+  background-color: rgb(26, 26, 26);
 }
 
 #list-select-container > #list-select-list > .list-select-selected {
@@ -47,12 +48,29 @@
   background-color: #000000;
 }
 
-#list-select-container > #list-select-list > .list-select-item > img {
-  width: 40px;
-  height: 40px;
+#list-select-container > #list-select-list > .list-select-item > .list-select-item-img-container {
+
+}
+
+#list-select-container > #list-select-list > .list-select-item > .list-select-item-img-container > .list-select-item-img {
+  width: 3em;
+  height: 3em;
   background-color: #e5c09c;
   border-radius: 100%;
   pointer-events: none;
+  object-fit: cover;
+}
+
+#list-select-container > #list-select-list > .list-select-item > .list-select-remove-icon {
+  /* display: none; */
+  align-self: flex-start;
+  width: 1em;
+  height: 1em;
+  opacity: 70%;
+}
+
+#list-select-container > #list-select-list > .list-select-item > .list-select-remove-icon:hover {
+  opacity: 100%;
 }
 
 #list-select-container > #list-select-list > .list-select-item > * h6 {
