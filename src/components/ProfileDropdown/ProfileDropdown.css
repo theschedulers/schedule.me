@@ -1,8 +1,13 @@
+#profile-icon {
+  display: flex;
+  justify-content: center;
+}
+
 #dashboard-profile-picture {
   width: 60px;
   height: 60px;
   border-radius: 100%;
-  margin: 1em 0em 0em 2em;
+  margin: 1em;
   background: #8eff9a;
 }
 

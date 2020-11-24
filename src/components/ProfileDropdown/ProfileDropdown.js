@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import { Dropdown, DropdownMenu, DropdownToggle, DropdownItem, Collapse, CardBody } from "reactstrap";
 import "./ProfileDropdown.css";
 
-class DropdownProfile extends Component {
+class ProfileDropdown extends Component {
 
   state = {
     userName: this.props.userName,
@@ -31,6 +31,7 @@ class DropdownProfile extends Component {
             <DropdownItem text id="dropdown-username">{this.props.userName}</DropdownItem>
             <DropdownItem divider />
             <DropdownItem onClick={{}}>Profile</DropdownItem>
+            <DropdownItem onClick={{}}>Notifications</DropdownItem>
             <DropdownItem onClick={this.props.onSignOut}>Sign Out</DropdownItem>
           </DropdownMenu>
         </Dropdown>
@@ -39,4 +40,4 @@ class DropdownProfile extends Component {
   }
 }
 
-export default DropdownProfile;
+export default ProfileDropdown;

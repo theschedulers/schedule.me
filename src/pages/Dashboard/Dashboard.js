@@ -5,6 +5,7 @@ import AddMemberModal from "../../components/AddMember/AddMemberModal";
 import { getTeams, addTeam, editTeam, deleteTeam } from "../../APIFunctions/Team";
 import Calendar from '../../components/Calendar/Calendar';
 import './Dashboard.css';
+import ProfileDropdown from "../../components/ProfileDropdown/ProfileDropdown"
 import CircleIcon from '../../components/CircleIcon/CircleIcon';
 
 export default class Dashboard extends Component {
@@ -387,7 +388,13 @@ export default class Dashboard extends Component {
           </div>
 
           <div id="right-sidebar-container" className={this.state.inputmode == true ? "blur-div-and-deactivate" : ""}>
-            <p id="btn" style={{ "color": "#E5C09C", "fontSize": "0.75em", "cursor": "pointer" }} onClick={this.handleSignOut}>Sign Out</p>
+            <div id="profile-icon-container">
+              <ProfileDropdown
+                userName={this.getGoogleAuthCredentials().getBasicProfile().getName()}
+                profilePicture={this.getGoogleAuthCredentials().getBasicProfile().getImageUrl()}
+                onSignOut={this.handleSignOut}
+              />
+            </div>
             <div id="circle-icon-container">
               <CircleIcon title={"Add/Edit Availability"} width={"3em"} height={"3em"} callback={this.editAvailability} icon={require('./img/addeditav.svg')}></CircleIcon>
               <CircleIcon title={"Request Time off"} width={"3em"} height={"3em"} icon={require('./img/timeoff.svg')}></CircleIcon>
