@@ -83,6 +83,7 @@ export default class Dashboard extends Component {
     Object.entries(res).forEach((team) => {
       const teamLength = team[1].teamMembers.length;
       const teamElement = {
+        teamID: team[1]._id,
         text: team[1].teamName,
         subtext: teamLength + (teamLength === 1 ? " member" : " members"),
         photo: team[1].teamPhoto
@@ -199,7 +200,7 @@ export default class Dashboard extends Component {
     const userProfile = {
       gapi_id: auth.Ca,
       memberEmail: auth.wt.cu,
-      memberName: this.state.userName,
+      memberName: auth.wt.Ad,
       memberDescription: this.state.userDescription,
       memberPhoto: this.state.userPhoto || this.state.defaultPhoto
     }
@@ -254,10 +255,9 @@ export default class Dashboard extends Component {
     return re.test(String(email).toLowerCase());
   }
 
-  checkUrlValid = (url) => {
+  checkImageUrlValid = (url) => {
     //eslint-disable-next-line
-    const re = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
-    return re.test(String(url).toLowerCase());
+    return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
   }
 
   checkTeamFormEmpty = () => {
@@ -300,13 +300,33 @@ export default class Dashboard extends Component {
     this.setState({ inputmode: true, inputtype: "manageshift", inputmodeheader: "Edit Required Shifts" });
   }
 
-  // For left sidebar
-  removeTeamCallback = (index) => {
-    console.log("Index of team to be removed", index)
+  // For left sidebar, remove team
+  removeTeamCallback = async (index) => {
+    // console.log(this.state.teamDBCollection);
+    const res = await deleteTeam(this.state.teamDBCollection[index]);
+    console.log(res);
+    this.updateAllLists();
   }
 
-  removeMemberCallback = (index) => {
-    console.log("Index of member to be removed", index)
+  // For left sidebar, remove member
+  removeMemberCallback = async (index) => {
+    //Need to add a case where if user deletes themselves the team gets deleted too or something (later)
+    const memberToRemove = this.state.teamDBCollection[this.state.selectedTeam].teamMembers[index];
+    const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
+    //Basically filter out the memberToRemove from the teamMembers array to store into DB
+    let teamMembersArr = currentTeam.teamMembers.filter(member => member !== memberToRemove);
+    //Encapsulate the filtered array into data to edit the current entry
+    const reqTeamToEdit = {
+      _id: currentTeam._id,
+      teamName: currentTeam.teamName,
+      teamPhoto: currentTeam.teamPhoto,
+      teamMembers: teamMembersArr,
+    }
+    //Backend call to editTeam () to db (here -> APIFunctions -> routes)
+    const res = await editTeam(reqTeamToEdit);
+    console.log(res);
+    //Refresh everything
+    this.updateAllLists();
   }
 
   render() {
@@ -344,7 +364,7 @@ export default class Dashboard extends Component {
                 updateUserDescription={this.updateUserDescription}
                 updateUserPhoto={this.updateUserPhoto}
                 handleAddTeam={this.handleAddTeam}
-                checkUrlValid={this.checkUrlValid}
+                checkUrlValid={this.checkImageUrlValid}
                 checkTeamFormEmpty={this.checkTeamFormEmpty}
               />
               <div id="dashboard-members-container">
