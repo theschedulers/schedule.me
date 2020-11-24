@@ -347,31 +347,31 @@ export default class Dashboard extends Component {
                 checkUrlValid={this.checkUrlValid}
                 checkTeamFormEmpty={this.checkTeamFormEmpty}
               />
-              <ListSelect list={this.state.personalMembers[this.state.selectedTeam]}
-                header={"Members"}
-                onAdd={this.onAddMemberCallback}
-                selectable={null}
-                id={"list-select-members"}
-                removeCallback={this.removeMemberCallback}
-              />
-              <AddMemberModal
-                toggle={this.state.memberModalToggle}
-                setToggle={this.toggleMemberModal}
-                memberName={this.state.memberName}
-                memberDescription={this.state.memberDescription}
-                memberEmail={this.state.memberEmail}
-                memberPhoto={this.state.memberPhoto}
-                updateMemberName={this.updateMemberName}
-                updateMemberDescription={this.updateMemberDescription}
-                updateMemberEmail={this.updateMemberEmail}
-                updateMemberPhoto={this.updateMemberPhoto}
-                handleAddMember={this.handleAddMember}
-                checkEmailValid={this.checkEmailValid}
-                checkUrlValid={this.checkUrlValid}
-                checkMemberFormEmpty={this.checkMemberFormEmpty}
-              />
-            </div>
-            <div id="dashboard-members-container">
+              <div id="dashboard-members-container">
+                <ListSelect list={this.state.personalMembers[this.state.selectedTeam]}
+                  header={"Members"}
+                  onAdd={this.onAddMemberCallback}
+                  selectable={null}
+                  id={"list-select-members"}
+                  removeCallback={this.removeMemberCallback}
+                />
+                <AddMemberModal
+                  toggle={this.state.memberModalToggle}
+                  setToggle={this.toggleMemberModal}
+                  memberName={this.state.memberName}
+                  memberDescription={this.state.memberDescription}
+                  memberEmail={this.state.memberEmail}
+                  memberPhoto={this.state.memberPhoto}
+                  updateMemberName={this.updateMemberName}
+                  updateMemberDescription={this.updateMemberDescription}
+                  updateMemberEmail={this.updateMemberEmail}
+                  updateMemberPhoto={this.updateMemberPhoto}
+                  handleAddMember={this.handleAddMember}
+                  checkEmailValid={this.checkEmailValid}
+                  checkUrlValid={this.checkUrlValid}
+                  checkMemberFormEmpty={this.checkMemberFormEmpty}
+                />
+              </div>
             </div>
           </div>
           <div id="calendar-container">
