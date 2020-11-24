@@ -21,7 +21,8 @@ export default class Dashboard extends Component {
       teamDBCollection: [],
       personalTeams: [],
       personalMembers: [],
-      defaultPhoto: "https://pm-site-assets-py4.s3.us-east-2.amazonaws.com/products/legacy/rose_gold_metallic_sq.jpg",
+      defaultTeamPhoto: "https://i.imgur.com/TiVXmXJ.png",
+      defaultMemberPhoto: "https://cdn.discordapp.com/attachments/747998557885300853/780871685401214987/woman.png",
       //For AddTeamModal
       teamModalToggle: false,
       teamName: "",
@@ -202,13 +203,13 @@ export default class Dashboard extends Component {
       memberEmail: auth.wt.cu,
       memberName: auth.wt.Ad,
       memberDescription: this.state.userDescription,
-      memberPhoto: this.state.userPhoto || this.state.defaultPhoto
+      memberPhoto: this.state.userPhoto || this.state.defaultMemberPhoto
     }
     //Refer to models/Team.js teamMembers, must be an array (just one element)
     let teamMembersArr = [userProfile];
     const reqTeamToAdd = {
       teamName: this.state.teamName,
-      teamPhoto: this.state.teamPhoto || this.state.defaultPhoto,
+      teamPhoto: this.state.teamPhoto || this.state.defaultTeamPhoto,
       teamMembers: teamMembersArr,
     }
     //Backend call to addTeam() to db (here -> APIFunctions -> routes)
@@ -230,7 +231,7 @@ export default class Dashboard extends Component {
       memberEmail: this.state.memberEmail,
       memberName: this.state.memberName,
       memberDescription: this.state.memberDescription,
-      memberPhoto: this.state.memberPhoto || this.state.defaultPhoto
+      memberPhoto: this.state.memberPhoto || this.state.defaultMemberPhoto
     }
     //Add member to team member list
     teamMembersArr.push(reqMemberToAdd);

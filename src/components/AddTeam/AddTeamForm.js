@@ -3,18 +3,21 @@ import { Form, FormFeedback, FormGroup, FormText, Label, Input } from 'reactstra
 
 export default function AddTeamForm(props){
 
-  function updateTeamPhoto(e) {
+  // This has to be removed once we figure out how to upload files correctly,
+  // then, we can use updatePhotoPreview instead.
+  function updatePhotoPreviewTemp(e) {
     if (e.target.files.length &&  e.target.files.length > 0) {
       // https://www.codegrepper.com/code-examples/html/input+type%3D%22file%22+and+display+image
       var image = document.getElementById('add-team-modal-profile');
       image.src = URL.createObjectURL(e.target.files[0]);
+      props.updateTeamPhoto(URL.createObjectURL(e.target.files[0]));
     }
   }
 
-  function updatePhotoPreview(e) {
-    if(props.checkUrlValid(e)){
-      var img= document.getElementById('add-team-modal-profile');
-      img.src = e;
+  function updatePhotoPreview(url) {
+    if(props.checkUrlValid(url)){
+      var img = document.getElementById('add-team-modal-profile');
+      img.src = url;
     }
   }
 
@@ -29,7 +32,7 @@ export default function AddTeamForm(props){
             <img src={require('./img/edit.png')} id="edit-icon"/>
           </div>
           <label id="add-team-modal-profile-img-input-container">
-            <input type="file" onChange={(e) => { props.updateTeamPhoto(e); updateTeamPhoto(e)}}/>
+            <input type="file" onChange={(e) => { updatePhotoPreviewTemp(e)}}/>
               <span style={{cursor: "pointer"}}>Edit Team Profile</span>
           </label>
         </div>
