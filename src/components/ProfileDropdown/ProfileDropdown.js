@@ -1,5 +1,5 @@
-import React, { Component, useState } from "react";
-import { Dropdown, DropdownMenu, DropdownToggle, DropdownItem, Collapse, CardBody } from "reactstrap";
+import React, { Component } from "react";
+import { Dropdown, DropdownMenu, DropdownToggle, DropdownItem } from "reactstrap";
 import "./ProfileDropdown.css";
 
 class ProfileDropdown extends Component {
@@ -22,11 +22,11 @@ class ProfileDropdown extends Component {
       <div id="profile-icon">
         <Dropdown isOpen={this.state.pDDOpen} toggle={this.profileToggle}>
           <DropdownToggle tag="div">
-            <img id="dashboard-profile-picture" src={this.state.profilePicture} alt="Dashboard Profile Picture" />
+            <img id="dashboard-profile-picture" src={this.state.profilePicture} alt="dashboard profile" />
           </DropdownToggle>
           <DropdownMenu right>
             <DropdownItem header>
-              <img id="dropdown-profile-picture" src={this.state.profilePicture} alt="Dropdown Profile Picture" />
+              <img id="dropdown-profile-picture" src={this.state.profilePicture} alt="dropdown profile" />
             </DropdownItem>
             <DropdownItem text id="dropdown-username">{this.props.userName}</DropdownItem>
             <DropdownItem divider />
