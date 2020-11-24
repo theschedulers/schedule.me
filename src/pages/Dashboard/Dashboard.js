@@ -350,6 +350,10 @@ export default class Dashboard extends Component {
                 valueUpdated={selectedTeam => this.setState({ selectedTeam })}
                 id={"list-select-teams"}
                 removeCallback={this.removeTeamCallback}
+                modalheadertext={"Remove Team"}
+                modalsubheader={"Are you sure you want to delete this team?"}
+                modalconfirmbuttontext={"Yes"}
+                modalcancelbuttontext={"No"}
               />
               <AddTeamModal
                 toggle={this.state.teamModalToggle}
@@ -375,6 +379,10 @@ export default class Dashboard extends Component {
                   selectable={null}
                   id={"list-select-members"}
                   removeCallback={this.removeMemberCallback}
+                  modalheadertext={"Remove Member"}
+                  modalsubheader={"Are you sure you want to remove this member?"}
+                  modalconfirmbuttontext={"Yes"}
+                  modalcancelbuttontext={"No"}
                 />
                 <AddMemberModal
                   toggle={this.state.memberModalToggle}
