@@ -26,6 +26,10 @@
   text-align: center;
 }
 
+/* #dropdown-username: hover {
+  cursor: default;
+} */
+
 div.dropdown-menu {
   margin-right: 1em;
 }

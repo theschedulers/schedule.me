@@ -28,10 +28,13 @@ class ProfileDropdown extends Component {
             <DropdownItem header>
               <img id="dropdown-profile-picture" src={this.state.profilePicture} alt="dropdown profile" />
             </DropdownItem>
-            <DropdownItem text id="dropdown-username">{this.props.userName}</DropdownItem>
+            <DropdownItem id="dropdown-username" text>{this.props.userName}</DropdownItem>
             <DropdownItem divider />
             <DropdownItem onClick={{}}>Profile</DropdownItem>
-            <DropdownItem onClick={{}}>Notifications</DropdownItem>
+            <DropdownItem onClick={{}}>Notifications
+            
+            </DropdownItem>
+            
             <DropdownItem onClick={this.props.onSignOut}>Sign Out</DropdownItem>
           </DropdownMenu>
         </Dropdown>
