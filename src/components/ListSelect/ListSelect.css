@@ -55,10 +55,10 @@
 #list-select-container > #list-select-list > .list-select-item > .list-select-item-img-container > .list-select-item-img {
   width: 3em;
   height: 3em;
-  background-color: #e5c09c;
   border-radius: 100%;
   pointer-events: none;
   object-fit: cover;
+  border: solid #222222 1px;
 }
 
 #list-select-container > #list-select-list > .list-select-item > .list-select-remove-icon {

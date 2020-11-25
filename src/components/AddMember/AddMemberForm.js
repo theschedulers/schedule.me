@@ -33,7 +33,6 @@ export default function AddMemberForm(props){
         />
         <FormFeedback invalid = "true">Please enter a valid email address!</FormFeedback>
       </FormGroup>
-      <FormFeedback invalid = "true">Please enter a valid image address!</FormFeedback>
     </Form>
   );
 }

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 import './ListSelect.css';
 
 export default class ListSelect extends Component {
@@ -11,6 +12,13 @@ export default class ListSelect extends Component {
     selected: this.props.id + this.props.selected,
     hovered: null,
     valueUpdated: this.props.valueUpdated,
+
+    itemToRemove: null,
+    confirmationModalToggle: false,
+    modalheadertext: "",
+    modalsubheader: "",
+    modalconfirmbuttontext: "",
+    modalcancelbuttontext: "",
   }
 
   // Select the clicked item
@@ -22,12 +30,9 @@ export default class ListSelect extends Component {
     }
   }
 
-  removeListItem = (e) => {
-
-    const selected = e.target.getAttribute("item-remove-index");
-
-    if (selected != null && this.props.removeCallback != null) {
-      this.props.removeCallback(selected.replace(this.state.id, ''));
+  removeListItem = () => {
+    if (this.state.itemToRemove != null && this.props.removeCallback != null) {
+      this.props.removeCallback(this.state.itemToRemove.replace(this.state.id, ''));
     }
   }
 
@@ -39,6 +44,16 @@ export default class ListSelect extends Component {
     this.setState({ hovered: null })
   }
 
+  toggleConfirmationModal = (selected) => {
+    this.setState({ confirmationModalToggle: !this.state.confirmationModalToggle, itemToRemove: selected });
+  }
+
+  onClickRemoveButton = (e) => {
+    var selected = e.target.getAttribute("item-remove-index");
+    if (selected != null)
+      this.toggleConfirmationModal(selected);
+  }
+
   //temp
   //require('./img/defaultprofile.png')
 
@@ -48,6 +63,15 @@ export default class ListSelect extends Component {
 
     return (
       <div id="list-select-container">
+        <ConfirmationModal
+          toggle={this.state.confirmationModalToggle}
+          setToggle={this.toggleConfirmationModal}
+          onConfirm={this.removeListItem}
+          header={this.props.modalheadertext}
+          subheader={this.props.modalsubheader}
+          confirmbuttontext={this.props.modalconfirmbuttontext}
+          cancelbuttontext={this.props.modalcancelbuttontext}
+        />
           <div id="list-select-header">
             <h6>{this.state.header}</h6>
             <img id="list-select-plus-icon" src={require('./img/plus.png')} alt="" onClick={this.state.onAdd}/>
@@ -62,7 +86,7 @@ export default class ListSelect extends Component {
                           onMouseLeave={this.hideRemoveIcon}
                           >
                 <img key={id + index} item-remove-index={id + index} src={require('./img/remove.png')} className="list-select-remove-icon"
-                      onClick={this.removeListItem}
+                      onClick={this.onClickRemoveButton}
                       style={{
                         visibility: this.state.hovered == (id + index) ? "visible" : "hidden"
                       }}

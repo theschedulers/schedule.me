@@ -9,6 +9,10 @@
     color: #E5C09C;
 }
 
+.modal-backdrop.show {
+    opacity: 0.8;
+}
+
 .modal-form-container {
     color: #E5C09C;
     padding-left: 3.5em;
@@ -39,6 +43,16 @@
 .modal-submit-button {
     border: solid #64E4BE 1px;
     color: #64E4BE;
+    padding: 0.5em 2em;
+    margin: 1em;
+    border-radius: 2em;
+    cursor: pointer;
+    text-align: center;
+}
+
+.modal-cancel-button {
+    border: solid #E4649A 1px;
+    color: #E4649A;
     padding: 0.5em 2em;
     margin: 1em;
     border-radius: 2em;

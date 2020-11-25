@@ -21,7 +21,8 @@ export default class Dashboard extends Component {
       teamDBCollection: [],
       personalTeams: [],
       personalMembers: [],
-      defaultPhoto: "https://pm-site-assets-py4.s3.us-east-2.amazonaws.com/products/legacy/rose_gold_metallic_sq.jpg",
+      defaultTeamPhoto: "https://i.imgur.com/TiVXmXJ.png",
+      defaultMemberPhoto: "https://cdn.discordapp.com/attachments/747998557885300853/780871685401214987/woman.png",
       //For AddTeamModal
       teamModalToggle: false,
       teamName: "",
@@ -83,6 +84,7 @@ export default class Dashboard extends Component {
     Object.entries(res).forEach((team) => {
       const teamLength = team[1].teamMembers.length;
       const teamElement = {
+        teamID: team[1]._id,
         text: team[1].teamName,
         subtext: teamLength + (teamLength === 1 ? " member" : " members"),
         photo: team[1].teamPhoto
@@ -199,15 +201,15 @@ export default class Dashboard extends Component {
     const userProfile = {
       gapi_id: auth.Ca,
       memberEmail: auth.wt.cu,
-      memberName: this.state.userName,
+      memberName: auth.wt.Ad,
       memberDescription: this.state.userDescription,
-      memberPhoto: this.state.userPhoto || this.state.defaultPhoto
+      memberPhoto: this.state.userPhoto || this.state.defaultMemberPhoto
     }
     //Refer to models/Team.js teamMembers, must be an array (just one element)
     let teamMembersArr = [userProfile];
     const reqTeamToAdd = {
       teamName: this.state.teamName,
-      teamPhoto: this.state.teamPhoto || this.state.defaultPhoto,
+      teamPhoto: this.state.teamPhoto || this.state.defaultTeamPhoto,
       teamMembers: teamMembersArr,
     }
     //Backend call to addTeam() to db (here -> APIFunctions -> routes)
@@ -229,7 +231,7 @@ export default class Dashboard extends Component {
       memberEmail: this.state.memberEmail,
       memberName: this.state.memberName,
       memberDescription: this.state.memberDescription,
-      memberPhoto: this.state.memberPhoto || this.state.defaultPhoto
+      memberPhoto: this.state.memberPhoto || this.state.defaultMemberPhoto
     }
     //Add member to team member list
     teamMembersArr.push(reqMemberToAdd);
@@ -254,10 +256,9 @@ export default class Dashboard extends Component {
     return re.test(String(email).toLowerCase());
   }
 
-  checkUrlValid = (url) => {
+  checkImageUrlValid = (url) => {
     //eslint-disable-next-line
-    const re = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/;
-    return re.test(String(url).toLowerCase());
+    return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
   }
 
   checkTeamFormEmpty = () => {
@@ -300,13 +301,33 @@ export default class Dashboard extends Component {
     this.setState({ inputmode: true, inputtype: "manageshift", inputmodeheader: "Edit Required Shifts" });
   }
 
-  // For left sidebar
-  removeTeamCallback = (index) => {
-    console.log("Index of team to be removed", index)
+  // For left sidebar, remove team
+  removeTeamCallback = async (index) => {
+    // console.log(this.state.teamDBCollection);
+    const res = await deleteTeam(this.state.teamDBCollection[index]);
+    console.log(res);
+    this.updateAllLists();
   }
 
-  removeMemberCallback = (index) => {
-    console.log("Index of member to be removed", index)
+  // For left sidebar, remove member
+  removeMemberCallback = async (index) => {
+    //Need to add a case where if user deletes themselves the team gets deleted too or something (later)
+    const memberToRemove = this.state.teamDBCollection[this.state.selectedTeam].teamMembers[index];
+    const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
+    //Basically filter out the memberToRemove from the teamMembers array to store into DB
+    let teamMembersArr = currentTeam.teamMembers.filter(member => member !== memberToRemove);
+    //Encapsulate the filtered array into data to edit the current entry
+    const reqTeamToEdit = {
+      _id: currentTeam._id,
+      teamName: currentTeam.teamName,
+      teamPhoto: currentTeam.teamPhoto,
+      teamMembers: teamMembersArr,
+    }
+    //Backend call to editTeam () to db (here -> APIFunctions -> routes)
+    const res = await editTeam(reqTeamToEdit);
+    console.log(res);
+    //Refresh everything
+    this.updateAllLists();
   }
 
   render() {
@@ -329,6 +350,10 @@ export default class Dashboard extends Component {
                 valueUpdated={selectedTeam => this.setState({ selectedTeam })}
                 id={"list-select-teams"}
                 removeCallback={this.removeTeamCallback}
+                modalheadertext={"Remove Team"}
+                modalsubheader={"Are you sure you want to delete this team?"}
+                modalconfirmbuttontext={"Yes"}
+                modalcancelbuttontext={"No"}
               />
               <AddTeamModal
                 toggle={this.state.teamModalToggle}
@@ -344,7 +369,7 @@ export default class Dashboard extends Component {
                 updateUserDescription={this.updateUserDescription}
                 updateUserPhoto={this.updateUserPhoto}
                 handleAddTeam={this.handleAddTeam}
-                checkUrlValid={this.checkUrlValid}
+                checkUrlValid={this.checkImageUrlValid}
                 checkTeamFormEmpty={this.checkTeamFormEmpty}
               />
               <div id="dashboard-members-container">
@@ -354,6 +379,10 @@ export default class Dashboard extends Component {
                   selectable={null}
                   id={"list-select-members"}
                   removeCallback={this.removeMemberCallback}
+                  modalheadertext={"Remove Member"}
+                  modalsubheader={"Are you sure you want to remove this member?"}
+                  modalconfirmbuttontext={"Yes"}
+                  modalcancelbuttontext={"No"}
                 />
                 <AddMemberModal
                   toggle={this.state.memberModalToggle}
