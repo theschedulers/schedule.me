@@ -8,6 +8,26 @@ import './Dashboard.css';
 import ProfileDropdown from "../../components/ProfileDropdown/ProfileDropdown"
 import CircleIcon from '../../components/CircleIcon/CircleIcon';
 
+const invite1 = {
+  senderId: "Justin Zhu",
+  recipientId: "Edward Josh Hermano",
+  teamName: "The Schedulers"
+}
+
+const invite2 = {
+  senderId: "Shinigami-sensei",
+  recipientId: "Edward Josh Hermano",
+  teamName: "the Underworld"
+}
+
+const invite3 = {
+  senderId: "Darth Vader",
+  recipientId: "Edward Josh Hermano",
+  teamName: "the Dark Side"
+}
+
+const notifs = [invite1, invite2, invite3];
+
 export default class Dashboard extends Component {
 
   // super(state = {
@@ -422,6 +442,7 @@ export default class Dashboard extends Component {
                 userName={this.getGoogleAuthCredentials().getBasicProfile().getName()}
                 profilePicture={this.getGoogleAuthCredentials().getBasicProfile().getImageUrl()}
                 onSignOut={this.handleSignOut}
+                notificationList={notifs}
               />
             </div>
             <div id="circle-icon-container">
