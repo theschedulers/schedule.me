@@ -56,7 +56,9 @@
 }
 
 #DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-div > #dragfillgrid-grid > tr > td {
+    display: flex;
     flex: 1;
+    min-width: 3em;
     border: solid #d3d3d3 1px;
     border-right: "none";
     height: 3em;

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ImageCell from '../ImageCell/ImageCell';
 import './DragFillGrid.css';
 class DragFillGrid extends Component {
 
@@ -168,15 +169,25 @@ class DragFillGrid extends Component {
                     height: "calc(100% + 1px)",
                     backgroundColor: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? this.state.blockedcells[i][j].darkColor : "")
                 }
+
+                var imagecell = (this.state.draggable == false && this.state.blockedcells[i][j].members) ? (<ImageCell
+                    members={this.state.blockedcells[i][j].members && this.state.blockedcells[i][j].blocked == 1 && this.state.blockedcells[i][j].members.map((member) => {
+                        return member
+                    })}
+                    imagebordercolor={this.state.blockedcells[i][j].members && this.state.blockedcells[i][j].darkColor}
+                    >
+                        
+                    </ImageCell>) : "";
                 
                 children.push(<td key={"rc" + i + "" + j} row={i} column={j} draggable="false"
                                 style={cellstyle}
                                 onMouseDown={(e) => {if (this.props.draggable == true) { this.startDrag(e); this.drag(e)}} }
                                 onMouseEnter={(e) => { if (this.state.dragging == 1 && this.props.draggable == true) this.drag(e) }}
                                 onMouseUp={(e) => { if (this.props.draggable == true) this.endDrag()}}>
-                                    <div row={i} column={j} style={{display: "flex", flex: 1, backgroundColor: "none", height: "100%", borderBottom: "solid #d3d3d3 1px"}}>
+                                    <div row={i} column={j} style={{display: "flex", flex: 1, alignItems: "center", backgroundColor: "none", height: "100%", width: "100%", borderBottom: "solid #d3d3d3 1px"}}>
                                         <div row={i} column={j} style={cellleftborderstyle}></div>
                                         {/* <div style={{...cellleftborderstyle, backgroundColor: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "#B7FABA" : "")}}></div> */}
+                                        {imagecell}
                                     </div>
                                 </td>)
             }
