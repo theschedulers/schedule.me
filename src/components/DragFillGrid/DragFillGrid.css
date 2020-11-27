@@ -57,9 +57,11 @@
 
 #DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-div > #dragfillgrid-grid > tr > td {
     flex: 1;
-    border-left: solid #d3d3d3 2px;
-    border-bottom: solid #d3d3d3 0.5px;
+    border: solid #d3d3d3 1px;
+    border-right: "none";
     height: 3em;
+    padding: 0px;
+    border-width: 0px 1px 0px 1px;
 }
 
 #DragFillGrid > #dragfillgrid-grid-container > .dragfillgrid-grid-side-info > .dragfillgrid-row-headers {

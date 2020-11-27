@@ -158,15 +158,27 @@ class DragFillGrid extends Component {
             for (let j = 0; j < cols; j++) {
                 var cellstyle = {
                     backgroundColor: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? this.state.blockedcells[i][j].color : ""),
-                    borderLeft: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "solid " + this.state.blockedcells[i][j].darkColor + " 2px" : ""),
-                    borderBottom: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "solid " + this.state.blockedcells[i][j].lightColor + " 2px" : "")
+                    borderLeft: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "solid " + this.state.blockedcells[i][j].darkColor + " 1px" : ""),
+                    display: "flex",
+                    alignItems: "center",
+                }
+
+                var cellleftborderstyle = {
+                    width: "4px",
+                    height: "calc(100% + 1px)",
+                    backgroundColor: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? this.state.blockedcells[i][j].darkColor : "")
                 }
                 
                 children.push(<td key={"rc" + i + "" + j} row={i} column={j} draggable="false"
                                 style={cellstyle}
                                 onMouseDown={(e) => {if (this.props.draggable == true) { this.startDrag(e); this.drag(e)}} }
                                 onMouseEnter={(e) => { if (this.state.dragging == 1 && this.props.draggable == true) this.drag(e) }}
-                                onMouseUp={(e) => { if (this.props.draggable == true) this.endDrag()}}></td>)
+                                onMouseUp={(e) => { if (this.props.draggable == true) this.endDrag()}}>
+                                    <div row={i} column={j} style={{display: "flex", flex: 1, backgroundColor: "none", height: "100%", borderBottom: "solid #d3d3d3 1px"}}>
+                                        <div row={i} column={j} style={cellleftborderstyle}></div>
+                                        {/* <div style={{...cellleftborderstyle, backgroundColor: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "#B7FABA" : "")}}></div> */}
+                                    </div>
+                                </td>)
             }
             table.push(<tr key={"r" + i}>{children}</tr>)
         }
