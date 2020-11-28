@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import ImageCell from '../ImageCell/ImageCell';
 import './DragFillGrid.css';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+import { Input } from 'reactstrap';
 
 class DragFillGrid extends Component {
 
@@ -284,7 +285,7 @@ class DragFillGrid extends Component {
                 onConfirm={this.onConfirmDrag}
                 onCancel={this.onCancelDrag}
                 header={"How many workers do you need for this shift?"}
-                subheader={<input type="number" id={"workers-count-required-input"} placeholder={"Please input an integer"} style={{padding: "0.25em 1em 0.25em 1em", borderColor: "#E5C09C", borderRadius: "0.5em", textAlign: "center"}}/>}
+                subheader={<Input type="number" className={"modal-form-input"} id={"workers-count-required-input"} style={{width: "8em", textAlign: "center", margin: "auto"}}></Input>}
                 confirmbuttontext={"Confirm"}
                 cancelbuttontext={"Cancel"}
                 // backdrop={"static"}
