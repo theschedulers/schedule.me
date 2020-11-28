@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import ImageCell from '../ImageCell/ImageCell';
 import './DragFillGrid.css';
+import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
+
 class DragFillGrid extends Component {
 
     state = {
@@ -13,6 +15,8 @@ class DragFillGrid extends Component {
         timeBlocksUpdated: this.props.timeBlocksUpdated,
         blockedcells: this.getBlockedCells(),
         blockedcellsinput: this.props.blockedcellsinput,
+        confirmdrag: this.props.confirmdrag,
+        confirmationModalToggle: false,
         dragging: 0,
         dragcol: null,
         dragstartrow: null,
@@ -131,18 +135,61 @@ class DragFillGrid extends Component {
         }
     }
 
-    endDrag = () => {
+    endDrag = (e) => {
         var blockedcells = this.state.blockedcells;
+        var row = parseInt(e.target.getAttribute("row"));
         for (let i = 0; i < this.state.rownum; i++) {
             if (blockedcells[i][this.state.dragcol] != null)
                 blockedcells[i][this.state.dragcol].currentdrag = 0;
         }
+
+        if (this.state.confirmdrag == true && (parseInt(this.state.dragstartrow) <= parseInt(row)) && this.state.blockedcells[row][this.state.dragcol].blocked == 1) {
+            this.toggleConfirmationModal();
+            this.setState({ blockedcells: blockedcells,
+                            dragging: 0,
+                            dragendrow: row });
+        }
+        else {
+            this.setState({ blockedcells: blockedcells,
+                            dragcol: null,
+                            dragging: 0,
+                            dragstartrow: null,
+                            dragendrow: null },
+                            () => { this.state.timeBlocksUpdated(this.state.blockedcells.map((row) => (row.map((cell) => ({...cell}))))); });
+            }
+    }
+
+    onConfirmDrag = () => {
+
+        var count = document.getElementById("workers-count-required-input").value;
+        var blockedcells = this.state.blockedcells;
+        for (let i = this.state.dragstartrow; i <= this.state.dragendrow; i++) {
+            if (blockedcells[i][this.state.dragcol] != null)
+                blockedcells[i][this.state.dragcol].workerscountrequired = parseInt(count);
+        }
+
         this.setState({ blockedcells: blockedcells,
                         dragcol: null,
                         dragging: 0,
                         dragstartrow: null,
                         dragendrow: null },
-                        () => { this.state.timeBlocksUpdated(this.state.blockedcells.map((row) => (row.map((cell) => ({ "blocked": cell.blocked }))))); });
+                        () => { this.state.timeBlocksUpdated(this.state.blockedcells.map((row) => (row.map((cell) => ({...cell}))))); });
+    }
+
+    onCancelDrag = () => {
+        var blockedcells = this.state.blockedcells;
+        for (let i = this.state.dragstartrow; i <= this.state.dragendrow; i++) {
+            if (blockedcells[i][this.state.dragcol] != null)
+                blockedcells[i][this.state.dragcol].blocked = 0;
+        }
+
+        this.setState({ blockedcells: blockedcells,
+                        dragcol: null,
+                        dragging: 0,
+                        dragstartrow: null,
+                        dragendrow: null },
+                        () => { this.state.timeBlocksUpdated(this.state.blockedcells.map((row) => (row.map((cell) => ({...cell}))))); });
+
     }
 
     // Source: https://blog.cloudboost.io/for-loops-in-react-render-no-you-didnt-6c9f4aa73778
@@ -183,7 +230,7 @@ class DragFillGrid extends Component {
                                 style={cellstyle}
                                 onMouseDown={(e) => {if (this.props.draggable == true) { this.startDrag(e); this.drag(e)}} }
                                 onMouseEnter={(e) => { if (this.state.dragging == 1 && this.props.draggable == true) this.drag(e) }}
-                                onMouseUp={(e) => { if (this.props.draggable == true) this.endDrag()}}>
+                                onMouseUp={(e) => { if (this.props.draggable == true) this.endDrag(e)}}>
                                     <div row={i} column={j} style={{display: "flex", flex: 1, alignItems: "center", backgroundColor: "none", height: "100%", width: "100%", borderBottom: "solid #d3d3d3 1px"}}>
                                         <div row={i} column={j} style={cellleftborderstyle}></div>
                                         {/* <div style={{...cellleftborderstyle, backgroundColor: this.state.blockedcells[i][j] && (this.state.blockedcells[i][j].blocked == 1 ? "#B7FABA" : "")}}></div> */}
@@ -223,10 +270,25 @@ class DragFillGrid extends Component {
         if (e.target.getAttribute('id') == "dragfillgrid-grid-div")
             document.getElementById(string.concat("dragfillgrid-grid-side-info-", this.state.id)).scrollTop = e.target.scrollTop;
     }
+
+    toggleConfirmationModal = () => {
+        this.setState({ confirmationModalToggle: !this.state.confirmationModalToggle });
+    }
     
     render() {
         return (
         <div id="DragFillGrid">
+            <ConfirmationModal
+                toggle={this.state.confirmationModalToggle}
+                setToggle={this.toggleConfirmationModal}
+                onConfirm={this.onConfirmDrag}
+                onCancel={this.onCancelDrag}
+                header={"How many workers do you need for this shift?"}
+                subheader={<input type="number" id={"workers-count-required-input"} placeholder={"Please input an integer"} style={{padding: "0.25em 1em 0.25em 1em", borderColor: "#E5C09C", borderRadius: "0.5em", textAlign: "center"}}/>}
+                confirmbuttontext={"Confirm"}
+                cancelbuttontext={"Cancel"}
+                // backdrop={"static"}
+            />
             <div id="dragfillgrid-header-titles">
                 {/* 7 static column headers */}
                 {this.createColHeaders()}

@@ -36,30 +36,29 @@ export default class Calendar extends Component {
 
     // console.log(this.props.calendarchoice)
 
-    var team, personal, input, blockedcellsinputinit;
-
-    if (this.props.inputtype == "availability") {
-      blockedcellsinputinit = [this.state.timeblocksinput[this.props.calendarchoice].availability];
-    }
-    else if (this.props.inputtype == "manageshift") {
-      blockedcellsinputinit = [this.state.timeblocksinput[this.props.calendarchoice].shifts];
-    }
-    else {
-      blockedcellsinputinit = null;
-    }
+    var team, personal, availabilityinput, manageshiftinput, blockedcellsinputinit;
 
     if (this.props.inputmode == 1) {
-      input = "block";
-      team = personal = "none";
+      if (this.props.inputtype == "availability") {
+        availabilityinput = "block";
+        team = personal = manageshiftinput = "none";
+      }
+      else if (this.props.inputtype == "manageshift") {
+        manageshiftinput = "block";
+        team = personal = availabilityinput = "none";
+      }
+      else {
+        blockedcellsinputinit = null;
+      }
     }
     else {
       if (this.state.tabchoice == 0) {
         team = "block";
-        input = personal = "none";
+        availabilityinput = personal = manageshiftinput = "none";
       }
       else if (this.state.tabchoice == 1) {
         personal = "block";
-        input = team = "none";
+        availabilityinput = team = manageshiftinput = "none";
       }
     }
       return (<div>
@@ -87,7 +86,7 @@ export default class Calendar extends Component {
                     blockedcellsinput={[this.state.timeblocksinput[this.props.calendarchoice].personal]}>
                   </DragFillGrid>
                 </div>
-                <div style={{display: input}}>
+                <div style={{display: availabilityinput}}>
                   <DragFillGrid
                     id={3}
                     rowheaders={this.state.rowheaders}
@@ -96,7 +95,20 @@ export default class Calendar extends Component {
                     colnum={7}
                     timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={true}
-                    blockedcellsinput={blockedcellsinputinit}>
+                    blockedcellsinput={[this.state.timeblocksinput[this.props.calendarchoice].availability]}>
+                  </DragFillGrid>
+                </div>
+                <div style={{display: manageshiftinput}}>
+                  <DragFillGrid
+                    id={4}
+                    rowheaders={this.state.rowheaders}
+                    colheaders={this.state.colheaders}
+                    rownum={24}
+                    colnum={7}
+                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
+                    draggable={true}
+                    blockedcellsinput={[this.state.timeblocksinput[this.props.calendarchoice].shifts]}
+                    confirmdrag={true}>
                   </DragFillGrid>
                 </div>
               </div>);

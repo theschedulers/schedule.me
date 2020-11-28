@@ -8,13 +8,15 @@ export default function ConfirmationModal(props){
   }
 
   function handleCancel() {
-      props.setToggle(null);
+    if (props.onCancel)
+      props.onCancel();
+    props.setToggle(null);
   }
 
   return (
     <React.Fragment>
-      <Modal isOpen={props.toggle} toggle={props.setToggle} className={"modal-container"}>
-        <img src={require('./img/cancel.png')} style={{width: "1em", height: "1em", cursor: "pointer"}} onClick={props.setToggle} />
+      <Modal isOpen={props.toggle} toggle={handleCancel} className={"modal-container"} backdrop={props.backdrop}>
+        <img src={require('./img/cancel.png')} style={{width: "1em", height: "1em", cursor: "pointer"}} onClick={handleCancel} />
         <h4 style={{textAlign: "center", marginBottom: "1em"}}>{props.header}</h4>
         <p style={{textAlign: "center", marginBottom: "1em"}}>{props.subheader}</p>
         <div className="modal-submit-button-container">
