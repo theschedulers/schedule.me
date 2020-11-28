@@ -15,6 +15,7 @@ class ImageCell extends Component {
         var memberContainerStyle = {
             display: "flex",
             margin: "1em",
+            alignItems: "center",
         }
 
         var imageContainerStyle = {
@@ -53,7 +54,7 @@ class ImageCell extends Component {
                         <img style={imageStyle} src={member.photo}/>
                     </section>
                     <div style={textContainerStyle}>
-                        <h5 style={textStyle}>{member.text}</h5>
+                        <h6 style={textStyle}>{member.text}</h6>
                         <p style={subtextStyle}>{member.subtext}</p>
                     </div>
                 </div>
