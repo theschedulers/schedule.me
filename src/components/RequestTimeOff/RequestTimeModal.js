@@ -4,13 +4,6 @@ import RequestTimeForm from "./RequestTimeForm";
 
 export default function RequestMemberModal(props) {
     function handleConfirmation() {
-        // if(props.checkEmailValid(props.memberEmail)){
-        //   console.log("Check")
-        // }
-        // else{
-        //   console.log("lk")
-        // }
-        props.handleAddMember();
         props.setToggle();
     }
     return (
@@ -19,10 +12,10 @@ export default function RequestMemberModal(props) {
                 <img src={require('./img/cancel.png')} style={{ width: "1em", height: "1em", cursor: "pointer" }} onClick={props.setToggle} />
                 <h4 style={{ textAlign: "center", marginBottom: "1em" }}>Request Time Off</h4>
                 <RequestTimeForm
-                    memberName={props.memberName}
-                    updateMemberName={props.updateMemberName}
-                    updateMemberDescription={props.updateMemberDescription}
-                    updateMemberEmail={props.updateMemberEmail}
+                    from={props.from}
+                    to={props.to}
+                    updateTimeoffRequestFrom={props.updateTimeoffRequestFrom}
+                    updateTimeoffRequestTo={props.updateTimeoffRequestTo}
                 ></RequestTimeForm>
 
                 <div className="modal-submit-button-container"><div className="modal-submit-button" onClick={handleConfirmation}>Submit</div></div>

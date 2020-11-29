@@ -9,8 +9,8 @@ export default function RequestModalForm(props) {
                 <Input
                     className={"modal-form-input"}
                     placeholder=""
-                // value={props.memberName}
-                // onChange={(e) => props.updateMemberName(e.target.value)}
+                    value={props.from}
+                    onChange={(e) => props.updateTimeoffRequestFrom(e.target.value)}
                 />
             </FormGroup>
             <FormGroup>
@@ -18,8 +18,8 @@ export default function RequestModalForm(props) {
                 <Input
                     className={"modal-form-input"}
                     placeholder=""
-                // value={props.memberDescription}
-                // onChange={(e) => props.updateMemberDescription(e.target.value)}
+                    value={props.to}
+                    onChange={(e) => props.updateTimeoffRequestTo(e.target.value)}
                 />
             </FormGroup>
 

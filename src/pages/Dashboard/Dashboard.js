@@ -44,7 +44,9 @@ export default class Dashboard extends Component {
 
       // For Request 
       requestTimeModalToggle: false,
-      timeoff: ""
+      timeoff: "",
+      timeoffrequestfrom: "",
+      timeoffrequestto: "",
     }
   }
 
@@ -129,17 +131,14 @@ export default class Dashboard extends Component {
   }
 
   onAddTeamCallback = () => {
-    console.log("Show add team popup.");
     this.toggleTeamModal();
   }
 
   onAddMemberCallback = () => {
-    console.log("Show add member popup.");
     this.toggleMemberModal();
   }
 
   onRequestTimeOffCallBack = () => {
-    console.log("Show request time off popup");
     this.toggleRequestTimeModal();
   }
 
@@ -320,6 +319,19 @@ export default class Dashboard extends Component {
     this.setState({ inputmode: true, inputtype: "manageshift", inputmodeheader: "Edit Required Shifts" });
   }
 
+  // For timeoff request modal
+  handleTimeoffRequest = () => {
+    console.log("Handle timeoff request", this.state.timeoffrequestfrom, this.state.timeoffrequestto);
+  }
+
+  updateTimeoffRequestFrom = (from) => {
+    this.setState({ timeoffrequestfrom: from });
+  }
+
+  updateTimeoffRequestTo = (to) => {
+    this.setState({ timeoffrequestto: to });
+  }
+
   // For left sidebar, remove team
   removeTeamCallback = async (index) => {
     // console.log(this.state.teamDBCollection);
@@ -453,6 +465,11 @@ export default class Dashboard extends Component {
               <RequestTimeModal
                 toggle={this.state.requestTimeModalToggle}
                 setToggle={this.toggleRequestTimeModal}
+                handleTimeoffRequest={this.handleTimeoffRequest}
+                updateTimeoffRequestFrom={this.updateTimeoffRequestFrom}
+                updateTimeoffRequestTo={this.updateTimeoffRequestTo}
+                from={this.state.timeoffrequestfrom}
+                to={this.state.timeoffrequestto}
               ></RequestTimeModal>
             </div>
           </div>
