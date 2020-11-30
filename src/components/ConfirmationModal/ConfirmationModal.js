@@ -3,7 +3,8 @@ import {Modal, ModalHeader, ModalBody, ModalFooter, Button} from "reactstrap";
 import "./ConfirmationModal.css"
 export default function ConfirmationModal(props){
   function handleConfirmation(){
-    props.onConfirm();
+    if (props.onConfirm)
+      props.onConfirm();
     props.setToggle(null);
   }
 
@@ -20,8 +21,8 @@ export default function ConfirmationModal(props){
         <h4 style={{textAlign: "center", marginBottom: "1em"}}>{props.header}</h4>
         <p style={{textAlign: "center", marginBottom: "1em"}}>{props.subheader}</p>
         <div className="modal-submit-button-container">
-            <div className="modal-submit-button" onClick={handleConfirmation}>{props.confirmbuttontext}</div>
-            <div className="modal-cancel-button" onClick={handleCancel}>{props.cancelbuttontext}</div>
+            {props.onConfirm && <div className="modal-submit-button" onClick={handleConfirmation}>{props.confirmbuttontext}</div>}
+            {props.onCancel && <div className="modal-cancel-button" onClick={handleCancel}>{props.cancelbuttontext}</div>}
         </div>
       </Modal>
     </React.Fragment>

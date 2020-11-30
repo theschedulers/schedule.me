@@ -67,6 +67,7 @@ export default class ListSelect extends Component {
           toggle={this.state.confirmationModalToggle}
           setToggle={this.toggleConfirmationModal}
           onConfirm={this.removeListItem}
+          onCancel={() => {}}
           header={this.props.modalheadertext}
           subheader={this.props.modalsubheader}
           confirmbuttontext={this.props.modalconfirmbuttontext}

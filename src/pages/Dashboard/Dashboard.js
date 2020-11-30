@@ -9,6 +9,7 @@ import Calendar from '../../components/Calendar/Calendar';
 import './Dashboard.css';
 import ProfileDropdown from "../../components/ProfileDropdown/ProfileDropdown"
 import CircleIcon from '../../components/CircleIcon/CircleIcon';
+import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -27,6 +28,7 @@ export default class Dashboard extends Component {
       teamModalToggle: false,
       //For AddMemberModal
       memberModalToggle: false,
+      confirmAddMemberAlertModalToggle: false,
       // For Calendar
       inputmode: false,
       inputmodeheader: "",
@@ -289,6 +291,10 @@ export default class Dashboard extends Component {
       this.setState({ memberModalToggle: !this.state.memberModalToggle });
   }
 
+  toggleAddMemberConfirmAlertModal = () => {
+    this.setState({ confirmAddMemberAlertModalToggle: !this.state.confirmAddMemberAlertModalToggle });
+  }
+
   toggleRequestTimeModal = async () => {
    this.setState({ requestTimeModalToggle: !this.state.requestTimeModalToggle })
   }
@@ -365,6 +371,7 @@ export default class Dashboard extends Component {
         invitedTeams,
       };
       const res = await editUser(reqUserToEdit);
+      this.toggleAddMemberConfirmAlertModal();
       console.log(res);
     }
     else{
@@ -377,6 +384,7 @@ export default class Dashboard extends Component {
         invitedTeams,
       };
       const res = await addUser(reqUserToAdd);
+      this.toggleAddMemberConfirmAlertModal();
       console.log(res);
     }
   }
@@ -664,6 +672,14 @@ export default class Dashboard extends Component {
                   // memberDescription={this.state.memberDescription}
                   // updateMemberName={this.updateMemberName}
                   // updateMemberDescription={this.updateMemberDescription}
+                />
+                <ConfirmationModal
+                  toggle={this.state.confirmAddMemberAlertModalToggle}
+                  setToggle={this.toggleAddMemberConfirmAlertModal}
+                  onConfirm={() => {}}
+                  header={"Invite sent"}
+                  subheader={<section><img style={{width: "2em", height: "2em", borderRadius: "50%"}} src={require('./img/confirm.png')}/></section>}
+                  confirmbuttontext={"Dismiss"}
                 />
               </div>
             </div>
