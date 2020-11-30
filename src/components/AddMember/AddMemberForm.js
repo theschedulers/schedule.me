@@ -26,7 +26,7 @@ export default function AddMemberForm(props){
         <Label>Member Email</Label>
          <Input
           className={"modal-form-input"}
-          invalid={props.memberEmail==="" ? false : !props.checkEmailValid(props.memberEmail)}
+          invalid={!props.checkEmailValid()}
           placeholder=""
           value={props.memberEmail}
           onChange={(e) => props.updateMemberEmail(e.target.value)}

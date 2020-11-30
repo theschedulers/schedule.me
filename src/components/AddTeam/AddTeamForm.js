@@ -62,7 +62,7 @@ export default function AddTeamForm(props){
           placeholder=""
           value={props.teamPhoto}
           onChange={(e) => {props.updateTeamPhoto(e.target.value); updatePhotoPreview(e.target.value)}}
-          invalid={props.teamPhoto==="" ? false : !props.checkUrlValid(props.teamPhoto)}
+          invalid={!props.checkUrlValid()}
         />
         <FormFeedback invalid = "true">Invalid image address or file extension (.img, .png, etc.)</FormFeedback>
       </FormGroup>

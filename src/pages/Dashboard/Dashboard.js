@@ -25,17 +25,8 @@ export default class Dashboard extends Component {
       defaultMemberPhoto: "https://cdn.discordapp.com/attachments/747998557885300853/780871685401214987/woman.png",
       //For AddTeamModal
       teamModalToggle: false,
-      teamName: "",
-      teamPhoto: "",
-      userName: "",
-      userDescription: "",
-      userPhoto: "",
       //For AddMemberModal
       memberModalToggle: false,
-      memberName: "",
-      memberDescription: "",
-      memberEmail: "",
-      memberPhoto: "",
       // For Calendar
       inputmode: false,
       inputmodeheader: "",
@@ -267,9 +258,6 @@ export default class Dashboard extends Component {
     this.toggleRequestTimeModal();
   }
 
-
-
-
   //function used to redirect to other pages. path example: '/other-page'
   redirectToHomePage = () => {
     this.props.history.push("/");
@@ -286,80 +274,35 @@ export default class Dashboard extends Component {
       this.setState({ memberModalToggle: !this.state.memberModalToggle });
   }
 
-  toggleRequestTimeModal = () => {
-    this.setState({ requestTimeModalToggle: !this.state.requestTimeModalToggle })
-  }
-
-
-
-  //Modal Input onChange updaters
-  updateTeamName = (e) => {
-    this.setState({ teamName: e });
-  }
-
-  updateTeamPhoto = (e) => {
-    this.setState({ teamPhoto: e });
-  }
-
-  updateUserName = (e) => {
-    this.setState({ userName: e });
-  }
-
-  updateUserDescription = (e) => {
-    this.setState({ userDescription: e });
-  }
-
-  updateUserPhoto = (e) => {
-    this.setState({ userPhoto: e });
-  }
-
-  updateMemberName = (e) => {
-    this.setState({ memberName: e });
-  }
-
-  updateMemberDescription = (e) => {
-    this.setState({ memberDescription: e });
-  }
-
-  updateMemberEmail = (e) => {
-    this.setState({ memberEmail: e });
-  }
-
-  updateMemberPhoto = (e) => {
-    this.setState({ memberPhoto: e });
-  }
-
-  clearTeamModalInputs = () => {
-    this.setState({ teamName: "", teamPhoto: "", userName: "", userDescription: "", userPhoto: "" });
-  }
-
-  clearMemberModalInputs = () => {
-    this.setState({ memberName: "", memberDescription: "", memberEmail: "", memberPhoto: "" });
+  toggleRequestTimeModal = async () => {
+   this.setState({ requestTimeModalToggle: !this.state.requestTimeModalToggle })
   }
 
   //Dashboard.js > APIFunctions/Team.js > routes/Team.js > server.js handles it
-  handleAddTeam = async () => {
+  handleAddTeam = async (teamName, teamPhoto, userDescription) => {
     const auth = this.getGoogleAuthCredentials();
     //Just one member here (yourself)
     const userProfile = {
       gapi_id: auth.Ca,
       memberEmail: auth.wt.cu.toLowerCase(),
       memberName: auth.wt.Ad,
-      memberDescription: this.state.userDescription,
+      memberDescription: userDescription,
       memberPhoto: this.state.userPhoto || this.state.defaultMemberPhoto
     }
     //Refer to models/Team.js teamMembers, must be an array (just one element)
     let teamMembersArr = [userProfile];
+    let teamPhotoChecked = this.state.defaultTeamPhoto;
+    if(this.checkImageUrlValid(teamPhoto) === true){
+      teamPhotoChecked = teamPhoto;
+    }
     const reqTeamToAdd = {
-      teamName: this.state.teamName,
-      teamPhoto: this.state.teamPhoto || this.state.defaultTeamPhoto,
+      teamName: teamName,
+      teamPhoto: teamPhotoChecked,
       teamMembers: teamMembersArr,
       teamCalendar: this.state.defaultTeamCalendar
     }
     //Backend call to addTeam() to db (here -> APIFunctions -> routes)
     const res = await addTeam(reqTeamToAdd);
-    console.log("res: ", res);
-    
     const user = await this.findUser(auth.wt.cu);
     let teams = user.teams || [];
     const newTeam = {
@@ -376,14 +319,12 @@ export default class Dashboard extends Component {
       invitedTeams: user.invitedTeams,
     };
     const res2 = await editUser(reqUserToEdit);
-    console.log("res2: ", res2);
     //Refresh everything
     this.updateAllLists();
-    this.clearTeamModalInputs();
   }
 
   //Add Member to Team, this function handles the submit in the AddMemberModal form
-  handleAddMember = async () => {
+  handleAddMember = async (email) => {
     //Get selected team's members
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     //Check if user is in user collection
@@ -394,8 +335,8 @@ export default class Dashboard extends Component {
     };
     let reqUserToAdd, reqUserToEdit = "";
     // console.log(await this.checkIfUserIsSaved(this.state.memberEmail));
-    if(await this.checkIfUserIsSaved(this.state.memberEmail)){
-      let user = await this.findUser(this.state.memberEmail);
+    if(await this.checkIfUserIsSaved(email.toLowerCase())){
+      let user = await this.findUser(email.toLowerCase());
       console.log("user: ", user);
       invitedTeams = user.invitedTeams;
       invitedTeams.push(team);
@@ -403,7 +344,7 @@ export default class Dashboard extends Component {
         _id: user._id,
         gapi_id: user.gapi_id,
         userName: user.userName,
-        userEmail: this.state.memberEmail.toLowerCase(),
+        userEmail: email.toLowerCase(),
         teams: user.teams,
         invitedTeams,
       };
@@ -415,7 +356,7 @@ export default class Dashboard extends Component {
       reqUserToAdd = {
         gapi_id: "",
         userName: "",
-        userEmail: this.state.memberEmail.toLowerCase(),
+        userEmail: email.toLowerCase(),
         teams: [],
         invitedTeams,
       };
@@ -462,7 +403,7 @@ export default class Dashboard extends Component {
           _id: user._id,
           gapi_id: user.gapi_id,
           userName: user.userName,
-          userEmail: this.state.memberEmail.toLowerCase(),
+          userEmail: user.userEmail.toLowerCase(),
           teams: teams,
           invitedTeams: invitedTeams,
         };
@@ -470,7 +411,6 @@ export default class Dashboard extends Component {
         console.log(res2);
         //Refresh everything
         this.updateAllLists();
-        this.clearMemberModalInputs();
       });
     }
   }
@@ -591,12 +531,13 @@ export default class Dashboard extends Component {
     console.log(teamToDelete);
     teamToDelete.teamMembers.forEach(async (member)=>{
       let foundUser = await this.findUser(member.memberEmail.toLowerCase())
-      console.log(foundUser);
       foundUser.teams.pop(teamToDelete._id);
       const res2 = await editUser(foundUser);
     });
-    
     this.updateAllLists();
+    if(this.state.selectedTeam === index){
+      this.setState({ selectedTeam: 0 });
+    }
   }
 
   // For left sidebar, remove member
@@ -692,14 +633,14 @@ export default class Dashboard extends Component {
                 <AddMemberModal
                   toggle={this.state.memberModalToggle}
                   setToggle={this.toggleMemberModal}
+                  // memberEmail={this.state.memberEmail}
+                  // updateMemberEmail={this.updateMemberEmail}
+                  handleAddMember={this.handleAddMember}
+                  // checkEmailValid={this.checkEmailValid}
                   // memberName={this.state.memberName}
                   // memberDescription={this.state.memberDescription}
-                  memberEmail={this.state.memberEmail}
                   // updateMemberName={this.updateMemberName}
                   // updateMemberDescription={this.updateMemberDescription}
-                  updateMemberEmail={this.updateMemberEmail}
-                  handleAddMember={this.handleAddMember}
-                  checkEmailValid={this.checkEmailValid}
                 />
               </div>
             </div>
@@ -714,8 +655,7 @@ export default class Dashboard extends Component {
               inputmode={this.state.inputmode}
               inputtype={this.state.inputtype}
               inputmodeheader={(this.state.inputmode == true) ? this.state.inputmodeheader : null}
-            >
-            </Calendar>
+            />
           </div>
 
           <div id="right-sidebar-container" className={this.state.inputmode == true ? "blur-div-and-deactivate" : ""}>
