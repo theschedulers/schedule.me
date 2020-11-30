@@ -9,6 +9,7 @@ router.get('/getTeams', (req, res)=>{
 router.post('/addTeam', (req, res) =>{
   const newTeam = new Team({
     teamName: req.body.teamName,
+    teamManager: req.body.teamManager,
     teamMembers: req.body.teamMembers,
     teamPhoto: req.body.teamPhoto,
     teamCalendar: req.body.teamCalendar
@@ -25,7 +26,8 @@ router.post('/addTeam', (req, res) =>{
 router.post('/editTeam', (req, res) =>{
   Team.findById({_id: req.body._id})
     .then(team => {
-      team.teamName = req.body.teamName || team.teamName
+      team.teamName = req.body.teamName || team.teamName,
+      team.teamManager = req.body.teamManager || team.teamManager,
       team.teamMembers = req.body.teamMembers || team.teamMembers
       team.teamPhoto = req.body.teamPhoto || team.teamPhoto,
       team.teamCalendar = req.body.teamCalendar || team.teamCalendar

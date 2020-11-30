@@ -140,15 +140,10 @@ export default class Calendar extends Component {
       // console.log(this.state.timeblocksinput);
       if(this.props.timeblocksinput.length != 0 && this.props.gapi_id !== ""){
         console.log(this.props.gapi_id, this.props.timeblocksinput);
-        let availability, shifts;
+        let availability;
         this.props.timeblocksinput[this.props.calendarchoice].availability.forEach(e => {
           if(e.gapi_id === this.props.gapi_id){
             availability = e;
-          }
-        });
-        this.props.timeblocksinput[this.props.calendarchoice].shifts.forEach(e => {
-          if(e.gapi_id === this.props.gapi_id){
-            shifts = e;
           }
         });
         return (<div>
@@ -161,7 +156,6 @@ export default class Calendar extends Component {
                     colnum={7}
                     timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={false}
-                    // blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].schedule]}>
                     blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].schedule]}>
                   </DragFillGrid>
                 </div>
@@ -198,7 +192,7 @@ export default class Calendar extends Component {
                     colnum={7}
                     timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={true}
-                    blockedcellsinput={[shifts]}
+                    blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].shifts]}
                     confirmdrag={true}>
                   </DragFillGrid>
                 </div>
