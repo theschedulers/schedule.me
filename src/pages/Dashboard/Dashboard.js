@@ -16,6 +16,7 @@ export default class Dashboard extends Component {
     super(props);
     this.state = {
       selectedTeam: 0,
+      gapi_id: "",
       teamDBCollection: [],
       personalTeams: [],
       personalMembers: [],
@@ -46,6 +47,7 @@ export default class Dashboard extends Component {
     this.updateAllLists();
     this.createDefaultTimeblocks();
     const auth = this.getGoogleAuthCredentials();
+    this.setState({gapi_id: auth.Ca});
     const userIsSaved = await this.checkIfUserIsSaved(auth.wt.cu);
     if(!userIsSaved){
       const reqUserToAdd = {
@@ -230,6 +232,7 @@ export default class Dashboard extends Component {
           layer,
           timeblocks: this.state.defaultTimeblock
         }
+        elements.push([element]);
       }
       else{
         element = {
@@ -237,9 +240,8 @@ export default class Dashboard extends Component {
           layer,
           timeblocks: this.state.defaultTimeblock
         }
+        elements.push(element);
       }
-      
-      elements.push(element);
     });
 
     const teamCalendar = {
@@ -409,13 +411,39 @@ export default class Dashboard extends Component {
         }
         //Add member to team member list
         teamMembersArr.push(reqMemberToAdd);
+        //Create new availability and shift calendar entry for new user
+        const availability = {
+          gapi_id: user.gapi_id, 
+          color: "#EDC8FF",
+          layer: "availability",
+          timeblocks: this.state.defaultTimeblock
+        };
+        const shifts = {
+          gapi_id: user.gapi_id, 
+          color: "#EDC8FF",
+          layer: "shifts",
+          timeblocks: this.state.defaultTimeblock
+        };
+        let newAvailabilityArr = foundTeam.teamCalendar.availability;
+        newAvailabilityArr.push(availability);
+        let newShiftsArr = foundTeam.teamCalendar.shifts;
+        newShiftsArr.push(shifts);
+        const reqTeamCalendarToEdit = {
+          availability: newAvailabilityArr,
+          default: foundTeam.teamCalendar.default,
+          events: foundTeam.teamCalendar.events,
+          personal: foundTeam.teamCalendar.personal,
+          schedule: foundTeam.teamCalendar.schedule,
+          shifts: newShiftsArr,
+          name: foundTeam.teamCalendar.name,
+        }
         //Add new member list to team entry
         const reqTeamToEdit = {
           _id: foundTeam._id,
           teamName: foundTeam.teamName,
           teamPhoto: foundTeam.teamPhoto,
           teamMembers: teamMembersArr,
-          teamCalendar: foundTeam.teamCalendar
+          teamCalendar: reqTeamCalendarToEdit
         }
         //Backend call to editTeam () to db (here -> APIFunctions -> routes)
         const res = await editTeam(reqTeamToEdit);
@@ -454,20 +482,29 @@ export default class Dashboard extends Component {
   calendarOnSubmitCallback = async (timeblocks) => {
     if(timeblocks !== null){
       const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
-      const currentTeamCalendar = currentTeam.teamCalendar;
+      let currentTeamCalendar = currentTeam.teamCalendar;
+      let currUser;
       var reqTeamCalendarToEdit;
       switch (this.state.inputtype) {
         case "availability": {
           console.log("New Availability", timeblocks);
           const availability = currentTeamCalendar.availability;
-          const reqAvailabilityToEdit = {
-            color: availability.color,
-            layer: availability.layer,
+          availability.forEach(e=>{
+            if(this.state.gapi_id === e.gapi_id){
+              currUser = e;
+            }
+          });
+          availability.pop(currUser);
+          const editedUser = {
+            gapi_id: currUser.gapi_id,
+            color: currUser.color,
+            layer: currUser.layer,
             timeblocks
           }
+          availability.push(editedUser);
           // console.log("reqAvailabilityToEdit: ", reqAvailabilityToEdit);
           reqTeamCalendarToEdit = {
-            availability: reqAvailabilityToEdit,
+            availability: availability,
             default: currentTeamCalendar.default,
             events: currentTeamCalendar.events,
             personal: currentTeamCalendar.personal,
@@ -480,12 +517,21 @@ export default class Dashboard extends Component {
         }
         case "manageshift": {
           console.log("New Shifts", timeblocks);
+          
           const shifts = currentTeamCalendar.shifts;
-          const reqShiftsToEdit = {
-            color: shifts.color,
-            layer: shifts.layer,
+          shifts.forEach(e=>{
+            if(this.state.gapi_id === e.gapi_id){
+              currUser = e;
+            }
+          });
+          shifts.pop(currUser);
+          const editedUser = {
+            gapi_id: currUser.gapi_id,
+            color: currUser.color,
+            layer: currUser.layer,
             timeblocks
           }
+          shifts.push(editedUser);
           // console.log("reqAvailabilityToEdit: ", reqShiftsToEdit);
           reqTeamCalendarToEdit = {
             availability: currentTeamCalendar.availability,
@@ -493,7 +539,7 @@ export default class Dashboard extends Component {
             events: currentTeamCalendar.events,
             personal: currentTeamCalendar.personal,
             schedule: currentTeamCalendar.schedule,
-            shifts: reqShiftsToEdit,
+            shifts: shifts,
             name: currentTeamCalendar.name,
           } 
           // console.log("reqTeamCalendarToEdit: ", reqTeamCalendarToEdit);
@@ -575,24 +621,50 @@ export default class Dashboard extends Component {
   removeMemberCallback = async (index) => {
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     const auth = this.getGoogleAuthCredentials();
+    let teamCalendar = currentTeam.teamCalendar;
+    let currUser;
+    let availability = teamCalendar.availability;
+    let shifts = teamCalendar.shifts;
 
-    if(currentTeam.teamMembers.length <= 1){
+    if(currentTeam.teamMembers.length <= 1){ //Only user left in the team
       this.removeTeamCallback(index);
     }
-    else if(currentTeam.teamMembers[index].gapi_id == auth.Ca){ //Removing yourself
+    else if(currentTeam.teamMembers[index].gapi_id == auth.Ca){ //Removing yourself  
       let foundUser = await this.findUser(auth.wt.cu.toLowerCase())
-      console.log(foundUser);
+      // console.log(foundUser);
       foundUser.teams.pop(currentTeam._id);
       const res2 = await editUser(foundUser);
       const memberToRemove = this.state.teamDBCollection[this.state.selectedTeam].teamMembers[index];
       //Basically filter out the memberToRemove from the teamMembers array to store into DB
       let teamMembersArr = currentTeam.teamMembers.filter(member => member !== memberToRemove);
-      //Encapsulate the filtered array into data to edit the current entry
+      //Remove user inputs on calendar
+      teamCalendar.availability.forEach(e=>{
+        if(this.state.gapi_id === e.gapi_id){
+          currUser = e;
+        }
+      });
+      availability.pop(currUser);
+      teamCalendar.shifts.forEach(e=>{
+        if(this.state.gapi_id === e.gapi_id){
+          currUser = e;
+        }
+      });
+      shifts.pop(currUser);
+      const teamCalendarToEdit = {
+        availability: availability,
+        default: teamCalendar.default,
+        events: teamCalendar.events,
+        personal: teamCalendar.personal,
+        schedule: teamCalendar.schedule,
+        shifts: shifts,
+        name: teamCalendar.name,
+      }
       const reqTeamToEdit = {
         _id: currentTeam._id,
         teamName: currentTeam.teamName,
         teamPhoto: currentTeam.teamPhoto,
         teamMembers: teamMembersArr,
+        teamCalendar: teamCalendarToEdit
       }
       //Backend call to editTeam () to db (here -> APIFunctions -> routes)
       const res = await editTeam(reqTeamToEdit);
@@ -601,12 +673,36 @@ export default class Dashboard extends Component {
       const memberToRemove = this.state.teamDBCollection[this.state.selectedTeam].teamMembers[index];
       //Basically filter out the memberToRemove from the teamMembers array to store into DB
       let teamMembersArr = currentTeam.teamMembers.filter(member => member !== memberToRemove);
+      //Remove user inputs on calendar
+      teamCalendar.availability.forEach(e=>{
+        if(memberToRemove.gapi_id === e.gapi_id){
+          currUser = e;
+        }
+      });
+      availability.pop(currUser);
+      teamCalendar.shifts.forEach(e=>{
+        if(memberToRemove.gapi_id === e.gapi_id){
+          currUser = e;
+        }
+      });
+      shifts.pop(currUser);
+      const teamCalendarToEdit = {
+        availability: availability,
+        default: teamCalendar.default,
+        events: teamCalendar.events,
+        personal: teamCalendar.personal,
+        schedule: teamCalendar.schedule,
+        shifts: shifts,
+        name: teamCalendar.name,
+      } 
+      
       //Encapsulate the filtered array into data to edit the current entry
       const reqTeamToEdit = {
         _id: currentTeam._id,
         teamName: currentTeam.teamName,
         teamPhoto: currentTeam.teamPhoto,
         teamMembers: teamMembersArr,
+        teamCalendar: teamCalendarToEdit
       }
       //Backend call to editTeam () to db (here -> APIFunctions -> routes)
       const res = await editTeam(reqTeamToEdit);
@@ -616,10 +712,24 @@ export default class Dashboard extends Component {
     this.updateAllLists();
   }
 
+  test = () =>{
+    let arr = [];
+    arr.push(this.state.defaultTeamCalendar.availability);
+    let bob = {
+      gapi_id: "6969",
+      color: "rsaf",
+      layer: "bob",
+      timeblocks: "bdb"
+    };
+    arr.push(bob);
+    console.log(arr);
+  }
+
   render() {
     let calendardata = require('./calendardatadummy.json');
     return (
       <div className="full-viewport-hv">
+        <button onClick={this.test}>Hi</button>
         <div id="Dashboard">
           <div id="left-sidebar-container" className={this.state.inputmode == true ? "blur-div-and-deactivate" : ""}>
             <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} alt="dashboard-logo-alt" onClick={this.redirectToHomePage} />
@@ -687,6 +797,7 @@ export default class Dashboard extends Component {
           <div id="calendar-container">
             <Calendar month={"November"} day={11} year={2020}
               // timeblocksinput={calendardata}
+              gapi_id={this.state.gapi_id}
               timeblocksinput={this.state.personalTeamCalendar}
               calendarchoice={this.state.selectedTeam}
               submitcallback={this.calendarOnSubmitCallback}

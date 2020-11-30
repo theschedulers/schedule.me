@@ -138,7 +138,19 @@ export default class Calendar extends Component {
     //           </div>);
       // console.log(this.props.timeblocksinput);
       // console.log(this.state.timeblocksinput);
-      if(this.props.timeblocksinput.length != 0){
+      if(this.props.timeblocksinput.length != 0 && this.props.gapi_id !== ""){
+        console.log(this.props.gapi_id, this.props.timeblocksinput);
+        let availability, shifts;
+        this.props.timeblocksinput[this.props.calendarchoice].availability.forEach(e => {
+          if(e.gapi_id === this.props.gapi_id){
+            availability = e;
+          }
+        });
+        this.props.timeblocksinput[this.props.calendarchoice].shifts.forEach(e => {
+          if(e.gapi_id === this.props.gapi_id){
+            shifts = e;
+          }
+        });
         return (<div>
                 <div style={{display: team}}>
                   <DragFillGrid
@@ -174,7 +186,7 @@ export default class Calendar extends Component {
                     colnum={7}
                     timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={true}
-                    blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].availability]}>
+                    blockedcellsinput={[availability]}>
                   </DragFillGrid>
                 </div>
                 <div style={{display: manageshiftinput}}>
@@ -186,7 +198,7 @@ export default class Calendar extends Component {
                     colnum={7}
                     timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={true}
-                    blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].shifts]}
+                    blockedcellsinput={[shifts]}
                     confirmdrag={true}>
                   </DragFillGrid>
                 </div>
