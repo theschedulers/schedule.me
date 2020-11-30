@@ -8,7 +8,7 @@ class RequestAcceptedNotification extends Component {
                 className="notification-list-item"
             >
                 <div id="notification-text">
-                    <span style={{ fontWeight: "bold" }}>{this.props.notification.senderId}</span> accpeted your time-off request in
+                    <span style={{ fontWeight: "bold" }}>{this.props.notification.senderId}</span> accepted your time-off request in
                       "<span style={{ fontWeight: "bold" }}>{this.props.notification.teamName}</span>"
                     </div>
                 <div>
