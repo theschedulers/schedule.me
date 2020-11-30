@@ -22,30 +22,6 @@ const UserSchema = new Schema(
       isManager: {
         type: Boolean
       },
-      teamCalendar: {
-        availability: {
-          color: {
-            type: String
-          },
-          layer: {
-            type: String
-          },
-          timeblocks: {
-            type: Array,
-          }
-        },
-        personal: {
-          color: {
-            type: String
-          },
-          layer: {
-            type: String
-          },
-          timeblocks: {
-            type: Array,
-          }
-        }
-      }
     },
     invitedTeams: {
       type: Array,

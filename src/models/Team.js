@@ -34,6 +34,11 @@ const TeamSchema = new Schema (
     teamCalendar: {
       type: Object,
       availability: {
+        type: Array,
+        gapi_id: {
+          unique: true,
+          type: String
+        },
         color: {
           type: String
         },
@@ -89,6 +94,11 @@ const TeamSchema = new Schema (
         }
       },
       shifts:{
+        type: Array,
+        gapi_id: {
+          unique: true,
+          type: String
+        },
         color: {
           type: String
         },

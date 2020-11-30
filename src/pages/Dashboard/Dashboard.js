@@ -214,14 +214,29 @@ export default class Dashboard extends Component {
 
   //Called in createDefaultTimeblocks to create defaultTeamCalendar
   createDefaultTeamCalendar = () => {
+    const auth = this.getGoogleAuthCredentials();
+    const userEmail = auth.wt.cu.toLowerCase();
     const layers = ["availability", "default", "events", "personal", "schedule", "shifts"];
     let elements = [];
+    let element;
     layers.forEach((layer)=>{
-      const element = {
-        color: "#EDC8FF",
-        layer,
-        timeblocks: this.state.defaultTimeblock
+      
+      if(layer === "availability" || layer === "shifts"){
+        element = {
+          gapi_id: auth.Ca, 
+          color: "#EDC8FF",
+          layer,
+          timeblocks: this.state.defaultTimeblock
+        }
       }
+      else{
+        element = {
+          color: "#EDC8FF",
+          layer,
+          timeblocks: this.state.defaultTimeblock
+        }
+      }
+      
       elements.push(element);
     });
 
@@ -313,6 +328,7 @@ export default class Dashboard extends Component {
     const reqUserToEdit = {
       _id: user._id,
       gapi_id: user.gapi_id,
+      isTeamManager: true,
       userName: user.userName,
       userEmail: this.state.memberEmail,
       teams: teams,
@@ -428,71 +444,78 @@ export default class Dashboard extends Component {
 
   // Calendar stuff
   calendarOnSubmitCallback = async (timeblocks) => {
-    const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
-    const currentTeamCalendar = currentTeam.teamCalendar;
-    var reqTeamCalendarToEdit;
-    switch (this.state.inputtype) {
-      case "availability": {
-        console.log("New Availability", timeblocks);
-        const availability = currentTeamCalendar.availability;
-        const reqAvailabilityToEdit = {
-          color: availability.color,
-          layer: availability.layer,
-          timeblocks
+    if(timeblocks !== null){
+      const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
+      const currentTeamCalendar = currentTeam.teamCalendar;
+      var reqTeamCalendarToEdit;
+      switch (this.state.inputtype) {
+        case "availability": {
+          console.log("New Availability", timeblocks);
+          const availability = currentTeamCalendar.availability;
+          const reqAvailabilityToEdit = {
+            color: availability.color,
+            layer: availability.layer,
+            timeblocks
+          }
+          // console.log("reqAvailabilityToEdit: ", reqAvailabilityToEdit);
+          reqTeamCalendarToEdit = {
+            availability: reqAvailabilityToEdit,
+            default: currentTeamCalendar.default,
+            events: currentTeamCalendar.events,
+            personal: currentTeamCalendar.personal,
+            schedule: currentTeamCalendar.schedule,
+            shifts:currentTeamCalendar.shifts,
+            name: currentTeamCalendar.name,
+          };
+          // console.log("reqTeamCalendarToEdit: ", reqTeamCalendarToEdit);
+          break;
         }
-        // console.log("reqAvailabilityToEdit: ", reqAvailabilityToEdit);
-        reqTeamCalendarToEdit = {
-          availability: reqAvailabilityToEdit,
-          default: currentTeamCalendar.default,
-          events: currentTeamCalendar.events,
-          personal: currentTeamCalendar.personal,
-          schedule: currentTeamCalendar.schedule,
-          shifts:currentTeamCalendar.shifts,
-          name: currentTeamCalendar.name,
-        };
-        // console.log("reqTeamCalendarToEdit: ", reqTeamCalendarToEdit);
-        break;
-      }
-      case "manageshift": {
-        console.log("New Shifts", timeblocks);
-        const shifts = currentTeamCalendar.shifts;
-        const reqShiftsToEdit = {
-          color: shifts.color,
-          layer: shifts.layer,
-          timeblocks
+        case "manageshift": {
+          console.log("New Shifts", timeblocks);
+          const shifts = currentTeamCalendar.shifts;
+          const reqShiftsToEdit = {
+            color: shifts.color,
+            layer: shifts.layer,
+            timeblocks
+          }
+          // console.log("reqAvailabilityToEdit: ", reqShiftsToEdit);
+          reqTeamCalendarToEdit = {
+            availability: currentTeamCalendar.availability,
+            default: currentTeamCalendar.default,
+            events: currentTeamCalendar.events,
+            personal: currentTeamCalendar.personal,
+            schedule: currentTeamCalendar.schedule,
+            shifts: reqShiftsToEdit,
+            name: currentTeamCalendar.name,
+          } 
+          // console.log("reqTeamCalendarToEdit: ", reqTeamCalendarToEdit);
+          break;
         }
-        // console.log("reqAvailabilityToEdit: ", reqShiftsToEdit);
-        reqTeamCalendarToEdit = {
-          availability: currentTeamCalendar.availability,
-          default: currentTeamCalendar.default,
-          events: currentTeamCalendar.events,
-          personal: currentTeamCalendar.personal,
-          schedule: currentTeamCalendar.schedule,
-          shifts: reqShiftsToEdit,
-          name: currentTeamCalendar.name,
-        } 
-        // console.log("reqTeamCalendarToEdit: ", reqTeamCalendarToEdit);
-        break;
+        default: break;
       }
-      default: break;
-    }
 
-    //Add new member list to team entry
-    const reqTeamToEdit = {
-      _id: currentTeam._id,
-      teamName: currentTeam.teamName,
-      teamPhoto: currentTeam.teamPhoto,
-      teamMembers: currentTeam.teamMembersArr,
-      teamCalendar: reqTeamCalendarToEdit
-    }
+      //Add new member list to team entry
+      const reqTeamToEdit = {
+        _id: currentTeam._id,
+        teamName: currentTeam.teamName,
+        teamPhoto: currentTeam.teamPhoto,
+        teamMembers: currentTeam.teamMembersArr,
+        teamCalendar: reqTeamCalendarToEdit
+      }
 
-    console.log("Team to edit result: ", reqTeamToEdit);
-    //Backend call to editTeam () to db (here -> APIFunctions -> routes)
-    const res = await editTeam(reqTeamToEdit);
-    console.log(res);
+      console.log("Team to edit result: ", reqTeamToEdit);
+      //Backend call to editTeam () to db (here -> APIFunctions -> routes)
+      const res = await editTeam(reqTeamToEdit);
+      console.log(res);
+    }
     //Refresh everything
     this.updateAllLists();
     this.setState({ inputmode: false });
+  }
+  
+  //Look at availability and shifts matrices and compare
+  generateSchedule = () => {
+
   }
 
   calendarOnCancelCallback = () => {
