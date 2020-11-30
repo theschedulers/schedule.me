@@ -15,13 +15,9 @@ export default function AddTeamModal(props){
         <AddTeamForm
           teamName = {props.teamName}
           teamPhoto = {props.teamPhoto}
-          userName = {props.userName}
           userDescription = {props.userDescription}
-          userPhoto = {props.userPhoto}
           updateTeamName = {props.updateTeamName}
           updateTeamPhoto = {props.updateTeamPhoto}
-          updateUserName = {props.updateUserName}
-          updateUserPhoto = {props.updateUserPhoto}
           updateUserDescription = {props.updateUserDescription}
           checkUrlValid = {props.checkUrlValid}
         />

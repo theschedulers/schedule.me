@@ -24,6 +24,7 @@ export async function addTeam(reqTeamToAdd){
     teamName: reqTeamToAdd.teamName,
     teamPhoto: reqTeamToAdd.teamPhoto,
     teamMembers: reqTeamToAdd.teamMembers, 
+    teamCalendar: reqTeamToAdd.teamCalendar
   };
   await axios
     .post('/api/addTeam', teamToAdd)
@@ -44,6 +45,7 @@ export async function editTeam(reqTeamToEdit){
     teamName: reqTeamToEdit.teamName,
     teamPhoto: reqTeamToEdit.teamPhoto,
     teamMembers: reqTeamToEdit.teamMembers, 
+    teamCalendar: reqTeamToEdit.teamCalendar
   };
   await axios
     .post('/api/editTeam', teamToEdit)

@@ -64,6 +64,23 @@ export default class TeamPage extends Component {
     }
     console.log("addUser", );
   }
+
+  testAvail = async () =>{
+    console.log("hi");
+    let defaultArr = [];
+    let eachRow = [];
+    let element = {blocked: 0};
+    for(let j=0; j<7; j++){
+        eachRow.push(element);
+    }
+    console.log("eachRow: ", eachRow);
+    //24 rows, 7 columns
+    for(let i=0; i<24; i++){
+      defaultArr.push(eachRow);
+    }
+    console.log("defaultArr: ", defaultArr);
+  }
+
   render() {
     return (
       <div>
@@ -71,6 +88,7 @@ export default class TeamPage extends Component {
         <button onClick={this.addTheTeams}>Hi There</button>
         <button onClick={this.deleteTheTeams}>Bye There</button>
         <button onClick={this.addUser}>addUser</button>
+        <button onClick={this.testAvail}>Test</button>
       </div>
     );
   }

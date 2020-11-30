@@ -4,7 +4,7 @@ import { Form, FormFeedback, FormGroup, FormText, Label, Input } from 'reactstra
 export default function AddMemberForm(props){
   return(
     <Form className={"modal-form-container"}>
-      <FormGroup>
+      {/* <FormGroup>
         <Label>Member Name</Label>
         <Input
           className={"modal-form-input"}
@@ -21,7 +21,7 @@ export default function AddMemberForm(props){
           value={props.memberDescription}
           onChange={(e) => props.updateMemberDescription(e.target.value)}
         />
-      </FormGroup>
+      </FormGroup> */}
       <FormGroup>
         <Label>Member Email</Label>
          <Input

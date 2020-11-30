@@ -1,16 +1,60 @@
 const mongoose = require('mongoose');
-
-//Define schema
 const Schema = mongoose.Schema;
-const UserSchema = new Schema({
-  id: String,
-  first_name: String,
-  last_name: String,
-  group: String,
-  date: {type: String, default: Date.now()},
-});
 
-//Define Data Model (data type in the database... name of schema: BlogPost, actual schema 2nd argument)
-const User = mongoose.model('User', UserSchema);
+const UserSchema = new Schema(
+  {
+    gapi_id: {
+      unique: true,
+      type: String
+    },
+    userName: {
+      type: String
+    },
+    userEmail: {
+      unique: true,
+      type: String
+    },
+    teams: {
+      type: Array,
+      team_id: {
+        type: String
+      },
+      isManager: {
+        type: Boolean
+      },
+      teamCalendar: {
+        availability: {
+          color: {
+            type: String
+          },
+          layer: {
+            type: String
+          },
+          timeblocks: {
+            type: Array,
+          }
+        },
+        personal: {
+          color: {
+            type: String
+          },
+          layer: {
+            type: String
+          },
+          timeblocks: {
+            type: Array,
+          }
+        }
+      }
+    },
+    invitedTeams: {
+      type: Array,
+      team_id:{
+        type: String
+      },
+    },
+  },
+  { collection: 'User' }
+);
 
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);

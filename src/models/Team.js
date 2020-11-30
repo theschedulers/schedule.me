@@ -31,6 +31,78 @@ const TeamSchema = new Schema (
         }
       }
     },
+    teamCalendar: {
+      type: Object,
+      availability: {
+        color: {
+          type: String
+        },
+        layer: {
+          type: String
+        },
+        timeblocks: {
+          type: Array,
+        }
+      },
+      default: {
+        color: {
+          type: String
+        },
+        layer: {
+          type: String
+        },
+        timeblocks: {
+          type: Array,
+        }
+      },
+      events: {
+        color: {
+          type: String
+        },
+        layer: {
+          type: String
+        },
+        timeblocks: {
+          type: Array,
+        }
+      },
+      personal:{
+        color: {
+          type: String
+        },
+        layer: {
+          type: String
+        },
+        timeblocks: {
+          type: Array,
+        }
+      },
+      schedule:{
+        color: {
+          type: String
+        },
+        layer: {
+          type: String
+        },
+        timeblocks: {
+          type: Array,
+        }
+      },
+      shifts:{
+        color: {
+          type: String
+        },
+        layer: {
+          type: String
+        },
+        timeblocks: {
+          type: Array,
+        },
+        workerscountrequired: {
+          type: Number
+        }
+      }
+    }
 
   },
   { collection: 'Team' }

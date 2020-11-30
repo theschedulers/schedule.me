@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 8080;
 //import new DB collection routes here
 const BlogPostRoutes = require('./routes/BlogPost');
 const TeamRoutes = require('./routes/Team');
+const userRoutes = require('./routes/User');
 
 const config = require("./config/config.json")
 
@@ -44,6 +45,7 @@ app.use(morgan('tiny'));
 //Add new schemas and collections here
 app.use('/api', BlogPostRoutes);
 app.use('/api', TeamRoutes);
+app.use('/api', userRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('./build'));

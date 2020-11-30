@@ -10,7 +10,8 @@ router.post('/addTeam', (req, res) =>{
   const newTeam = new Team({
     teamName: req.body.teamName,
     teamMembers: req.body.teamMembers,
-    teamPhoto: req.body.teamPhoto
+    teamPhoto: req.body.teamPhoto,
+    teamCalendar: req.body.teamCalendar
   });
 
   Team.create(newTeam, (err, team) => {
@@ -26,7 +27,8 @@ router.post('/editTeam', (req, res) =>{
     .then(team => {
       team.teamName = req.body.teamName || team.teamName
       team.teamMembers = req.body.teamMembers || team.teamMembers
-      team.teamPhoto = req.body.teamPhoto || team.teamPhoto
+      team.teamPhoto = req.body.teamPhoto || team.teamPhoto,
+      team.teamCalendar = req.body.teamCalendar || team.teamCalendar
       team.save()
         .then(ret =>{
           res.json(ret);
