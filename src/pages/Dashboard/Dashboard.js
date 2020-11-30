@@ -729,7 +729,7 @@ export default class Dashboard extends Component {
     let calendardata = require('./calendardatadummy.json');
     return (
       <div className="full-viewport-hv">
-        <button onClick={this.test}>Hi</button>
+        {/* <button onClick={this.test}>Hi</button> */}
         <div id="Dashboard">
           <div id="left-sidebar-container" className={this.state.inputmode == true ? "blur-div-and-deactivate" : ""}>
             <img id="dashboard-logo" src={require('./img/schedulemelogo.png')} alt="dashboard-logo-alt" onClick={this.redirectToHomePage} />
