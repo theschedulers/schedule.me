@@ -37,14 +37,14 @@ const request1 = {
 }
 
 const requestResponse1 = { //Negative response
-  className: "RequestDecline.js", //idk how you wanna do this exactly. Or maybe just a boolean or other value
+  className: "RequestDeclined.js", //idk how you wanna do this exactly. Or maybe just a boolean or other value
   senderId: "Watson", // Watson declined my request
   recipientId: "Edward Josh Hermano", //I requested time off
   teamName: "Watson Industries"
 }
 
 const requestResponse2 = { //Positive response
-  className: "RequestAccept.js",
+  className: "RequestAccepted.js",
   senderId: "Yellow", // Yellow accepted my request
   recipientId: "Edward Josh Hermano", //I requested time off
   teamName: "Crewmates"
@@ -470,7 +470,7 @@ export default class Dashboard extends Component {
                 handleDeclineInvite={{}}
                 handleViewRequest={{}}
                 handleDeclineRequest={{}}
-                handleConfirmRead={{}}
+                handleDismissNotif={{}}
               />
             </div>
             <div id="circle-icon-container">

@@ -4,11 +4,22 @@
 }
 
 #dashboard-profile-picture {
+  position: relative;
+  display: inline;
   width: 60px;
   height: 60px;
   border-radius: 100%;
-  margin: 1em;
   background: #8eff9a;
+}
+
+#dashboard-notification-badge {
+  position: absolute;
+  background-color: #dc3545;
+  top: 0;
+  right: 0;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 100%;
 }
 
 #dashboard-profile-picture:hover {
@@ -26,13 +37,13 @@
   text-align: center;
 }
 
-/* #dropdown-username: hover {
-  cursor: default;
-} */
+#notification-badge {
+  background-color: #dc3545;
+}
 
 .dropdown-menu {
-  margin-right: 5rem;
-  margin-top: -5rem;
+  margin-right: 4rem;
+  margin-top: -3rem;
   width: 22rem;
   background: #323232;
   border: 0.1em solid #e5c09c;

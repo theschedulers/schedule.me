@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dropdown, DropdownMenu, DropdownToggle, DropdownItem, Collapse, Badge } from "reactstrap";
+import { Dropdown, DropdownMenu, DropdownToggle, DropdownItem, Collapse, } from "reactstrap";
 import "./ProfileDropdown.css";
 import NotificationList from "../Notifications/NotificationList"
 
@@ -24,12 +24,21 @@ class ProfileDropdown extends Component {
     }));
   }
 
+  getNotificationBadge() {
+    console.log("not badge");
+    if (this.props.notificationList.length > 0) {
+      console.log("true");
+      return <span id="dashboard-notification-badge" className="badge"> </span>
+    }
+  }
+
   render() {
     return (
       <div id="profile-icon">
         <Dropdown isOpen={this.state.pDDOpen} toggle={this.profileToggle}>
           <DropdownToggle tag="div">
             <img id="dashboard-profile-picture" src={this.state.profilePicture} alt="dashboard profile" />
+            {this.getNotificationBadge()}
           </DropdownToggle>
           <DropdownMenu right>
             <DropdownItem header>
@@ -37,28 +46,26 @@ class ProfileDropdown extends Component {
             </DropdownItem>
             <DropdownItem id="dropdown-username" >{this.props.userName}</DropdownItem>
             <DropdownItem divider />
+
             <DropdownItem toggle={false}
               id="notification-btn"
               onClick={this.notificationToggle}
             >
-              Notifications <Badge color="danger">{this.props.notificationList.length}</Badge>
+              Notifications <span id="notification-badge" className="badge">{this.props.notificationList.length}</span>
             </DropdownItem>
-            <Collapse
+            <Collapse //When notification-btn is toggled, the elements in this Collapse appear/hide
               isOpen={this.state.nDDOpen}
-            // onEntering={{}}
-            // onExiting={{}}
             >
               <NotificationList
                 notificationList={this.props.notificationList}
-                handleAcceptInvite={{}}
-                handleDeclineInvite={{}}
-                handleViewRequest={{}}
-                handleDeclineRequest={{}}
-                handleConfirmRead={{}}
+                handleAcceptInvite={this.props.handleAcceptInvite}
+                handleDeclineInvite={this.props.handleDeclineInvite}
+                handleViewRequest={this.props.handleViewRequest}
+                handleDeclineRequest={this.props.handleDeclineRequest}
+                handleDismissNotif={this.props.handleDismissNotif} //e.g. Justin accepted/declined your request. [Dismiss]
               />
               <DropdownItem divider />
             </Collapse>
-
 
             <DropdownItem onClick={this.props.onSignOut}>Sign Out</DropdownItem>
           </DropdownMenu>
