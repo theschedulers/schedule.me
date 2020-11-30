@@ -1,0 +1,45 @@
+#notification-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* max-height: 30rem; */
+}
+
+.notification-list-item {
+  text-align: center;
+  background-color: #4d4d4d;
+  border-radius: 1em;
+  width: 20rem;
+  margin-bottom: 1em;
+  padding: 0.8em;
+}
+
+#notification-text {
+  font-size: 1.1rem;
+}
+
+.notification-response-btn {
+  background-color: #fff;
+  border-radius: 0.75em;
+  border: none;
+  margin: 0.5em 0.8em 0em;
+  padding: 0.3em;
+  width: 4.5em;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #d7d7d7;
+  font-weight: bold;
+}
+
+.notification-response-btn#notif-accept-btn {
+  background-color: #0c8341;
+}
+
+.notification-response-btn#notif-decline-btn {
+  background-color: #c93434;
+}
+
+.notification-response-btn#notif-view-btn {
+  background-color: #e5c09c;
+  color: #000;
+}

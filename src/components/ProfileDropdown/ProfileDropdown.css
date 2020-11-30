@@ -33,10 +33,13 @@
 .dropdown-menu {
   margin-right: 5rem;
   margin-top: -5rem;
-  width: 20rem;
+  width: 22rem;
   background: #323232;
-  border: 0.25em solid #e5c09c;
+  border: 0.1em solid #e5c09c;
+  border-radius: 1em;
   color: #d7d7d7;
+  font-family: "Lora";
+  font-size: 1.3rem;
 }
 
 .dropdown-header {
@@ -49,40 +52,4 @@
 
 .dropdown-divider {
   margin: 0.5rem 2rem;
-}
-
-#notification-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.notification-list-item {
-  text-align: center;
-  background-color: #4d4d4d;
-  border-radius: 1em;
-  width: 18rem;
-  margin-bottom: 1em;
-  padding: 1em;
-}
-
-#notification-text {
-  /* margin-top: 0.5em; */
-}
-
-.notification-response-btn {
-  background-color: #fff;
-  border-radius: 1em;
-  border: none;
-  margin: 0.5em 1em 0em;
-  padding: 0.5em;
-  text-align: center;
-}
-
-.notification-response-btn#accept-btn {
-  background-color: #119c4f;
-}
-
-.notification-response-btn#decline-btn {
-  background-color: #ff6565;
 }
