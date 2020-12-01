@@ -396,14 +396,15 @@ export default class Dashboard extends Component {
   }
 
   //Add Member to Team, this function handles the submit in the AddMemberModal form
-  handleAddMember = async (email) => {
+  handleAddMember = async (email, desc) => {
     //Get selected team's members
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     //Check if user is in user collection
     //if so, add this team to invited list of user, else, add user
     let invitedTeams = [];
     const team = {
-      team_id: currentTeam._id
+      team_id: currentTeam._id,
+      role: desc,
     };
     let reqUserToAdd, reqUserToEdit = "";
     if(await this.checkIfUserIsSaved(email.toLowerCase())){
@@ -453,7 +454,7 @@ export default class Dashboard extends Component {
           gapi_id: user.gapi_id,
           memberEmail: user.userEmail.toLowerCase(),
           memberName: user.userName,
-          memberDescription: "Member",
+          memberDescription: team.role || "Member",
           memberPhoto: this.state.defaultMemberPhoto
         }
         //Add member to team member list

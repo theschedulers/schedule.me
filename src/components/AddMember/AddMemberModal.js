@@ -7,12 +7,13 @@ export default class AddMemberModal extends Component {
   constructor(props){
     super(props);
     this.state = {
-      memberEmail: ""
+      memberEmail: "",
+      memberDescription: "",
     }
   }
 
   handleConfirmation = () => {
-    this.props.handleAddMember(this.state.memberEmail);
+    this.props.handleAddMember(this.state.memberEmail, this.state.memberDescription);
     this.props.setToggle();
     this.clearMemberModalInputs();
   }
@@ -32,8 +33,12 @@ export default class AddMemberModal extends Component {
     this.setState({ memberEmail: e });
   }
 
+  updateMemberDescription = (e) => {
+    this.setState({ memberDescription: e });
+  }
+
   clearMemberModalInputs = () => {
-    this.setState({ memberEmail: "" });
+    this.setState({ memberEmail: "", memberDescription: ""});
   }
 
   render() {
@@ -44,10 +49,10 @@ export default class AddMemberModal extends Component {
           <h4 style={{textAlign: "center", marginBottom: "1em"}}>Add Member</h4>
           <AddMemberForm
             // memberName = {props.memberName}
-            // memberDescription = {props.memberDescription}
+            memberDescription = {this.memberDescription}
             memberEmail = {this.memberEmail}
             // updateMemberName = {props.updateMemberName}
-            // updateMemberDescription = {props.updateMemberDescription}
+            updateMemberDescription = {this.updateMemberDescription}
             updateMemberEmail = {this.updateMemberEmail}
             checkEmailValid = {this.checkEmailValid}
           />
