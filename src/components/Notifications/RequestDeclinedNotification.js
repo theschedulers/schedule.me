@@ -11,8 +11,8 @@ class RequestDeclinedNotification extends Component {
                     <span style={{ fontWeight: "bold" }}>{this.props.notification.senderId}</span> declined your time-off request in
                       "<span style={{ fontWeight: "bold" }}>{this.props.notification.teamName}</span>"
                     </div>
-                <div>
-                    <button id="notif-dismiss-btn" className="notification-response-btn">Dismiss</button>
+                <div className={"notif-dismiss-btn-container"}>
+                    <div id="notif-dismiss-btn" className="notification-response-btn" onClick={() => { this.props.handleConfirmRead(this.props.notification) }}>Dismiss</div>
                 </div>
             </div>
         );

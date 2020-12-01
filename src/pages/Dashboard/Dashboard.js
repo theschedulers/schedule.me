@@ -12,6 +12,7 @@ import CircleIcon from '../../components/CircleIcon/CircleIcon';
 import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 
 const invite1 = {
+  id: 1,
   className: "Invite.js",
   senderId: "Justin Zhu",
   recipientId: "Edward Josh Hermano",
@@ -19,6 +20,7 @@ const invite1 = {
 }
 
 const invite2 = {
+  id: 2,
   className: "Invite.js",
   senderId: "Shinigami-sensei",
   recipientId: "Edward Josh Hermano",
@@ -26,6 +28,7 @@ const invite2 = {
 }
 
 const invite3 = {
+  id: 3,
   className: "Invite.js",
   senderId: "Darth Vader",
   recipientId: "Edward Josh Hermano",
@@ -33,6 +36,7 @@ const invite3 = {
 }
 
 const request1 = {
+  id: 4,
   className: "Request.js",
   senderId: "Squidward",  //Squidward wants time off
   recipientId: "Edward Josh Hermano", //I'll approve or decline
@@ -40,6 +44,7 @@ const request1 = {
 }
 
 const requestResponse1 = { //Negative response
+  id: 5,
   className: "RequestDeclined.js", //idk how you wanna do this exactly. Or maybe just a boolean or other value
   senderId: "Watson", // Watson declined my request
   recipientId: "Edward Josh Hermano", //I requested time off
@@ -47,6 +52,7 @@ const requestResponse1 = { //Negative response
 }
 
 const requestResponse2 = { //Positive response
+  id: 6,
   className: "RequestAccepted.js",
   senderId: "Yellow", // Yellow accepted my request
   recipientId: "Edward Josh Hermano", //I requested time off
@@ -747,6 +753,23 @@ export default class Dashboard extends Component {
 
   }
 
+  // For Profile Dropdown
+  handleAcceptInvite = (n) => {
+    console.log(n);
+  }
+  handleDeclineInvite = (n) => {
+    console.log(n);
+  }
+  handleViewRequest = (n) => {
+    console.log(n);
+  }
+  handleDeclineRequest = (n) => {
+    console.log(n);
+  }
+  handleDismissNotif = (n) => {
+    console.log(n);
+  }
+
   // For left sidebar, remove member
   removeMemberCallback = async (index) => {
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
@@ -952,11 +975,11 @@ export default class Dashboard extends Component {
                 profilePicture={this.getGoogleAuthCredentials().getBasicProfile().getImageUrl()}
                 onSignOut={this.handleSignOut}
                 notificationList={notifs} //If you're looking for the dummy notifications, they're at the top of Dashboard.js
-                handleAcceptInvite={{}}
-                handleDeclineInvite={{}}
-                handleViewRequest={{}}
-                handleDeclineRequest={{}}
-                handleDismissNotif={{}}
+                handleAcceptInvite={this.handleAcceptInvite}
+                handleDeclineInvite={this.handleDeclineInvite}
+                handleViewRequest={this.handleViewRequest}
+                handleDeclineRequest={this.handleDeclineRequest}
+                handleDismissNotif={this.handleDismissNotif}
               />
             </div>
             <div id="circle-icon-container">

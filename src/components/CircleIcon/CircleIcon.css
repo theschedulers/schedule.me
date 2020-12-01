@@ -6,7 +6,7 @@
 #circle-icons-container > #icon-button {
     padding: 0.5em;
     border-radius: 50%;
-    border: solid #e5c09c 2px;
+    border: solid #e5c09c 1px;
     margin: 0.5em;
     cursor: pointer;
 }

@@ -27,8 +27,7 @@ class ProfileDropdown extends Component {
   getNotificationBadge() {
     console.log("not badge");
     if (this.props.notificationList.length > 0) {
-      console.log("true");
-      return <span id="dashboard-notification-badge" className="badge"> </span>
+      return <div id="dashboard-notification-badge" className="badge">{this.props.notificationList.length}</div>
     }
   }
 
@@ -44,18 +43,8 @@ class ProfileDropdown extends Component {
             <DropdownItem header>
               <img id="dropdown-profile-picture" src={this.state.profilePicture} alt="dropdown profile" />
             </DropdownItem>
-            <DropdownItem id="dropdown-username" >{this.props.userName}</DropdownItem>
-            <DropdownItem divider />
-
-            <DropdownItem toggle={false}
-              id="notification-btn"
-              onClick={this.notificationToggle}
-            >
-              Notifications <span id="notification-badge" className="badge">{this.props.notificationList.length}</span>
-            </DropdownItem>
-            <Collapse //When notification-btn is toggled, the elements in this Collapse appear/hide
-              isOpen={this.state.nDDOpen}
-            >
+            <div id="dropdown-username" style={{display: "flex", justifyContent: "center", fontSize: "large"}} >{this.props.userName}</div>
+            <hr style={{color: "#E5C09C", size: "1px", backgroundColor: "#E5C09C"}} />
               <NotificationList
                 notificationList={this.props.notificationList}
                 handleAcceptInvite={this.props.handleAcceptInvite}
@@ -64,10 +53,8 @@ class ProfileDropdown extends Component {
                 handleDeclineRequest={this.props.handleDeclineRequest}
                 handleDismissNotif={this.props.handleDismissNotif} //e.g. Justin accepted/declined your request. [Dismiss]
               />
-              <DropdownItem divider />
-            </Collapse>
-
-            <DropdownItem onClick={this.props.onSignOut}>Sign Out</DropdownItem>
+            <hr style={{color: "#E5C09C", size: "1px", backgroundColor: "#E5C09C"}} />
+            <div style={{display: "flex", justifyContent: "center", fontSize: "large", cursor: "pointer"}} onClick={this.props.onSignOut}>Logout</div>
           </DropdownMenu>
         </Dropdown>
       </div >
