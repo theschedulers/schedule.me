@@ -15,6 +15,7 @@
   margin-bottom: 0.5em;
   padding: 0.5em;
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  width: 100%;
 }
 
 .notification-list-item > .notif-dismiss-btn-container {
@@ -28,7 +29,7 @@
 }
 
 .notification-response-btn {
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 0.75em;
   border: none;
   margin: 0.2em 0.8em 0em;
@@ -40,11 +41,11 @@
 }
 
 .notification-response-btn#notif-accept-btn {
-  background-color: #FF6565;
+  background-color: #747474;
 }
 
 .notification-response-btn#notif-decline-btn {
-  background-color: #747474;
+  background-color: #ff6565;
 }
 
 .notification-response-btn#notif-view-btn {
@@ -54,7 +55,7 @@
 
 .notification-response-btn#notif-dismiss-btn {
   background-color: #747474;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .dropdown-menu.dropdown-menu-right.show {
