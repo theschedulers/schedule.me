@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, ModalHeader, ModalBody, ModalFooter, Button} from "reactstrap";
+import {Modal} from "reactstrap";
 import "./ConfirmationModal.css"
 export default function ConfirmationModal(props){
   function handleConfirmation(){

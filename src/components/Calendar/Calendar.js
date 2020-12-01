@@ -151,8 +151,8 @@ export default class Calendar extends Component {
             personalCalendar = e;
           }
         });
-        console.log(personalCalendar);
-        console.log(availability);
+        // console.log(personalCalendar);
+        // console.log(availability);
         return (<div>
                 <div style={{display: team}}>
                   <DragFillGrid
