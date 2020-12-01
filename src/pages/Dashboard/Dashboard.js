@@ -81,6 +81,7 @@ export default class Dashboard extends Component {
       //For AddMemberModal
       memberModalToggle: false,
       confirmAddMemberAlertModalToggle: false,
+      exportCalendarModalToggle: false,
       denyAlertModalToggle: false,
       // For Calendar
       inputmode: false,
@@ -349,6 +350,10 @@ export default class Dashboard extends Component {
 
   toggleAddMemberConfirmAlertModal = () => {
     this.setState({ confirmAddMemberAlertModalToggle: !this.state.confirmAddMemberAlertModalToggle });
+  }
+
+  toggleExportCalendarModal = () => {
+    this.setState({ exportCalendarModalToggle : !this.state.exportCalendarModalToggle });
   }
 
   toggleDenyAlertModal = () => {
@@ -1059,12 +1064,48 @@ export default class Dashboard extends Component {
     this.setState({ selectedTeam: 0 });
   }
 
-  removeMemberFromCalendars = (member) => {
-    //Really just schedule and remove personal calendar
-  }
-
   isManager = ( manager_id, test_id ) => {
     return (manager_id === test_id); 
+  }
+
+    //Google Calendar add an event. onClick for Add Event Button
+  handleAddEvent = () => {
+    console.log('Add event!');
+    var event = {
+      summary: 'CMPE 133 Sec 02',
+      location: 'Home',
+      description: "Schedule Me Project Demo.",
+      start: {
+        dateTime: '2020-12-01T19:00:00-07:00',
+        timeZone: 'America/Los_Angeles',
+      },
+      end: {
+        dateTime: '2020-12-01T22:00:00-07:00',
+        timeZone: 'America/Los_Angeles',
+      },
+      recurrence: ['RRULE:FREQ=DAILY;COUNT=1'],
+      attendees: [
+        // {email: 'lpage@example.com'}, {email: 'sbrin@example.com'}
+      ],
+      reminders: {
+        useDefault: false,
+        overrides: [
+          {method: 'email', minutes: 24 * 60},
+          {method: 'popup', minutes: 10},
+        ],
+      },
+    };
+
+    var request = window.gapi.client.calendar.events.insert({
+      calendarId: 'primary',
+      resource: event,
+    });
+    request.execute();
+    this.toggleExportCalendarModal();
+    // request.execute((event) => {
+    //   console.log(event);
+    // });
+
   }
 
   render() {
@@ -1133,6 +1174,14 @@ export default class Dashboard extends Component {
                   confirmbuttontext={"Dismiss"}
                 />
                 <ConfirmationModal
+                  toggle={this.state.exportCalendarModalToggle}
+                  setToggle={this.toggleExportCalendarModal}
+                  onConfirm={() => {}}
+                  header={"Calendar Exported!"}
+                  subheader={<section><img style={{width: "2em", height: "2em", borderRadius: "50%"}} src={require('./img/confirm.png')}/></section>}
+                  confirmbuttontext={"Dismiss"}
+                />
+                <ConfirmationModal
                   toggle={this.state.denyAlertModalToggle}
                   setToggle={this.toggleDenyAlertModal}
                   onConfirm={() => {}}
@@ -1174,7 +1223,7 @@ export default class Dashboard extends Component {
             <div id="circle-icon-container">
               <CircleIcon title={"Add/Edit Availability"} width={"3em"} height={"3em"} callback={this.editAvailability} icon={require('./img/addeditav.svg')}></CircleIcon>
               <CircleIcon title={"Request Time off"} width={"3em"} height={"3em"} callback={this.onRequestTimeOffCallBack} icon={require('./img/timeoff.svg')}></CircleIcon>
-              <CircleIcon title={"Export to Google Calendar"} width={"3em"} height={"3em"} icon={require('./img/google.png')}></CircleIcon>
+              <CircleIcon title={"Export to Google Calendar"} width={"3em"} height={"3em"} callback={this.handleAddEvent} icon={require('./img/google.png')}></CircleIcon>
               <CircleIcon title={"Export Calendar"} width={"3em"} height={"3em"} icon={require('./img/download.svg')}></CircleIcon>
               <CircleIcon title={"Manage Shifts"} width={"3em"} height={"3em"} callback={this.manageShifts} icon={require('./img/pencil.svg')}></CircleIcon>
 
