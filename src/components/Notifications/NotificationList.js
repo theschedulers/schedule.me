@@ -17,8 +17,8 @@ class NotificationList extends Component {
                             key={index}
                             item-index={index}
                             notification={item}
-                            handleAcceptInvite={{}}
-                            handleDeclineInvite={{}}
+                            handleAcceptInvite={this.props.handleAcceptInvite}
+                            handleDeclineInvite={this.props.handleDeclineInvite}
                         />
                     }
                     //e.g. Edward sent a time-off request in "The Schedulers" [Decline] [View]
@@ -27,8 +27,8 @@ class NotificationList extends Component {
                             key={index}
                             item-index={index}
                             notification={item}
-                            handleViewRequest={{}}
-                            handleDeclineRequest={{}}
+                            handleViewRequest={this.props.handleViewRequest}
+                            handleDeclineRequest={this.props.handleDeclineRequest}
                         />
                     }
                     //e.g. Justin declined your time-off request in "The Schedulers" [Dismiss]
@@ -37,7 +37,7 @@ class NotificationList extends Component {
                             key={index}
                             item-index={index}
                             notification={item}
-                            handleConfirmRead={{}}
+                            handleConfirmRead={this.props.handleDismissNotif}
                         />
                     }
                     //e.g. Justin accepted your time-off request
@@ -46,7 +46,7 @@ class NotificationList extends Component {
                             key={index}
                             item-index={index}
                             notification={item}
-                            handleConfirmRead={{}}
+                            handleConfirmRead={this.props.handleDismissNotif}
                         />
                     }
                     else {
