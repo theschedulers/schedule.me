@@ -57,6 +57,29 @@ class DragFillGrid extends Component {
         return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
     }
 
+    static removeMemberRedundancy(rows) {
+
+        var colnum = rows[0].length
+
+        for (var i = 0; i < colnum; i++) {
+            var m = null;
+            rows.map((row) => {
+                if (row[i].blocked == 1 && row[i].members != null) {
+                    if (JSON.stringify(m) !== JSON.stringify(row[i].members)) {
+                        m = row[i].members;
+                    }
+                    else {
+                        row[i].members = null;
+                    }
+                }
+                else {
+                    m = null;
+                }
+            })
+        }
+        return rows
+    }
+
     static getDerivedStateFromProps(nextProps, prevState) {
         if (JSON.stringify(nextProps.blockedcellsinput) !== JSON.stringify(prevState.blockedcellsinput)) {
             if (nextProps.blockedcellsinput != null) {
@@ -64,7 +87,9 @@ class DragFillGrid extends Component {
                 var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
                 var lightColor = DragFillGrid.lightenDarkenColor(color, 10);
                 var cells = nextProps.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor: darkColor, lightColor: lightColor, currentdrag: 0}))));
-                return {blockedcells: cells, blockedcellsinput: nextProps.blockedcellsinput};
+
+                var bcells = DragFillGrid.removeMemberRedundancy(cells);
+                return {blockedcells: bcells, blockedcellsinput: nextProps.blockedcellsinput};
             }
             else {
                 var color = "#B7DEFA";
@@ -85,7 +110,8 @@ class DragFillGrid extends Component {
             var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
             var lightColor = DragFillGrid.lightenDarkenColor(color, 10);
             var cells = this.props.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor: darkColor, lightColor: lightColor, currentdrag: 0}))));
-            return cells;
+            var bcells = DragFillGrid.removeMemberRedundancy(cells);
+            return bcells;
         }
         else {
             var color = "#B7DEFA";
