@@ -1,74 +1,89 @@
 #DragFillGrid {
-
 }
 
 #DragFillGrid > #dragfillgrid-header-titles {
-    display: flex;
-    justify-content: space-around;
-    margin-left: 3.7em;
-    margin-bottom: 0.5em;
+  display: flex;
+  justify-content: space-around;
+  margin-left: 3.7em;
+  margin-bottom: 0.5em;
 }
 
 #DragFillGrid > #dragfillgrid-header-titles > span {
-    display: flex;
-    flex: 1;
-    justify-content: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
 }
 
-#DragFillGrid > #dragfillgrid-header-titles > #dragfill-grid-header-start, #dragfill-grid-header-end {
-    color:#E5C09C;
+#DragFillGrid > #dragfillgrid-header-titles > #dragfill-grid-header-start,
+#dragfill-grid-header-end {
+  color: #e5c09c;
 }
 
 #DragFillGrid > #dragfillgrid-grid-container {
-    display: flex;
-    height: 45em;
+  display: flex;
+  height: 45em;
 }
 
 #DragFillGrid > #dragfillgrid-grid-container > .dragfillgrid-grid-side-info {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    overflow: hidden;
-    margin-right: 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  overflow: hidden;
+  margin-right: 1em;
 }
 
 #DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-div {
-    display: flex;
-    flex: 20;
-    background-color: #FFFFFF;
-    border-radius: 0.5em;
-    overflow: auto;
+  display: flex;
+  flex: 20;
+  background-color: #ffffff;
+  border-radius: 0.5em;
+  overflow: auto;
 }
 
-#DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-div > #dragfillgrid-grid {
-    /* display: flex; */
-    flex: 1;
-    flex-direction: column;
-    background-color: #FFFFFF;
+#DragFillGrid
+  > #dragfillgrid-grid-container
+  > #dragfillgrid-grid-div
+  > #dragfillgrid-grid {
+  /* display: flex; */
+  flex: 1;
+  flex-direction: column;
+  background-color: #ffffff;
 }
 
-::-webkit-scrollbar { 
-    display: none; 
+::-webkit-scrollbar {
+  display: none;
 }
 
-#DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-div > #dragfillgrid-grid > tr {
-    display: flex;
+#DragFillGrid
+  > #dragfillgrid-grid-container
+  > #dragfillgrid-grid-div
+  > #dragfillgrid-grid
+  > tr {
+  display: flex;
 }
 
-#DragFillGrid > #dragfillgrid-grid-container > #dragfillgrid-grid-div > #dragfillgrid-grid > tr > td {
-    display: flex;
-    flex: 1;
-    min-width: 3em;
-    border: solid #d3d3d3 1px;
-    border-right: "none";
-    height: 3em;
-    padding: 0px;
-    border-width: 0px 1px 0px 1px;
+#DragFillGrid
+  > #dragfillgrid-grid-container
+  > #dragfillgrid-grid-div
+  > #dragfillgrid-grid
+  > tr
+  > td {
+  display: flex;
+  flex: 1;
+  min-width: 3em;
+  border: solid #d3d3d3 1px;
+  border-right: 'none';
+  height: 3em;
+  padding: 0px;
+  border-width: 0px 1px 0px 1px;
 }
 
-#DragFillGrid > #dragfillgrid-grid-container > .dragfillgrid-grid-side-info > .dragfillgrid-row-headers {
-    font-weight: 300;
-    margin-bottom: 1.5em;
+#DragFillGrid
+  > #dragfillgrid-grid-container
+  > .dragfillgrid-grid-side-info
+  > .dragfillgrid-row-headers {
+  font-weight: 300;
+  margin-bottom: 1.5em;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -78,6 +93,6 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
