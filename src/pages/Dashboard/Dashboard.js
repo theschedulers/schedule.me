@@ -3,7 +3,7 @@ import ListSelect from '../../components/ListSelect/ListSelect';
 import AddTeamModal from "../../components/AddTeam/AddTeamModal";
 import AddMemberModal from "../../components/AddMember/AddMemberModal";
 import RequestTimeModal from "../../components/RequestTimeOff/RequestTimeModal"
-import { getTeams, addTeam, editTeam, deleteTeam } from "../../APIFunctions/Team";
+import { getTeams, addTeam, editTeam, deleteTeam, downloadICS } from "../../APIFunctions/Team";
 import { getUsers, addUser, editUser, deleteUser } from "../../APIFunctions/User";
 import Calendar from '../../components/Calendar/Calendar';
 import './Dashboard.css';
@@ -323,6 +323,10 @@ export default class Dashboard extends Component {
 
   onRequestTimeOffCallBack = () => {
     this.toggleRequestTimeModal();
+  }
+
+  downloadICSFile = async () => {
+    const res = await downloadICS(this.state.personalTeamCalendar[this.state.selectedTeam] && this.state.personalTeamCalendar[this.state.selectedTeam].schedule);
   }
 
   //function used to redirect to other pages. path example: '/other-page'
@@ -1017,7 +1021,7 @@ export default class Dashboard extends Component {
               <CircleIcon title={"Add/Edit Availability"} width={"3em"} height={"3em"} callback={this.editAvailability} icon={require('./img/addeditav.svg')}></CircleIcon>
               <CircleIcon title={"Request Time off"} width={"3em"} height={"3em"} callback={this.onRequestTimeOffCallBack} icon={require('./img/timeoff.svg')}></CircleIcon>
               <CircleIcon title={"Export to Google Calendar"} width={"3em"} height={"3em"} icon={require('./img/google.png')}></CircleIcon>
-              <CircleIcon title={"Export Calendar"} width={"3em"} height={"3em"} icon={require('./img/download.svg')}></CircleIcon>
+              <CircleIcon title={"Export Calendar"} width={"3em"} height={"3em"} callback={this.downloadICSFile} icon={require('./img/download.svg')}></CircleIcon>
               <CircleIcon title={"Manage Shifts"} width={"3em"} height={"3em"} callback={this.manageShifts} icon={require('./img/pencil.svg')}></CircleIcon>
 
               <RequestTimeModal
