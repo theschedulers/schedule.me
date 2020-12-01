@@ -145,6 +145,14 @@ export default class Calendar extends Component {
             availability = e;
           }
         });
+        let personal;
+        this.props.timeblocksinput[this.props.calendarchoice].personal.forEach(e => {
+          if(e.gapi_id === this.props.gapi_id){
+            personal = e;
+          }
+        });
+        console.log(personal);
+        console.log(availability);
         return (<div>
                 <div style={{display: team}}>
                   <DragFillGrid
@@ -167,7 +175,7 @@ export default class Calendar extends Component {
                     colnum={7}
                     timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
                     draggable={false}
-                    blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].personal]}>
+                    blockedcellsinput={[personal]}>
                   </DragFillGrid>
                 </div>
                 <div style={{display: availabilityinput}}>

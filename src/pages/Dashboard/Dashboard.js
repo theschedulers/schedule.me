@@ -273,7 +273,7 @@ export default class Dashboard extends Component {
     let element;
     layers.forEach((layer)=>{
       
-      if(layer === "availability"){
+      if(layer === "availability" || layer === "personal"){
         element = {
           gapi_id: auth.Ca, 
           color: "#EDC8FF",
@@ -468,11 +468,19 @@ export default class Dashboard extends Component {
         };
         let newAvailabilityArr = foundTeam.teamCalendar.availability;
         newAvailabilityArr.push(availability);
+        const personal = {
+          gapi_id: user.gapi_id, 
+          color: "#EDC8FF",
+          layer: "personal",
+          timeblocks: this.state.defaultTimeblock
+        }
+        let newPersonalArr = foundTeam.teamCalendar.personal;
+        newPersonalArr.push(personal);
         const reqTeamCalendarToEdit = {
           availability: newAvailabilityArr,
           default: foundTeam.teamCalendar.default,
           events: foundTeam.teamCalendar.events,
-          personal: foundTeam.teamCalendar.personal,
+          personal: newPersonalArr,
           schedule: foundTeam.teamCalendar.schedule,
           shifts: foundTeam.teamCalendar.shifts,
           name: foundTeam.teamCalendar.name,
@@ -625,7 +633,8 @@ export default class Dashboard extends Component {
     let availability = currentTeam.teamCalendar.availability;
     let shifts = currentTeam.teamCalendar.shifts;
     const schedule = currentTeam.teamCalendar.schedule;
-    const match = this.getModifiedSchedule(shifts, availability, schedule, currentTeam);
+    const personal = currentTeam.teamCalendar.personal;
+    const match = this.getModifiedSchedule(shifts, availability, schedule, personal, currentTeam);
     //Change the schedule
     const reqTeamCalendarToEdit = {
       availability: currentTeamCalendar.availability,
@@ -650,7 +659,15 @@ export default class Dashboard extends Component {
     this.updateAllLists();
   }
 
-  getModifiedSchedule = (shifts, availability, schedule, team) => {
+  getModifiedSchedule = (shifts, availability, schedule, personal, team) => {
+    //Personal
+    let modifiedPersonal;
+    personal.forEach(calendar => {
+      if(calendar.gapi_id === this.state.gapi_id){
+        modifiedPersonal = calendar;
+      };
+    });
+    console.log("Personal: ", modifiedPersonal);
     //For each shift element, check it with each member's availability
     //If both are blocked, add member to the element in schedule
     let modifiedSchedule = schedule;

@@ -75,6 +75,10 @@ const TeamSchema = new Schema (
         }
       },
       personal:{
+        gapi_id: {
+          unique: true,
+          type: String
+        },
         color: {
           type: String
         },
