@@ -14,9 +14,9 @@ class RequestNotification extends Component {
                     <span style={{ fontWeight: "bold" }}>{this.props.notification.senderId}</span> sent a time-off request in
                       "<span style={{ fontWeight: "bold" }}>{this.props.notification.teamName}</span>"
                     </div>
-                <div>
-                    <button id="notif-decline-btn" className="notification-response-btn">Decline</button>
-                    <button id="notif-view-btn" className="notification-response-btn">View</button>
+                <div className={"notif-dismiss-btn-container"}>
+                    <div id="notif-decline-btn" className="notification-response-btn" onClick={() => { this.props.handleViewRequest(this.props.notification) }}>Decline</div>
+                    <div id="notif-view-btn" className="notification-response-btn" onClick={() => { this.props.handleDeclineRequest(this.props.notification) }}>View</div>
                 </div>
             </div>
         );
