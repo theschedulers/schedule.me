@@ -1,8 +1,8 @@
 {
-  "MONGODB_URI": "mongodb+srv://admin:admin123@cluster0.jgn8u.mongodb.net/<Cluster0>?retryWrites=true&w=majority",
+  "MONGODB_URI": "XXXXXXXXXXXXXXXXXXXXXXXXX",
   "DB_URL": "http://localhost:8080/",
-  "CLIENT_ID": "852366822927-c1c50j0bb718vopt4vse0jdhkgmb457n.apps.googleusercontent.com",
-  "API_KEY": "AIzaSyBZnvlgrQiS4EB_Yr6qFHJjOfMxM6xKmPU",
+  "CLIENT_ID": "XXXXXXXXXXXXXXXXXXXXXXXXX",
+  "API_KEY": "XXXXXXXXXXXXXXXXXXXXXXXXX",
   "DISCOVERY_DOCS": "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest",
   "SCOPES": "https://www.googleapis.com/auth/calendar.events"
 }

@@ -81,6 +81,7 @@ export default class Dashboard extends Component {
       //For AddMemberModal
       memberModalToggle: false,
       confirmAddMemberAlertModalToggle: false,
+      denyAlertModalToggle: false,
       // For Calendar
       inputmode: false,
       inputmodeheader: "",
@@ -350,6 +351,10 @@ export default class Dashboard extends Component {
     this.setState({ confirmAddMemberAlertModalToggle: !this.state.confirmAddMemberAlertModalToggle });
   }
 
+  toggleDenyAlertModal = () => {
+    this.setState({ denyAlertModalToggle: !this.state.denyAlertModalToggle});
+  }
+
   toggleRequestTimeModal = async () => {
    this.setState({ requestTimeModalToggle: !this.state.requestTimeModalToggle })
   }
@@ -404,6 +409,7 @@ export default class Dashboard extends Component {
   handleAddMember = async (email, desc) => {
     let sender = await this.findUser(this.state.email);
     //Get selected team's members
+    await this.updateAllLists();
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     //Check if user is in user collection
     //if so, add this team to invited list of user, else, add user
@@ -616,6 +622,7 @@ export default class Dashboard extends Component {
   // Calendar stuff
   calendarOnSubmitCallback = async (timeblocks) => {
     if(timeblocks !== null){
+      await this.updateAllLists();
       const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
       let currentTeamCalendar = currentTeam.teamCalendar;
       let currUser;
@@ -708,6 +715,7 @@ export default class Dashboard extends Component {
   //Look at availability and shifts matrices and compare
   generateSchedule = async () => {
     //Compare shift and availability, if equal, change the schedule.
+    await this.updateAllLists();
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     const currentTeamCalendar = currentTeam.teamCalendar;
     console.log("Generating...", currentTeam.teamCalendar);
@@ -805,8 +813,9 @@ export default class Dashboard extends Component {
   }
 
   calendarOnCancelCallback = () => {
-    console.log(this.state.teamDBCollection[this.state.selectedTeam]);
+    // console.log(this.state.teamDBCollection[this.state.selectedTeam]);
     this.setState({ inputmode: false });
+    // window.location.reload();
   }
 
   // For right sidebar
@@ -834,6 +843,7 @@ export default class Dashboard extends Component {
   // For left sidebar, remove team
   removeTeamCallback = async (index) => {
     // console.log(this.state.teamDBCollection);
+    await this.updateAllLists();
     let teamToDelete = this.state.teamDBCollection[index];
     const res = await deleteTeam(teamToDelete);
     //for each member, remove the team from their team array
@@ -865,17 +875,23 @@ export default class Dashboard extends Component {
 
   // For left sidebar, remove member
   removeMemberCallback = async (index) => {
+    await this.updateAllLists();
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     const auth = this.getGoogleAuthCredentials();
     let teamCalendar = currentTeam.teamCalendar;
     let currUser;
     let availability = teamCalendar.availability;
     if(this.isManager(currentTeam.teamMembers[index].gapi_id, currentTeam.teamManager.gapi_id)){ //Removing manager
-      this.removeTeamCallback(index);
+      if(this.isManager(this.state.gapi_id, currentTeam.teamManager.gapi_id)){ //Only manager can remove manager
+        this.removeTeamCallback(index);
+      }
+      else{
+        this.toggleDenyAlertModal();
+      }
     }
     else{
       if(currentTeam.teamMembers.length <= 1){ //Only user left in the team
-      this.removeTeamCallback(index);
+        this.removeTeamCallback(index);
       }
       else if(currentTeam.teamMembers[index].gapi_id == auth.Ca){ //Removing yourself  
         let foundUser = await this.findUser(auth.wt.cu.toLowerCase())
@@ -896,28 +912,58 @@ export default class Dashboard extends Component {
           gapi_id: foundUser.gapi_id
         }
         const res2 = await editUser(userToEdit);
+        await this.updateAllLists();
         const memberToRemove = this.state.teamDBCollection[this.state.selectedTeam].teamMembers[index];
         //Basically filter out the memberToRemove from the teamMembers array to store into DB
-        let teamMembersArr = currentTeam.teamMembers.filter(member => member !== memberToRemove);
+        let teamMembersArr = currentTeam.teamMembers.filter(member => member.gapi_id !== memberToRemove.gapi_id);
         //Remove user inputs on calendar
-        teamCalendar.availability.forEach(e=>{
-          if(this.state.gapi_id === e.gapi_id){
-            currUser = e;
-          }
-        });
         let newAvail = [];
         availability.forEach(user =>{
-          if(user !== currUser){
+          if(user.gapi_id !== memberToRemove.gapi_id){
             newAvail.push(user);
           }
         });
-        // availability.pop(currUser);
+        let newPersonal = [];
+        teamCalendar.personal.forEach(user=>{
+          if(memberToRemove.gapi_id !== user.gapi_id){
+            newPersonal.push(user);
+          }
+        });
+        let newSchedule = teamCalendar.schedule;
+        teamCalendar.schedule.timeblocks.forEach((row, index) => {
+          let r = index;
+          row.forEach((col, index) =>{
+            let c = index;
+            //Check element for blocked, if blocked check if member is here, if here, remove
+            if(col.blocked === 1){
+              let newMembers = [];
+              col.members.forEach(m => {
+                if(m.gapi_id !== memberToRemove.gapi_id){
+                  newMembers.push(m);
+                }
+              });
+              let block;
+              if(newMembers.length === 0){
+                block = {
+                  blocked: 0
+                }
+              }
+              else{
+                block = {
+                  blocked: 1,
+                  members: newMembers
+                }
+              }
+              newSchedule.timeblocks[r][c] = block;
+            }
+          });
+        });
         const teamCalendarToEdit = {
           availability: newAvail,
           default: teamCalendar.default,
           events: teamCalendar.events,
-          personal: teamCalendar.personal,
-          schedule: teamCalendar.schedule,
+          personal: newPersonal,
+          schedule: newSchedule,
           shifts: teamCalendar.shifts,
           name: teamCalendar.name,
         }
@@ -931,48 +977,90 @@ export default class Dashboard extends Component {
         //Backend call to editTeam () to db (here -> APIFunctions -> routes)
         const res = await editTeam(reqTeamToEdit);
       }
-      else{
-        const memberToRemove = this.state.teamDBCollection[this.state.selectedTeam].teamMembers[index];
-        //Basically filter out the memberToRemove from the teamMembers array to store into DB
-        let teamMembersArr = currentTeam.teamMembers.filter(member => member !== memberToRemove);
-        //Remove user inputs on calendar
-        teamCalendar.availability.forEach(e=>{
-          if(memberToRemove.gapi_id === e.gapi_id){
-            currUser = e;
+      else{ //Removing another person, must be manager to do so
+        console.log("here");
+        if(this.isManager(this.state.gapi_id, currentTeam.teamManager.gapi_id)){
+          console.log("here2");
+          await this.updateAllLists();
+          const memberToRemove = this.state.teamDBCollection[this.state.selectedTeam].teamMembers[index];
+          //Basically filter out the memberToRemove from the teamMembers array to store into DB
+          let teamMembersArr = currentTeam.teamMembers.filter(member => member.gapi_id !== memberToRemove.gapi_id);
+          //Remove user inputs on calendar, availability, personal, and schedule
+          let newAvail = [];
+          availability.forEach(user =>{
+            if(user.gapi_id !== memberToRemove.gapi_id){
+              newAvail.push(user);
+            }
+          });
+          let newPersonal = [];
+          teamCalendar.personal.forEach(user=>{
+            if(memberToRemove.gapi_id !== user.gapi_id){
+              // currUser = e;
+              newPersonal.push(user);
+            }
+          });
+          let newSchedule = teamCalendar.schedule;
+          teamCalendar.schedule.timeblocks.forEach((row, index) => {
+            let r = index;
+            row.forEach((col, index) =>{
+              let c = index;
+              //Check element for blocked, if blocked check if member is here, if here, remove
+              if(col.blocked === 1){
+                let newMembers = [];
+                col.members.forEach(m => {
+                  if(m.gapi_id !== memberToRemove.gapi_id){
+                    newMembers.push(m);
+                  }
+                });
+                let block;
+                if(newMembers.length === 0){
+                  block = {
+                    blocked: 0
+                  }
+                }
+                else{
+                  block = {
+                    blocked: 1,
+                    members: newMembers
+                  }
+                }
+                newSchedule.timeblocks[r][c] = block;
+              }
+            });
+          });
+          const teamCalendarToEdit = {
+            availability: newAvail,
+            default: teamCalendar.default,
+            events: teamCalendar.events,
+            personal: newPersonal,
+            schedule: newSchedule,
+            shifts: teamCalendar.shifts,
+            name: teamCalendar.name,
+          } 
+          console.log(teamCalendarToEdit);
+          //Encapsulate the filtered array into data to edit the current entry
+          const reqTeamToEdit = {
+            _id: currentTeam._id,
+            teamName: currentTeam.teamName,
+            teamPhoto: currentTeam.teamPhoto,
+            teamMembers: teamMembersArr,
+            teamCalendar: teamCalendarToEdit
           }
-        });
-        let newAvail = [];
-        availability.forEach(user =>{
-          if(user !== currUser){
-            newAvail.push(user);
-          }
-        });
-        // availability.pop(currUser);
-        const teamCalendarToEdit = {
-          availability: availability,
-          default: teamCalendar.default,
-          events: teamCalendar.events,
-          personal: teamCalendar.personal,
-          schedule: teamCalendar.schedule,
-          shifts: teamCalendar.shifts,
-          name: teamCalendar.name,
-        } 
-        
-        //Encapsulate the filtered array into data to edit the current entry
-        const reqTeamToEdit = {
-          _id: currentTeam._id,
-          teamName: currentTeam.teamName,
-          teamPhoto: currentTeam.teamPhoto,
-          teamMembers: teamMembersArr,
-          teamCalendar: teamCalendarToEdit
+          //Backend call to editTeam () to db (here -> APIFunctions -> routes)
+          const res = await editTeam(reqTeamToEdit);
         }
-        //Backend call to editTeam () to db (here -> APIFunctions -> routes)
-        const res = await editTeam(reqTeamToEdit);
+        else{
+          this.toggleDenyAlertModal();
+        }
       }
     }
     // Refresh everything
     this.updateAllLists();
     this.setState({ selectedTeam: 0 });
+  }
+
+  removeMemberFromCalendars = (member) => {
+    //Really just schedule and remove personal calendar
   }
 
   isManager = ( manager_id, test_id ) => {
@@ -1042,6 +1130,14 @@ export default class Dashboard extends Component {
                   onConfirm={() => {}}
                   header={"Invite sent"}
                   subheader={<section><img style={{width: "2em", height: "2em", borderRadius: "50%"}} src={require('./img/confirm.png')}/></section>}
+                  confirmbuttontext={"Dismiss"}
+                />
+                <ConfirmationModal
+                  toggle={this.state.denyAlertModalToggle}
+                  setToggle={this.toggleDenyAlertModal}
+                  onConfirm={() => {}}
+                  header={"Access Denied"}
+                  subheader={<section><img style={{width: "2em", height: "2em", borderRadius: "50%"}} src={require('./img/deny.png')}/></section>}
                   confirmbuttontext={"Dismiss"}
                 />
               </div>

@@ -82,8 +82,11 @@ class DragFillGrid extends Component {
 
     static getDerivedStateFromProps(nextProps, prevState) {
         if (JSON.stringify(nextProps.blockedcellsinput) !== JSON.stringify(prevState.blockedcellsinput)) {
-            if (nextProps.blockedcellsinput != null) {
-                var color = nextProps.blockedcellsinput[0].color;
+            if (nextProps.blockedcellsinput[0] != null) {
+                var color = "#EDC8FF";
+                if(nextProps.blockedcellsinput[0].color !== undefined){
+                    color = nextProps.blockedcellsinput[0].color;
+                }
                 var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
                 var lightColor = DragFillGrid.lightenDarkenColor(color, 10);
                 var cells = nextProps.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor: darkColor, lightColor: lightColor, currentdrag: 0}))));
@@ -105,8 +108,11 @@ class DragFillGrid extends Component {
         /* TODO: Allow multiple layers
             for not this.props.blockedcellsinput[0] is used because there's only one layer (and this is what's supported atm)
         */
-        if (this.props.blockedcellsinput != null) {
-            var color = this.props.blockedcellsinput[0].color;
+        if (this.props.blockedcellsinput[0] != null) {
+            var color = "#EDC8FF";
+            if(this.props.blockedcellsinput[0].color !== undefined){
+                color = this.props.blockedcellsinput[0].color;
+            }
             var darkColor = DragFillGrid.lightenDarkenColor(color, -60);
             var lightColor = DragFillGrid.lightenDarkenColor(color, 10);
             var cells = this.props.blockedcellsinput[0].timeblocks.map((row) => (row.map((cell) => ({ ...cell , color: color, darkColor: darkColor, lightColor: lightColor, currentdrag: 0}))));
