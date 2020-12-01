@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema(
   {
     gapi_id: {
-      unique: true,
       type: String
     },
     userName: {
@@ -18,9 +17,6 @@ const UserSchema = new Schema(
       type: Array,
       team_id: {
         type: String
-      },
-      isManager: {
-        type: Boolean
       },
     },
     invitedTeams: {

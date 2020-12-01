@@ -22,6 +22,7 @@ export async function addTeam(reqTeamToAdd){
   let data;
   const teamToAdd = {
     teamName: reqTeamToAdd.teamName,
+    teamManager: reqTeamToAdd.teamManager,
     teamPhoto: reqTeamToAdd.teamPhoto,
     teamMembers: reqTeamToAdd.teamMembers, 
     teamCalendar: reqTeamToAdd.teamCalendar
@@ -43,6 +44,7 @@ export async function editTeam(reqTeamToEdit){
   const teamToEdit = {
     _id: reqTeamToEdit._id,
     teamName: reqTeamToEdit.teamName,
+    teamManager: reqTeamToEdit.teamManager,
     teamPhoto: reqTeamToEdit.teamPhoto,
     teamMembers: reqTeamToEdit.teamMembers, 
     teamCalendar: reqTeamToEdit.teamCalendar

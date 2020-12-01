@@ -6,6 +6,9 @@ const TeamSchema = new Schema (
     teamName: {
       type: String,
     },
+    teamManager: {
+      type: Object,
+    },
     teamPhoto: {
       type: String
     },
@@ -94,11 +97,6 @@ const TeamSchema = new Schema (
         }
       },
       shifts:{
-        type: Array,
-        gapi_id: {
-          unique: true,
-          type: String
-        },
         color: {
           type: String
         },
@@ -108,9 +106,6 @@ const TeamSchema = new Schema (
         timeblocks: {
           type: Array,
         },
-        workerscountrequired: {
-          type: Number
-        }
       }
     }
 
