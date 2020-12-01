@@ -352,13 +352,14 @@ export default class Dashboard extends Component {
   //Dashboard.js > APIFunctions/Team.js > routes/Team.js > server.js handles it
   handleAddTeam = async (teamName, teamPhoto, userDescription) => {
     const auth = this.getGoogleAuthCredentials();
+    var userPhoto = auth.getBasicProfile().getImageUrl()
     //Just one member here (yourself)
     const userProfile = {
       gapi_id: auth.Ca,
       memberEmail: auth.wt.cu.toLowerCase(),
       memberName: auth.wt.Ad,
       memberDescription: userDescription,
-      memberPhoto: this.state.userPhoto || this.state.defaultMemberPhoto
+      memberPhoto: userPhoto || this.state.defaultMemberPhoto
     }
     //Refer to models/Team.js teamMembers, must be an array (just one element)
     let teamMembersArr = [userProfile];
@@ -441,6 +442,7 @@ export default class Dashboard extends Component {
 
   handleTeamInvites = async () => {
     const auth = this.getGoogleAuthCredentials();
+    var userPhoto = auth.getBasicProfile().getImageUrl()
     const user = await this.findUser(auth.wt.cu);
     if(user.invitedTeams.length > 0){
       //for each invitedTeam, transfer to team
@@ -455,7 +457,7 @@ export default class Dashboard extends Component {
           memberEmail: user.userEmail.toLowerCase(),
           memberName: user.userName,
           memberDescription: team.role || "Member",
-          memberPhoto: this.state.defaultMemberPhoto
+          memberPhoto: userPhoto || this.state.defaultMemberPhoto
         }
         //Add member to team member list
         teamMembersArr.push(reqMemberToAdd);
