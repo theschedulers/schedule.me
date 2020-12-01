@@ -45,6 +45,7 @@ class ProfileDropdown extends Component {
             </DropdownItem>
             <div id="dropdown-username" style={{display: "flex", justifyContent: "center", fontSize: "large"}} >{this.props.userName}</div>
             <hr style={{color: "#E5C09C", size: "1px", backgroundColor: "#E5C09C"}} />
+              <div style={{textAlign: "center", fontSize: "large", color: '#989898'}}>{this.props.notificationList.length === 0 ? "No Notifications": ""}</div>
               <NotificationList
                 notificationList={this.props.notificationList}
                 handleAcceptInvite={this.props.handleAcceptInvite}
