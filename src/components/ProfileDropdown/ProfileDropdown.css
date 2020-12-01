@@ -6,8 +6,8 @@
 #dashboard-profile-picture {
   position: relative;
   display: inline;
-  width: 60px;
-  height: 60px;
+  width: 3em;
+  height: 3em;
   border-radius: 100%;
   background: #8eff9a;
 }
