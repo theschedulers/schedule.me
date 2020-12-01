@@ -28,7 +28,7 @@
 }
 
 .notification-response-btn {
-  color: #FFFFFF;
+  color: #ffffff;
   border-radius: 0.75em;
   border: none;
   margin: 0.2em 0.8em 0em;
@@ -40,11 +40,11 @@
 }
 
 .notification-response-btn#notif-accept-btn {
-  background-color: #FF6565;
+  background-color: #747474;
 }
 
 .notification-response-btn#notif-decline-btn {
-  background-color: #747474;
+  background-color: #ff6565;
 }
 
 .notification-response-btn#notif-view-btn {
@@ -54,7 +54,7 @@
 
 .notification-response-btn#notif-dismiss-btn {
   background-color: #747474;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .dropdown-menu.dropdown-menu-right.show {

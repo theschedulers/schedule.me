@@ -15,8 +15,8 @@ class InviteNotification extends Component {
                       "<span style={{ fontWeight: "bold" }}>{this.props.notification.teamName}</span>"
                     </div>
         <div className={"notif-dismiss-btn-container"}>
-          <div id="notif-decline-btn" className="notification-response-btn" onClick={() => {this.props.handleAcceptInvite(this.props.notification)}}>Decline</div>
-          <div id="notif-accept-btn" className="notification-response-btn" onClick={() => {this.props.handleDeclineInvite(this.props.notification)}}>Accept</div>
+          <div id="notif-decline-btn" className="notification-response-btn" onClick={() => {this.props.handleDeclineInvite(this.props.notification)}}>Decline</div>
+          <div id="notif-accept-btn" className="notification-response-btn" onClick={() => {this.props.handleAcceptInvite(this.props.notification)}}>Accept</div>
         </div>
       </div>
     );

@@ -66,6 +66,8 @@ export default class Dashboard extends Component {
     this.state = {
       selectedTeam: 0,
       gapi_id: "",
+      email: "",
+      notifications: [],
       teamDBCollection: [],
       personalTeams: [],
       personalMembers: [],
@@ -97,6 +99,7 @@ export default class Dashboard extends Component {
     this.createDefaultTimeblocks();
     const auth = this.getGoogleAuthCredentials();
     this.setState({gapi_id: auth.Ca});
+    this.setState({email: auth.wt.cu});
     const userIsSaved = await this.checkIfUserIsSaved(auth.wt.cu);
     if(!userIsSaved){
       const reqUserToAdd = {
@@ -124,11 +127,13 @@ export default class Dashboard extends Component {
         console.log(res);
       }
       user = await this.findUser(auth.wt.cu);
+      this.createNotifications(user);
       // Invited teams, handle them
-      this.handleTeamInvites();
+      // this.handleTeamInvites();
     };
-
   }
+
+
 
   //Checks if user exists in db
   checkIfUserIsSaved = async (userEmail) => {
@@ -397,6 +402,7 @@ export default class Dashboard extends Component {
 
   //Add Member to Team, this function handles the submit in the AddMemberModal form
   handleAddMember = async (email, desc) => {
+    let sender = await this.findUser(this.state.email);
     //Get selected team's members
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     //Check if user is in user collection
@@ -405,6 +411,9 @@ export default class Dashboard extends Component {
     const team = {
       team_id: currentTeam._id,
       role: desc,
+      sender: sender.userName,
+      team: currentTeam.teamName,
+      recipientEmail: email,
     };
     let reqUserToAdd, reqUserToEdit = "";
     if(await this.checkIfUserIsSaved(email.toLowerCase())){
@@ -439,7 +448,81 @@ export default class Dashboard extends Component {
     }
   }
 
-  handleTeamInvites = async () => {
+  //Store invite data into a format
+  createNotifications = (user) => {
+    console.log(user);
+    if(user.invitedTeams.length > 0){
+      let notifs = [];
+      user.invitedTeams.forEach((t, index)=>{
+        const invite = {
+          id: index,
+          team_id: t.team_id,
+          className: "Invite.js",
+          senderId: t.sender || "Someone",
+          recipientId: user.userName || "Edward Josh Hermano",
+          teamName: t.team || "a team",
+          recipientEmail: t.recipientEmail
+        }
+        notifs.push(invite);
+      });
+      console.log(notifs);
+      this.setState({notifications: notifs});
+    }
+  }
+
+  removeNotifFromList = (n) => {
+    //Remove from state list
+    let notifList = []; 
+    this.state.notifications.forEach(notif => {
+      if(notif !== n){
+        notifList.push(notif);
+      }
+    });
+    this.setState({notifications: notifList});
+  }
+
+  // For Profile Dropdown
+  handleAcceptInvite = async (n) => {
+    console.log("Accept", n);
+    this.removeNotifFromList(n);
+    this.handleTeamInvite(n);
+  }
+
+  handleDeclineInvite = async (n) => {
+    console.log("Decline", n);
+    this.removeNotifFromList(n);
+    //remove the invite from user
+    const user = await this.findUser(n.recipientEmail);
+    if(user !== null){
+      let invitedTeamsArr = [];
+      user.invitedTeams.forEach(invite=>{
+        if(invite.team_id !== n.team_id){
+          invitedTeamsArr.push(invite);
+        }
+      });
+      const reqUserToEdit = {
+        _id: user._id,
+        teams: user.teams,
+        invitedTeams: invitedTeamsArr,
+        gapi_id: user.gapi_id,
+        userName: user.userName,
+        userEmail: user.userEmail
+      };
+      const res = await editUser(reqUserToEdit);
+    }
+  }
+
+  handleViewRequest = (n) => {
+    console.log(n);
+  }
+  handleDeclineRequest = (n) => {
+    console.log(n);
+  }
+  handleDismissNotif = (n) => {
+    console.log(n);
+  }
+
+  handleTeamInvite = async (n) => {
     const auth = this.getGoogleAuthCredentials();
     const user = await this.findUser(auth.wt.cu);
     if(user.invitedTeams.length > 0){
@@ -448,75 +531,73 @@ export default class Dashboard extends Component {
       let teams = user.teams;
       // console.log(invitedTeams, teams);
       invitedTeams.forEach(async(team)=>{
-        const foundTeam = await this.findTeam(team.team_id);
-        let teamMembersArr = foundTeam.teamMembers;
-        const reqMemberToAdd = {
-          gapi_id: user.gapi_id,
-          memberEmail: user.userEmail.toLowerCase(),
-          memberName: user.userName,
-          memberDescription: team.role || "Member",
-          memberPhoto: this.state.defaultMemberPhoto
-        }
-        //Add member to team member list
-        teamMembersArr.push(reqMemberToAdd);
-        //Create new availability and shift calendar entry for new user
-        const availability = {
-          gapi_id: user.gapi_id, 
-          color: "#EDC8FF",
-          layer: "availability",
-          timeblocks: this.state.defaultTimeblock
-        };
-        let newAvailabilityArr = foundTeam.teamCalendar.availability;
-        newAvailabilityArr.push(availability);
-        const personal = {
-          gapi_id: user.gapi_id, 
-          color: "#EDC8FF",
-          layer: "personal",
-          timeblocks: this.state.defaultTimeblock
-        }
-        let newPersonalArr = foundTeam.teamCalendar.personal;
-        newPersonalArr.push(personal);
-        const reqTeamCalendarToEdit = {
-          availability: newAvailabilityArr,
-          default: foundTeam.teamCalendar.default,
-          events: foundTeam.teamCalendar.events,
-          personal: newPersonalArr,
-          schedule: foundTeam.teamCalendar.schedule,
-          shifts: foundTeam.teamCalendar.shifts,
-          name: foundTeam.teamCalendar.name,
-        }
-        //Add new member list to team entry
-        const reqTeamToEdit = {
-          _id: foundTeam._id,
-          teamName: foundTeam.teamName,
-          teamPhoto: foundTeam.teamPhoto,
-          teamMembers: teamMembersArr,
-          teamCalendar: reqTeamCalendarToEdit
-        }
-        //Backend call to editTeam () to db (here -> APIFunctions -> routes)
-        const res = await editTeam(reqTeamToEdit);
-        console.log(res);
-        //add to member to team
-        invitedTeams.pop(team);
-        let newInvitedTeams = [];
-        invitedTeams.forEach((t)=>{
-          if(team !== t){
-            newInvitedTeams.push(t);
+        if(n.team_id === team.team_id){
+          const foundTeam = await this.findTeam(team.team_id);
+          let teamMembersArr = foundTeam.teamMembers;
+          const reqMemberToAdd = {
+            gapi_id: user.gapi_id,
+            memberEmail: user.userEmail.toLowerCase(),
+            memberName: user.userName,
+            memberDescription: team.role || "Member",
+            memberPhoto: this.state.defaultMemberPhoto
           }
-        });
-        teams.push(team);
-        const reqUserToEdit = {
-          _id: user._id,
-          gapi_id: user.gapi_id,
-          userName: user.userName,
-          userEmail: user.userEmail.toLowerCase(),
-          teams: teams,
-          invitedTeams: newInvitedTeams,
-        };
-        const res2 = await editUser(reqUserToEdit);
-        console.log(res2);
-        //Refresh everything
-        this.updateAllLists();
+           //Add member to team member list
+          teamMembersArr.push(reqMemberToAdd);
+          //Create new availability and shift calendar entry for new user
+          const availability = {
+            gapi_id: user.gapi_id, 
+            color: "#EDC8FF",
+            layer: "availability",
+            timeblocks: this.state.defaultTimeblock
+          };
+          let newAvailabilityArr = foundTeam.teamCalendar.availability;
+          newAvailabilityArr.push(availability);
+          const personal = {
+            gapi_id: user.gapi_id, 
+            color: "#EDC8FF",
+            layer: "personal",
+            timeblocks: this.state.defaultTimeblock
+          }
+          let newPersonalArr = foundTeam.teamCalendar.personal;
+          newPersonalArr.push(personal);
+          const reqTeamCalendarToEdit = {
+            availability: newAvailabilityArr,
+            default: foundTeam.teamCalendar.default,
+            events: foundTeam.teamCalendar.events,
+            personal: newPersonalArr,
+            schedule: foundTeam.teamCalendar.schedule,
+            shifts: foundTeam.teamCalendar.shifts,
+            name: foundTeam.teamCalendar.name,
+          }
+          //Add new member list to team entry
+          const reqTeamToEdit = {
+            _id: foundTeam._id,
+            teamName: foundTeam.teamName,
+            teamPhoto: foundTeam.teamPhoto,
+            teamMembers: teamMembersArr,
+            teamCalendar: reqTeamCalendarToEdit
+          }
+          //Backend call to editTeam () to db (here -> APIFunctions -> routes)
+          const res = await editTeam(reqTeamToEdit);
+          console.log(res);
+          let invitedTeamsArr = [];
+          user.invitedTeams.forEach(invite=>{
+            if(invite.team_id !== n.team_id){
+              invitedTeamsArr.push(invite);
+            }
+          });
+          teams.push(team);
+          const reqUserToEdit = {
+            _id: user._id,
+            teams: teams,
+            invitedTeams: invitedTeamsArr,
+            gapi_id: user.gapi_id,
+            userName: user.userName,
+            userEmail: user.userEmail
+          };
+          const res2 = await editUser(reqUserToEdit);
+          this.updateAllLists();
+        }
       });
     }
   }
@@ -782,23 +863,6 @@ export default class Dashboard extends Component {
 
   }
 
-  // For Profile Dropdown
-  handleAcceptInvite = (n) => {
-    console.log(n);
-  }
-  handleDeclineInvite = (n) => {
-    console.log(n);
-  }
-  handleViewRequest = (n) => {
-    console.log(n);
-  }
-  handleDeclineRequest = (n) => {
-    console.log(n);
-  }
-  handleDismissNotif = (n) => {
-    console.log(n);
-  }
-
   // For left sidebar, remove member
   removeMemberCallback = async (index) => {
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
@@ -984,7 +1048,7 @@ export default class Dashboard extends Component {
             </div>
           </div>
           <div id="calendar-container">
-            <Calendar month={"November"} day={11} year={2020}
+            <Calendar month={"December"} day={1} year={2020}
               // timeblocksinput={calendardata}
               timeblocksinput={this.state.personalTeamCalendar}
               gapi_id={this.state.gapi_id}
@@ -1003,7 +1067,7 @@ export default class Dashboard extends Component {
                 userName={this.getGoogleAuthCredentials().getBasicProfile().getName()}
                 profilePicture={this.getGoogleAuthCredentials().getBasicProfile().getImageUrl()}
                 onSignOut={this.handleSignOut}
-                notificationList={notifs} //If you're looking for the dummy notifications, they're at the top of Dashboard.js
+                notificationList={this.state.notifications}
                 handleAcceptInvite={this.handleAcceptInvite}
                 handleDeclineInvite={this.handleDeclineInvite}
                 handleViewRequest={this.handleViewRequest}
