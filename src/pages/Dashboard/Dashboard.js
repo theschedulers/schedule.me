@@ -635,6 +635,7 @@ export default class Dashboard extends Component {
     const schedule = currentTeam.teamCalendar.schedule;
     const personal = currentTeam.teamCalendar.personal;
     const match = this.getModifiedSchedule(shifts, availability, schedule, personal, currentTeam);
+    //Power of React, personal calendar updates miraculously
     //Change the schedule
     const reqTeamCalendarToEdit = {
       availability: currentTeamCalendar.availability,
@@ -660,6 +661,7 @@ export default class Dashboard extends Component {
   }
 
   getModifiedSchedule = (shifts, availability, schedule, personal, team) => {
+    let schedules = [];
     //Personal
     let modifiedPersonal;
     personal.forEach(calendar => {
@@ -686,6 +688,7 @@ export default class Dashboard extends Component {
           if(col.blocked === 1 && member.timeblocks[r][c].blocked === 1){ //If matching, add new member into block
             console.log("matching", col, member.timeblocks, "(", r, " , ", c, ")");
             const newMember = {
+              gapi_id: currMember.gapi_id,
               text: currMember.memberName,
               subtext: currMember.memberDescription,
               photo: currMember.memberPhoto,
@@ -699,14 +702,22 @@ export default class Dashboard extends Component {
               members: membersArr 
           };
           modifiedSchedule.timeblocks[r][c] = block;
+          membersArr.forEach((member) => {
+            if(member.gapi_id === this.state.gapi_id){
+              const personalBlock = {
+                blocked: 1 
+              };
+              modifiedPersonal.timeblocks[r][c] = personalBlock;
+            }
+          });
         }
         else{
           const block = {
             blocked: 0,
           }
           modifiedSchedule.timeblocks[r][c] = block;
+          modifiedPersonal.timeblocks[r][c] = block;
         }
-
       });
     });
     return modifiedSchedule;
