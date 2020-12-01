@@ -136,8 +136,7 @@ export default class Calendar extends Component {
     //               </DragFillGrid>
     //             </div>
     //           </div>);
-      // console.log(this.props.timeblocksinput);
-      // console.log(this.state.timeblocksinput);
+      
       if(this.props.timeblocksinput.length != 0 && this.props.gapi_id !== ""){
         console.log(this.props.gapi_id, this.props.timeblocksinput);
         let availability;

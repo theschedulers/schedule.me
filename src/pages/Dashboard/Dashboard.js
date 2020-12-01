@@ -507,31 +507,28 @@ export default class Dashboard extends Component {
         }
         case "manageshift": {
           console.log("New Shifts", timeblocks);
-          
-          // const shifts = currentTeamCalendar.shifts;
-          // shifts.forEach(e=>{
-          //   if(this.state.gapi_id === e.gapi_id){
-          //     currUser = e;
-          //   }
-          // });
-          // shifts.pop(currUser);
-          // const editedUser = {
-          //   gapi_id: currUser.gapi_id,
-          //   color: currUser.color,
-          //   layer: currUser.layer,
-          //   timeblocks
-          // }
-          // shifts.push(editedUser);
-          // // console.log("reqAvailabilityToEdit: ", reqShiftsToEdit);
-          // reqTeamCalendarToEdit = {
-          //   availability: currentTeamCalendar.availability,
-          //   default: currentTeamCalendar.default,
-          //   events: currentTeamCalendar.events,
-          //   personal: currentTeamCalendar.personal,
-          //   schedule: currentTeamCalendar.schedule,
-          //   shifts: shifts,
-          //   name: currentTeamCalendar.name,
-          // } 
+          const auth = this.getGoogleAuthCredentials();
+          const shifts = currentTeamCalendar.shifts;
+
+          if(this.isManager(auth.Ca, currentTeam.teamManager.gapi_id)){
+            const reqShiftsToEdit = {
+              color: shifts.color,
+              layer: shifts.layer,
+              timeblocks,
+            }
+            reqTeamCalendarToEdit = {
+              availability: currentTeamCalendar.availability,
+              default: currentTeamCalendar.default,
+              events: currentTeamCalendar.events,
+              personal: currentTeamCalendar.personal,
+              schedule: currentTeamCalendar.schedule,
+              shifts: reqShiftsToEdit,
+              name: currentTeamCalendar.name,
+            } 
+          }
+          else{
+              console.log("invalid, not a manager");
+          }
           // console.log("reqTeamCalendarToEdit: ", reqTeamCalendarToEdit);
           break;
         }
@@ -546,12 +543,11 @@ export default class Dashboard extends Component {
         teamMembers: currentTeam.teamMembersArr,
         teamCalendar: reqTeamCalendarToEdit
       }
-
-      console.log("Team to edit result: ", reqTeamToEdit);
       //Backend call to editTeam () to db (here -> APIFunctions -> routes)
       const res = await editTeam(reqTeamToEdit);
       console.log(res);
     }
+    this.generateSchedule();
     //Refresh everything
     this.updateAllLists();
     this.setState({ inputmode: false });
@@ -559,7 +555,13 @@ export default class Dashboard extends Component {
   
   //Look at availability and shifts matrices and compare
   generateSchedule = () => {
-
+    //Compare shift and availability, if equal, change the schedule.
+    const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
+    console.log("Generating...", currentTeam.teamCalendar);
+    let availability = currentTeam.teamCalendar.availability;
+    let shiftsTimeblocks = currentTeam.teamCalendar.shifts.timeblocks;
+    console.log("Availability list: ", availability);
+    console.log("Shifts: ", shiftsTimeblocks)
   }
 
   calendarOnCancelCallback = () => {
@@ -602,9 +604,8 @@ export default class Dashboard extends Component {
       const res2 = await editUser(foundUser);
     });
     this.updateAllLists();
-    if(this.state.selectedTeam === index){
-      this.setState({ selectedTeam: 0 });
-    }
+    this.setState({ selectedTeam: 0 });
+
   }
 
   // For left sidebar, remove member
@@ -615,6 +616,7 @@ export default class Dashboard extends Component {
     let currUser;
     let availability = teamCalendar.availability;
     if(this.isManager(currentTeam.teamMembers[index].gapi_id, currentTeam.teamManager.gapi_id)){ //Removing manager
+      console.log("here");
       this.removeTeamCallback(index);
     }
     else{
@@ -781,8 +783,8 @@ export default class Dashboard extends Component {
           <div id="calendar-container">
             <Calendar month={"November"} day={11} year={2020}
               // timeblocksinput={calendardata}
-              gapi_id={this.state.gapi_id}
               timeblocksinput={this.state.personalTeamCalendar}
+              gapi_id={this.state.gapi_id}
               calendarchoice={this.state.selectedTeam}
               submitcallback={this.calendarOnSubmitCallback}
               cancelcallback={this.calendarOnCancelCallback}

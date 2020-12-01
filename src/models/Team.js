@@ -106,9 +106,6 @@ const TeamSchema = new Schema (
         timeblocks: {
           type: Array,
         },
-        workerscountrequired: {
-          type: Number
-        }
       }
     }
 
