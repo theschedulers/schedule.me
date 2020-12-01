@@ -11,6 +11,49 @@ import ProfileDropdown from "../../components/ProfileDropdown/ProfileDropdown"
 import CircleIcon from '../../components/CircleIcon/CircleIcon';
 import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal';
 
+const invite1 = {
+  className: "Invite.js",
+  senderId: "Justin Zhu",
+  recipientId: "Edward Josh Hermano",
+  teamName: "The Schedulers"
+}
+
+const invite2 = {
+  className: "Invite.js",
+  senderId: "Shinigami-sensei",
+  recipientId: "Edward Josh Hermano",
+  teamName: "the Underworld"
+}
+
+const invite3 = {
+  className: "Invite.js",
+  senderId: "Darth Vader",
+  recipientId: "Edward Josh Hermano",
+  teamName: "the Dark Side"
+}
+
+const request1 = {
+  className: "Request.js",
+  senderId: "Squidward",  //Squidward wants time off
+  recipientId: "Edward Josh Hermano", //I'll approve or decline
+  teamName: "Krusty Krab"
+}
+
+const requestResponse1 = { //Negative response
+  className: "RequestDeclined.js", //idk how you wanna do this exactly. Or maybe just a boolean or other value
+  senderId: "Watson", // Watson declined my request
+  recipientId: "Edward Josh Hermano", //I requested time off
+  teamName: "Watson Industries"
+}
+
+const requestResponse2 = { //Positive response
+  className: "RequestAccepted.js",
+  senderId: "Yellow", // Yellow accepted my request
+  recipientId: "Edward Josh Hermano", //I requested time off
+  teamName: "Crewmates"
+}
+const notifs = [invite1, invite2, invite3, request1, requestResponse1, requestResponse2];
+
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -703,6 +746,12 @@ export default class Dashboard extends Component {
                 userName={this.getGoogleAuthCredentials().getBasicProfile().getName()}
                 profilePicture={this.getGoogleAuthCredentials().getBasicProfile().getImageUrl()}
                 onSignOut={this.handleSignOut}
+                notificationList={notifs} //If you're looking for the dummy notifications, they're at the top of Dashboard.js
+                handleAcceptInvite={{}}
+                handleDeclineInvite={{}}
+                handleViewRequest={{}}
+                handleDeclineRequest={{}}
+                handleDismissNotif={{}}
               />
             </div>
             <div id="circle-icon-container">

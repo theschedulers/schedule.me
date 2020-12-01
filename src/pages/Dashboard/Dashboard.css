@@ -10,11 +10,11 @@
   -ms-filter: blur(10px);
   pointer-events: none;
 
-  -webkit-transition: .2s ease-in-out;
-  -moz-transition: .2s ease-in-out;
-  -o-transition: .2s ease-in-out;
-  -ms-transition: .2s ease-in-out;
-  transition: .2s ease-in-out;
+  -webkit-transition: 0.2s ease-in-out;
+  -moz-transition: 0.2s ease-in-out;
+  -o-transition: 0.2s ease-in-out;
+  -ms-transition: 0.2s ease-in-out;
+  transition: 0.2s ease-in-out;
 }
 
 #Dashboard > #left-sidebar-container {
@@ -56,6 +56,10 @@
 
 #Dashboard > #right-sidebar-container > #btn {
   margin-left: 40px;
+}
+
+#Dashboard > #right-sidebar-container > #profile-icon-container {
+  margin-bottom: 1em;
 }
 
 #Dashboard > #right-sidebar-container > #circle-icon-container {
