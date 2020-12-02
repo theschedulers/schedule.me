@@ -2,26 +2,19 @@
 
 A group scheduler app where users form teams and input availabilities and shifts on a team calendar!
 
+## Getting Started
+
+Choose how you would like to run our web application!
+
+Locally: Install Node.js and make sure it's running, download the source code (master branch) from the repository, load the source code into an IDE (We used VS Code), then in your terminal at the source code file type `npm install` to install all used node dependencies. In order to actually get the Google API and MongoDB working for the application to run, you must have a working set of config variables. Obviously we won't share our config variables to the public. There is a config.example.json file that you can reference. Essentially you will need Google API client key and MongoDB Atlas cluster connections.
+
+Heroku: Go to our site and you're ready to go! Note that our application may not support huge amounts of data transfer due to the "free of charge" level of services we use (for both MongoDB and Heroku). It should be fine if you don't have more than 3 or so members and you're not filling out the entire grid. 
+
 ## Some answers to some questions
 - If you run into any errors that will not allow you to do anything, contact us. The application is buggy and needs improvements 👍
 - If you cannot edit any shifts or anything on the team, it may be a payload error. The grid is very large and data transfers may not be working properly with large amounts of data (Free version of MongoDB Cloud).
 - If you want to export calendars, those are not quite done yet so 😶
 - Also try not to have multiple users edit things at the same time. It will work fine if you go one by one (sequentially), but may break if multiple users are editing the same data.
-
-## Node Dependencies to Download
-
-This project involves many node dependecies. I will list them here: Mongoose, Express, Concurrently, Axios, Morgan, Nodemon, React-Router-Dom, Bootstrap, Reactstrap.<br /><br />
-Assuming that you already have Node.js installed and everything, there are many ways to download the dependencies necessary to get it working. <br /><br />
-
-First way is to clone this project and in your local terminal, run `npm install`. <br /><br />
-
-Below is the code I used to install them all. This would be the second way.<br />
-
-`npm install mongoose express concurrently axios morgan -s`<br />
-`npm install -g nodemon`<br />
-`npm install react-router-dom`<br />
-`npm install --save bootstrap`<br />
-`npm install --save reactstrap react react-dom`
 
 ## When deploying to Heroku
 
