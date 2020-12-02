@@ -332,7 +332,43 @@ export default class Dashboard extends Component {
   }
 
   downloadICSFile = async () => {
-    const res = await downloadICS(this.state.personalTeamCalendar[this.state.selectedTeam] && this.state.personalTeamCalendar[this.state.selectedTeam].schedule);
+    var personalCalendar = null;
+    var teamname = this.state.personalTeams[this.state.selectedTeam] && this.state.personalTeams[this.state.selectedTeam].text;
+    this.state.personalTeamCalendar[this.state.selectedTeam] && this.state.personalTeamCalendar[this.state.selectedTeam].personal.forEach(e => {
+      if(e.gapi_id == this.state.gapi_id){
+        personalCalendar = {...e, teamname};
+      }
+    })
+
+    var timeblocks = [];
+
+    for (var i = 0; i < personalCalendar.timeblocks[0].length; i ++) {
+      var cellblocked = 0;
+      var recentchange = false;
+
+      personalCalendar.timeblocks.map((row, index) => {
+        if (cellblocked !== row[i].blocked) {
+          cellblocked = row[i].blocked;
+          recentchange = true;
+        }
+
+        if (recentchange == true && cellblocked == 1) {
+          timeblocks.push({
+            title: personalCalendar.teamname + " (ScheduleMe)" || "Work",
+            start: [2021, 1, i+4, index, 0],
+            end: null,
+            description: "Imported from ScheduleMe: Personal Schedule"
+          })
+          recentchange = false;
+        }
+        if (recentchange == true && cellblocked == 0) {
+          timeblocks[timeblocks.length - 1].end = [2021, 1, i+4, index, 0];
+          recentchange = false;
+        }
+      })
+    }
+
+    const res = await downloadICS(timeblocks);
   }
 
   //function used to redirect to other pages. path example: '/other-page'

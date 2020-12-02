@@ -76,7 +76,7 @@ export async function deleteTeam(reqTeamToDelete){
 
 }
 
-export async function downloadICS(reqTeamSchedule){
+export async function downloadICS(reqPersonalSchedule){
   let data;
   let fileName = 'calendar.ics';
   await axios({
@@ -85,7 +85,7 @@ export async function downloadICS(reqTeamSchedule){
     responseType: 'blob',
     headers: {},
     data: {
-      reqTeamSchedule: reqTeamSchedule,
+      reqPersonalSchedule: reqPersonalSchedule,
     }
   })
   .then(res => {
@@ -95,7 +95,7 @@ export async function downloadICS(reqTeamSchedule){
     link.href = url;
     link.setAttribute('download', fileName);
     document.body.appendChild(link);
-    // link.click();
+    link.click();
   })
   .catch(err => {
     return err;

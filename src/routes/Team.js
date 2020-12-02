@@ -55,9 +55,7 @@ router.post('/deleteTeam', (req, res) =>{
 
 router.post('/downloadICS/:filename', (req, res) => {
 
-  if (req.body.reqTeamSchedule) {
-
-    console.log(req.body.reqTeamSchedule)
+  if (req.body.reqPersonalSchedule) {
 
     const { writeFileSync } = require('fs')
     const ics = require('ics')
@@ -81,7 +79,7 @@ router.post('/downloadICS/:filename', (req, res) => {
 
     let filename = req.params.filename
 
-    ics.createEvent(event, (error, value) => {
+    ics.createEvents(req.body.reqPersonalSchedule, (error, value) => {
       if (error) {
         return res.send(error);
       }
