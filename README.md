@@ -12,7 +12,7 @@ Choose how you would like to run our web application!
 
 ## Some answers to some questions
 - If you run into any errors that will not allow you to do anything, contact us. The application is buggy and needs improvements 👍
-- If you cannot edit any shifts or anything on the team, it may be a payload error. The grid is very large and data transfers may not be working properly with large amounts of data (Free version of MongoDB Cloud).
+- If you cannot edit any shifts or anything on the team, it may be a payload error. The grid is very large and data transfers may not be working properly with large amounts of data ("free of charge" level of services).
 - If you want to export calendars, those are not quite done yet so 😶
 - Also try not to have multiple users edit things at the same time. It will work fine if you go one by one (sequentially), but may break if multiple users are editing the same data.
 
