@@ -25,7 +25,6 @@ class ProfileDropdown extends Component {
   }
 
   getNotificationBadge() {
-    console.log("not badge");
     if (this.props.notificationList.length > 0) {
       return <div id="dashboard-notification-badge" className="badge">{this.props.notificationList.length}</div>
     }

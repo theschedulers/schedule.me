@@ -86,7 +86,7 @@ export default class ListSelect extends Component {
                           onMouseEnter={this.showRemoveIcon}
                           onMouseLeave={this.hideRemoveIcon}
                           >
-                <img key={id + index} item-remove-index={id + index} src={require('./img/remove.png')} className="list-select-remove-icon"
+                <img key={id + index} item-remove-index={id + index} src={require('./img/remove.png')} alt = {"X"} className="list-select-remove-icon"
                       onClick={this.onClickRemoveButton}
                       style={{
                         visibility: this.state.hovered == (id + index) ? "visible" : "hidden"
