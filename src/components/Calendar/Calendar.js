@@ -137,7 +137,7 @@ export default class Calendar extends Component {
     //             </div>
     //           </div>);
       
-      if(this.props.timeblocksinput.length != 0 && this.props.gapi_id !== ""){
+      if(this.props.timeblocksinput.length > 0 && this.props.timeblocksinput.length >= this.props.calendarchoice && this.props.gapi_id !== ""){
         // console.log(this.props.gapi_id, this.props.timeblocksinput);
         let availability;
         this.props.timeblocksinput[this.props.calendarchoice].availability.forEach(e => {
