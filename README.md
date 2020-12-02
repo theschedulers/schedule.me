@@ -1,6 +1,6 @@
 ## About the Project
 
-A group scheduler app where users form teams and input availabilities and shifts on a team calendar! https://sjsu-schedule-me.herokuapp.com/
+A group scheduler app where users form teams and input availabilities and shifts on a team calendar!
 
 ## Some answers to some questions
 - If you run into any errors that will not allow you to do anything, contact us. The application is buggy and needs improvements 👍
