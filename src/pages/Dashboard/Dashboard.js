@@ -83,6 +83,8 @@ export default class Dashboard extends Component {
       confirmAddMemberAlertModalToggle: false,
       exportCalendarModalToggle: false,
       denyAlertModalToggle: false,
+      teamConfirmModalText: "Confirmed",
+      teamConfirmModalToggle: false,
       // For Calendar
       inputmode: false,
       inputmodeheader: "",
@@ -385,6 +387,10 @@ export default class Dashboard extends Component {
       this.setState({ memberModalToggle: !this.state.memberModalToggle });
   }
 
+  toggleTeamConfirmModal = () => {
+    this.setState({ teamConfirmModalToggle: !this.state.teamConfirmModalToggle });
+  }
+
   toggleAddMemberConfirmAlertModal = () => {
     this.setState({ confirmAddMemberAlertModalToggle: !this.state.confirmAddMemberAlertModalToggle });
   }
@@ -539,6 +545,8 @@ export default class Dashboard extends Component {
   handleAcceptInvite = async (n) => {
     this.removeNotifFromList(n);
     this.handleTeamInvite(n);
+    this.setState({teamConfirmModalText: "Invite Accepted"});
+    this.toggleTeamConfirmModal();
   }
 
   handleDeclineInvite = async (n) => {
@@ -913,6 +921,8 @@ export default class Dashboard extends Component {
       });
       this.updateAllLists();
       this.setState({ selectedTeam: 0 });
+      this.setState({teamConfirmModalText: "Team Removal Successful"});
+      this.toggleTeamConfirmModal();
     }
     else{ //Not team manager
       this.toggleDenyAlertModal();
@@ -1023,6 +1033,8 @@ export default class Dashboard extends Component {
         const res = await editTeam(reqTeamToEdit);
         await this.updateAllLists();
         this.setState({ selectedTeam: 0 });
+        this.setState({teamConfirmModalText: "Removed Yourself Successfully"});
+        this.toggleTeamConfirmModal();
       }
       else{ //Removing another person, must be manager to do so
         if(this.isManager(this.state.gapi_id, currentTeam.teamManager.gapi_id)){
@@ -1094,6 +1106,8 @@ export default class Dashboard extends Component {
           const res = await editTeam(reqTeamToEdit);
           await this.updateAllLists();
           this.setState({ selectedTeam: 0 });
+          this.setState({teamConfirmModalText: "Member Removal Successful"});
+          this.toggleTeamConfirmModal();
         }
         else{
           this.toggleDenyAlertModal();
@@ -1204,6 +1218,14 @@ export default class Dashboard extends Component {
                   // memberDescription={this.state.memberDescription}
                   // updateMemberName={this.updateMemberName}
                   // updateMemberDescription={this.updateMemberDescription}
+                />
+                <ConfirmationModal
+                  toggle={this.state.teamConfirmModalToggle}
+                  setToggle={this.toggleTeamConfirmModal}
+                  onConfirm={() => {}}
+                  header={this.state.teamConfirmModalText}
+                  subheader={<section><img style={{width: "2em", height: "2em", borderRadius: "50%"}} src={require('./img/confirm.png')}/></section>}
+                  confirmbuttontext={"Dismiss"}
                 />
                 <ConfirmationModal
                   toggle={this.state.confirmAddMemberAlertModalToggle}
