@@ -6,9 +6,11 @@ A group scheduler app where users form teams and input availabilities and shifts
 
 Choose how you would like to run our web application!
 
-Locally: Install Node.js and make sure it's running, download the source code (master branch) from the repository, load the source code into an IDE (We used VS Code), then in your terminal at the source code file type `npm install` to install all used node dependencies. In order to actually get the Google API and MongoDB working for the application to run, you must have a working set of config variables. Obviously we won't share our config variables to the public. There is a config.example.json file that you can reference. Essentially you will need Google API client key and MongoDB Atlas cluster connections.
+<b>Locally:</b> Install Node.js and make sure it's running, download the source code (master branch) from the repository, load the source code into an IDE (We used VS Code), then in your terminal at the source code file type `npm install` to install all used node dependencies. In order to actually get the Google API and MongoDB working for the application to run, you must have a working set of config variables. Obviously we won't share our config variables to the public. There is a config.example.json file that you can reference. Essentially you will need Google API client key and MongoDB Atlas cluster connections. To finally begin to run the application, use the command `npm run dev` in the terminal and make sure you have already navigated to your source code's file destination (not necessary if using VS Code's built-in terminal and you have the source code open there).
 
-Heroku: Go to our site and you're ready to go! Note that our application may not support huge amounts of data transfer due to the "free of charge" level of services we use (for both MongoDB and Heroku). It should be fine if you don't have more than 3 or so members and you're not filling out the entire grid. 
+<b>Heroku:</b> Go to our site and you're ready to go! Note that our application may not support huge amounts of data transfer due to the "free of charge" level of services we use (for both MongoDB and Heroku). It should be fine if you don't have more than 3 or so members and you're not filling out the entire grid. Also, for some reason the .png file we use for the remove team and remove member functions are not showing on our site. Please know that it is there, so you can still remove properly (just invisible?). It is in the top-left corner of each list element (e.g. each team or each member). Just click around. For reference, Team 1 is hovered and the red ❌ is being shown. Click where that would be to remove.
+
+![image](https://user-images.githubusercontent.com/25803515/100835873-2d185080-3423-11eb-818b-d9cc8c52ec08.png)
 
 ## Some answers to some questions
 - If you run into any errors that will not allow you to do anything, contact us. The application is buggy and needs improvements 👍
@@ -18,7 +20,7 @@ Heroku: Go to our site and you're ready to go! Note that our application may not
 
 ## When deploying to Heroku
 
-Make sure that you have Heroku connected to your GitHub account. This will make the process of connecting your application much easier as deployments will be through GitHub code that you push onto your repository.
+Make sure that you have Heroku connected to your GitHub account. This will make the process of connecting your application much easier as deployments will be through GitHub code that you push onto your repository. You will also need to bring in some Heroku build packs as well. These are the names of the buildpacks utilized: `https://buildpack-registry.s3.amazonaws.com/buildpacks/mars/create-react-app.tgz` and `heroku/nodejs`.
 
 ## Get your config vars ready
 There are only two config vars necessary to get your web app up and running completely. One is for MongoDB Atlas connection (`MONGODB_URI`) and the other is your env var for production and development (`NODE_ENV`). For the MongoDB Atlas URI, make sure you create a MongoDB atlas account, create a cluster, and there should be a button for you to connect it to your application. Make sure you follow all the steps and you should get a funky looking link to copy into the config vars section in Heroku. The env var has two options, "development" or "production". Usually you just keep it in production. 
