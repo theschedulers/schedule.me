@@ -75,3 +75,31 @@ export async function deleteTeam(reqTeamToDelete){
     return data;
 
 }
+
+export async function downloadICS(reqPersonalSchedule){
+  let data;
+  let fileName = 'calendar.ics';
+  await axios({
+    method: 'post',
+    url: 'http://localhost:3000/api/downloadICS/' + fileName,
+    responseType: 'blob',
+    headers: {},
+    data: {
+      reqPersonalSchedule: reqPersonalSchedule,
+    }
+  })
+  .then(res => {
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    data = url;
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', fileName);
+    document.body.appendChild(link);
+    link.click();
+  })
+  .catch(err => {
+    return err;
+  });
+    
+    return data;
+}

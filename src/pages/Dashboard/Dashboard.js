@@ -3,7 +3,7 @@ import ListSelect from '../../components/ListSelect/ListSelect';
 import AddTeamModal from "../../components/AddTeam/AddTeamModal";
 import AddMemberModal from "../../components/AddMember/AddMemberModal";
 import RequestTimeModal from "../../components/RequestTimeOff/RequestTimeModal"
-import { getTeams, addTeam, editTeam, deleteTeam } from "../../APIFunctions/Team";
+import { getTeams, addTeam, editTeam, deleteTeam, downloadICS } from "../../APIFunctions/Team";
 import { getUsers, addUser, editUser, deleteUser } from "../../APIFunctions/User";
 import Calendar from '../../components/Calendar/Calendar';
 import './Dashboard.css';
@@ -332,6 +332,46 @@ export default class Dashboard extends Component {
     this.toggleRequestTimeModal();
   }
 
+  downloadICSFile = async () => {
+    var personalCalendar = null;
+    var teamname = this.state.personalTeams[this.state.selectedTeam] && this.state.personalTeams[this.state.selectedTeam].text;
+    this.state.personalTeamCalendar[this.state.selectedTeam] && this.state.personalTeamCalendar[this.state.selectedTeam].personal.forEach(e => {
+      if(e.gapi_id == this.state.gapi_id){
+        personalCalendar = {...e, teamname};
+      }
+    })
+
+    var timeblocks = [];
+
+    for (var i = 0; i < personalCalendar.timeblocks[0].length; i ++) {
+      var cellblocked = 0;
+      var recentchange = false;
+
+      personalCalendar.timeblocks.map((row, index) => {
+        if (cellblocked !== row[i].blocked) {
+          cellblocked = row[i].blocked;
+          recentchange = true;
+        }
+
+        if (recentchange == true && cellblocked == 1) {
+          timeblocks.push({
+            title: personalCalendar.teamname + " (ScheduleMe)" || "Work",
+            start: [2021, 1, i+4, index, 0],
+            end: null,
+            description: "Imported from ScheduleMe: Personal Schedule"
+          })
+          recentchange = false;
+        }
+        if (recentchange == true && cellblocked == 0) {
+          timeblocks[timeblocks.length - 1].end = [2021, 1, i+4, index, 0];
+          recentchange = false;
+        }
+      })
+    }
+
+    const res = await downloadICS(timeblocks);
+  }
+
   //function used to redirect to other pages. path example: '/other-page'
   redirectToHomePage = () => {
     this.props.history.push("/");
@@ -367,13 +407,14 @@ export default class Dashboard extends Component {
   //Dashboard.js > APIFunctions/Team.js > routes/Team.js > server.js handles it
   handleAddTeam = async (teamName, teamPhoto, userDescription) => {
     const auth = this.getGoogleAuthCredentials();
+    var userPhoto = auth.getBasicProfile().getImageUrl()
     //Just one member here (yourself)
     const userProfile = {
       gapi_id: auth.Ca,
       memberEmail: auth.wt.cu.toLowerCase(),
       memberName: auth.wt.Ad,
       memberDescription: userDescription,
-      memberPhoto: this.state.userPhoto || this.state.defaultMemberPhoto
+      memberPhoto: userPhoto || this.state.defaultMemberPhoto
     }
     //Refer to models/Team.js teamMembers, must be an array (just one element)
     let teamMembersArr = [userProfile];
@@ -535,6 +576,7 @@ export default class Dashboard extends Component {
 
   handleTeamInvite = async (n) => {
     const auth = this.getGoogleAuthCredentials();
+    var userPhoto = auth.getBasicProfile().getImageUrl()
     const user = await this.findUser(auth.wt.cu);
     if(user.invitedTeams.length > 0){
       //for each invitedTeam, transfer to team
@@ -550,7 +592,7 @@ export default class Dashboard extends Component {
             memberEmail: user.userEmail.toLowerCase(),
             memberName: user.userName,
             memberDescription: team.role || "Member",
-            memberPhoto: this.state.defaultMemberPhoto
+            memberPhoto: userPhoto || this.state.defaultMemberPhoto
           }
            //Add member to team member list
           teamMembersArr.push(reqMemberToAdd);
@@ -1224,7 +1266,7 @@ export default class Dashboard extends Component {
               <CircleIcon title={"Add/Edit Availability"} width={"3em"} height={"3em"} callback={this.editAvailability} icon={require('./img/addeditav.svg')}></CircleIcon>
               <CircleIcon title={"Request Time off"} width={"3em"} height={"3em"} callback={this.onRequestTimeOffCallBack} icon={require('./img/timeoff.svg')}></CircleIcon>
               <CircleIcon title={"Export to Google Calendar"} width={"3em"} height={"3em"} callback={this.handleAddEvent} icon={require('./img/google.png')}></CircleIcon>
-              <CircleIcon title={"Export Calendar"} width={"3em"} height={"3em"} icon={require('./img/download.svg')}></CircleIcon>
+              <CircleIcon title={"Export Calendar"} width={"3em"} height={"3em"} callback={this.downloadICSFile} icon={require('./img/download.svg')}></CircleIcon>
               <CircleIcon title={"Manage Shifts"} width={"3em"} height={"3em"} callback={this.manageShifts} icon={require('./img/pencil.svg')}></CircleIcon>
 
               <RequestTimeModal
