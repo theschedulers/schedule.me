@@ -356,14 +356,14 @@ export default class Dashboard extends Component {
         if (recentchange == true && cellblocked == 1) {
           timeblocks.push({
             title: personalCalendar.teamname + " (ScheduleMe)" || "Work",
-            start: [2021, 1, i+4, index, 0],
+            start: [2021, 1, i+3, index, 0],
             end: null,
             description: "Imported from ScheduleMe: Personal Schedule"
           })
           recentchange = false;
         }
         if (recentchange == true && cellblocked == 0) {
-          timeblocks[timeblocks.length - 1].end = [2021, 1, i+4, index, 0];
+          timeblocks[timeblocks.length - 1].end = [2021, 1, i+3, index, 0];
           recentchange = false;
         }
       })

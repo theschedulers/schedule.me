@@ -67,6 +67,7 @@
   width: 1em;
   height: 1em;
   opacity: 70%;
+  z-index: 99999;
 }
 
 #list-select-container > #list-select-list > .list-select-item > .list-select-remove-icon:hover {
