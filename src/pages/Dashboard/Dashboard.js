@@ -451,7 +451,7 @@ export default class Dashboard extends Component {
     const res2 = await editUser(reqUserToEdit);
     //Refresh everything
     this.updateAllLists();
-    this.setState({teamConfirmModalText: "Team Added Successful"});
+    this.setState({teamConfirmModalText: "Team Added Successfully"});
     this.toggleTeamConfirmModal();
   }
 
