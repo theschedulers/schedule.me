@@ -48,11 +48,17 @@
   background-color: #000000;
 }
 
-#list-select-container > #list-select-list > .list-select-item > .list-select-item-img-container {
-
+#list-select-container
+  > #list-select-list
+  > .list-select-item
+  > .list-select-item-img-container {
 }
 
-#list-select-container > #list-select-list > .list-select-item > .list-select-item-img-container > .list-select-item-img {
+#list-select-container
+  > #list-select-list
+  > .list-select-item
+  > .list-select-item-img-container
+  > .list-select-item-img {
   width: 3em;
   height: 3em;
   border-radius: 100%;
@@ -61,17 +67,23 @@
   border: solid #222222 1px;
 }
 
-#list-select-container > #list-select-list > .list-select-item > .list-select-remove-icon {
+#list-select-container
+  > #list-select-list
+  > .list-select-item
+  > .list-select-remove-icon {
   /* display: none; */
   align-self: flex-start;
   width: 1em;
   height: 1em;
-  opacity: 70%;
+  opacity: 0.7;
   z-index: 99999;
 }
 
-#list-select-container > #list-select-list > .list-select-item > .list-select-remove-icon:hover {
-  opacity: 100%;
+#list-select-container
+  > #list-select-list
+  > .list-select-item
+  > .list-select-remove-icon:hover {
+  opacity: 1;
 }
 
 #list-select-container > #list-select-list > .list-select-item > * h6 {
