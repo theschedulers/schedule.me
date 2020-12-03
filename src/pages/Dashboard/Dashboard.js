@@ -531,7 +531,7 @@ export default class Dashboard extends Component {
     }
   }
 
-  removeNotifFromList = (n) => {
+  removeNotifFromList = async (n) => {
     //Remove from state list
     let notifList = []; 
     this.state.notifications.forEach(notif => {
@@ -544,10 +544,11 @@ export default class Dashboard extends Component {
 
   // For Profile Dropdown
   handleAcceptInvite = async (n) => {
-    this.removeNotifFromList(n);
-    this.handleTeamInvite(n);
+    await this.removeNotifFromList(n);
+    await this.handleTeamInvite(n);
     this.setState({teamConfirmModalText: "Invite Accepted"});
     this.toggleTeamConfirmModal();
+    this.updateAllLists();
   }
 
   handleDeclineInvite = async (n) => {
