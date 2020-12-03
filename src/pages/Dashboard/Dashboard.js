@@ -83,6 +83,8 @@ export default class Dashboard extends Component {
       confirmAddMemberAlertModalToggle: false,
       exportCalendarModalToggle: false,
       denyAlertModalToggle: false,
+      teamConfirmModalText: "Confirmed",
+      teamConfirmModalToggle: false,
       // For Calendar
       inputmode: false,
       inputmodeheader: "",
@@ -126,7 +128,6 @@ export default class Dashboard extends Component {
           invitedTeams: user.invitedTeams,
         };
         const res = await editUser(reqUserToEdit);
-        console.log(res);
       }
       user = await this.findUser(auth.wt.cu);
       this.createNotifications(user);
@@ -179,7 +180,6 @@ export default class Dashboard extends Component {
   //Add user to db
   addUserToCollection = async (user) => {
     const res = await addUser(user);
-    console.log(res);
   }
 
   updateAllLists = async () => {
@@ -233,7 +233,6 @@ export default class Dashboard extends Component {
     var personalMembersArr = [];
     Object.entries(res).forEach((team) => {
       const teamMembers = team[1].teamMembers;
-      // console.log(team[1].teamMembers);
       var memberEncapsulation = [];
       teamMembers.forEach((member) => {
         const memberToModify = {
@@ -404,6 +403,10 @@ export default class Dashboard extends Component {
       this.setState({ memberModalToggle: !this.state.memberModalToggle });
   }
 
+  toggleTeamConfirmModal = () => {
+    this.setState({ teamConfirmModalToggle: !this.state.teamConfirmModalToggle });
+  }
+
   toggleAddMemberConfirmAlertModal = () => {
     this.setState({ confirmAddMemberAlertModalToggle: !this.state.confirmAddMemberAlertModalToggle });
   }
@@ -453,7 +456,6 @@ export default class Dashboard extends Component {
       team_id: res._id 
     }
     teams.push(newTeam);
-    console.log(teams);
     const reqUserToEdit = {
       _id: user._id,
       gapi_id: user.gapi_id,
@@ -465,6 +467,8 @@ export default class Dashboard extends Component {
     const res2 = await editUser(reqUserToEdit);
     //Refresh everything
     this.updateAllLists();
+    this.setState({teamConfirmModalText: "Team Added Successfully"});
+    this.toggleTeamConfirmModal();
   }
 
   //Add Member to Team, this function handles the submit in the AddMemberModal form
@@ -484,41 +488,48 @@ export default class Dashboard extends Component {
       recipientEmail: email,
     };
     let reqUserToAdd, reqUserToEdit = "";
-    if(await this.checkIfUserIsSaved(email.toLowerCase())){
-      let user = await this.findUser(email.toLowerCase());
-      console.log("user: ", user);
-      invitedTeams = user.invitedTeams;
-      invitedTeams.push(team);
-      reqUserToEdit = {
-        _id: user._id,
-        gapi_id: user.gapi_id,
-        userName: user.userName,
-        userEmail: email.toLowerCase(),
-        teams: user.teams,
-        invitedTeams,
-      };
-      const res = await editUser(reqUserToEdit);
-      this.toggleAddMemberConfirmAlertModal();
-      console.log(res);
+    let validEmailToAdd = true;
+    currentTeam.teamMembers.forEach(member =>{
+      if(member.memberEmail.toLowerCase() === email.toLowerCase()){
+        validEmailToAdd = false;
+      }
+    });
+    if(validEmailToAdd === true){  
+      if(await this.checkIfUserIsSaved(email.toLowerCase())){
+        let user = await this.findUser(email.toLowerCase());
+        invitedTeams = user.invitedTeams;
+        invitedTeams.push(team);
+        reqUserToEdit = {
+          _id: user._id,
+          gapi_id: user.gapi_id,
+          userName: user.userName,
+          userEmail: email.toLowerCase(),
+          teams: user.teams,
+          invitedTeams,
+        };
+        const res = await editUser(reqUserToEdit);
+        this.toggleAddMemberConfirmAlertModal();
+      }
+      else{
+        invitedTeams.push(team);
+        reqUserToAdd = {
+          gapi_id: "",
+          userName: "",
+          userEmail: email.toLowerCase(),
+          teams: [],
+          invitedTeams,
+        };
+        const res = await addUser(reqUserToAdd);
+        this.toggleAddMemberConfirmAlertModal();
+      }
     }
     else{
-      invitedTeams.push(team);
-      reqUserToAdd = {
-        gapi_id: "",
-        userName: "",
-        userEmail: email.toLowerCase(),
-        teams: [],
-        invitedTeams,
-      };
-      const res = await addUser(reqUserToAdd);
-      this.toggleAddMemberConfirmAlertModal();
-      console.log(res);
+      this.toggleDenyAlertModal();
     }
   }
 
   //Store invite data into a format
   createNotifications = (user) => {
-    console.log(user);
     if(user.invitedTeams.length > 0){
       let notifs = [];
       user.invitedTeams.forEach((t, index)=>{
@@ -533,7 +544,6 @@ export default class Dashboard extends Component {
         }
         notifs.push(invite);
       });
-      console.log(notifs);
       this.setState({notifications: notifs});
     }
   }
@@ -551,13 +561,13 @@ export default class Dashboard extends Component {
 
   // For Profile Dropdown
   handleAcceptInvite = async (n) => {
-    console.log("Accept", n);
     this.removeNotifFromList(n);
     this.handleTeamInvite(n);
+    this.setState({teamConfirmModalText: "Invite Accepted"});
+    this.toggleTeamConfirmModal();
   }
 
   handleDeclineInvite = async (n) => {
-    console.log("Decline", n);
     this.removeNotifFromList(n);
     //remove the invite from user
     const user = await this.findUser(n.recipientEmail);
@@ -581,13 +591,13 @@ export default class Dashboard extends Component {
   }
 
   handleViewRequest = (n) => {
-    console.log(n);
+    // console.log(n);
   }
   handleDeclineRequest = (n) => {
-    console.log(n);
+    // console.log(n);
   }
   handleDismissNotif = (n) => {
-    console.log(n);
+    // console.log(n);
   }
 
   handleTeamInvite = async (n) => {
@@ -598,7 +608,6 @@ export default class Dashboard extends Component {
       //for each invitedTeam, transfer to team
       let invitedTeams = user.invitedTeams;
       let teams = user.teams;
-      // console.log(invitedTeams, teams);
       invitedTeams.forEach(async(team)=>{
         if(n.team_id === team.team_id){
           const foundTeam = await this.findTeam(team.team_id);
@@ -648,7 +657,6 @@ export default class Dashboard extends Component {
           }
           //Backend call to editTeam () to db (here -> APIFunctions -> routes)
           const res = await editTeam(reqTeamToEdit);
-          console.log(res);
           let invitedTeamsArr = [];
           user.invitedTeams.forEach(invite=>{
             if(invite.team_id !== n.team_id){
@@ -692,7 +700,6 @@ export default class Dashboard extends Component {
       var reqTeamCalendarToEdit;
       switch (this.state.inputtype) {
         case "availability": {
-          console.log("New Availability", timeblocks);
           const availability = currentTeamCalendar.availability;
           let newAvail = [];
           availability.forEach(e=>{
@@ -709,7 +716,6 @@ export default class Dashboard extends Component {
               newAvail.push(editedUser);
             }
           });
-          console.log("check: ", newAvail);
           reqTeamCalendarToEdit = {
             availability: newAvail,
             default: currentTeamCalendar.default,
@@ -719,11 +725,9 @@ export default class Dashboard extends Component {
             shifts:currentTeamCalendar.shifts,
             name: currentTeamCalendar.name,
           };
-          // console.log("reqTeamCalendarToEdit: ", reqTeamCalendarToEdit);
           break;
         }
         case "manageshift": {
-          console.log("New Shifts", timeblocks);
           const auth = this.getGoogleAuthCredentials();
           const shifts = currentTeamCalendar.shifts;
 
@@ -733,7 +737,6 @@ export default class Dashboard extends Component {
               layer: shifts.layer,
               timeblocks,
             }
-            console.log("here, ", reqShiftsToEdit);
             reqTeamCalendarToEdit = {
               availability: currentTeamCalendar.availability,
               default: currentTeamCalendar.default,
@@ -743,17 +746,14 @@ export default class Dashboard extends Component {
               shifts: reqShiftsToEdit,
               name: currentTeamCalendar.name,
             } 
-            console.log("here, ", reqShiftsToEdit);
           }
           else{
-              console.log("invalid, not a manager");
+              this.toggleDenyAlertModal(); // Access denied
           }
-          // console.log("reqTeamCalendarToEdit: ", reqTeamCalendarToEdit);
           break;
         }
         default: break;
       }
-      console.log("here, ", reqTeamCalendarToEdit);
 
       //Add new member list to team entry
       const reqTeamToEdit = {
@@ -763,11 +763,9 @@ export default class Dashboard extends Component {
         teamMembers: currentTeam.teamMembersArr,
         teamCalendar: reqTeamCalendarToEdit
       }
-      console.log("here, ", reqTeamToEdit);
 
       //Backend call to editTeam () to db (here -> APIFunctions -> routes)
       const res = await editTeam(reqTeamToEdit);
-      console.log(res);
     }
     //Refresh everything
     await this.updateAllLists();
@@ -781,20 +779,25 @@ export default class Dashboard extends Component {
     await this.updateAllLists();
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     const currentTeamCalendar = currentTeam.teamCalendar;
-    console.log("Generating...", currentTeam.teamCalendar);
     let availability = currentTeam.teamCalendar.availability;
     let shifts = currentTeam.teamCalendar.shifts;
     const schedule = currentTeam.teamCalendar.schedule;
-    const personal = currentTeam.teamCalendar.personal;
+    let personal = currentTeam.teamCalendar.personal;
     const match = this.getModifiedSchedule(shifts, availability, schedule, personal, currentTeam);
-    //Power of React, personal calendar updates miraculously
+    let newPersonal = [];
+    personal.forEach(p =>{
+      if(p.gapi_id !== match[1].gapi_id){
+        newPersonal.push(p);
+      }
+    })
+    newPersonal.push(match[1]);
     //Change the schedule
     const reqTeamCalendarToEdit = {
       availability: currentTeamCalendar.availability,
       default: currentTeamCalendar.default,
       events: currentTeamCalendar.events,
-      personal: currentTeamCalendar.personal,
-      schedule: match,
+      personal: newPersonal,
+      schedule: match[0],
       shifts: currentTeamCalendar.shifts,
       name: currentTeamCalendar.name,
     };
@@ -813,7 +816,6 @@ export default class Dashboard extends Component {
   }
 
   getModifiedSchedule = (shifts, availability, schedule, personal, team) => {
-    let schedules = [];
     //Personal
     let modifiedPersonal;
     personal.forEach(calendar => {
@@ -821,9 +823,9 @@ export default class Dashboard extends Component {
         modifiedPersonal = calendar;
       };
     });
-    console.log("Personal: ", modifiedPersonal);
     //For each shift element, check it with each member's availability
     //If both are blocked, add member to the element in schedule
+    let schedules = [];
     let modifiedSchedule = schedule;
     shifts.timeblocks.forEach((row, index) =>{ //For each row in shift
       let r = index;
@@ -838,7 +840,6 @@ export default class Dashboard extends Component {
             };
           }); 
           if(col.blocked === 1 && member.timeblocks[r][c].blocked === 1){ //If matching, add new member into block
-            console.log("matching", col, member.timeblocks, "(", r, " , ", c, ")");
             const newMember = {
               gapi_id: currMember.gapi_id,
               text: currMember.memberName,
@@ -861,6 +862,12 @@ export default class Dashboard extends Component {
               };
               modifiedPersonal.timeblocks[r][c] = personalBlock;
             }
+            else{
+              const personalBlock = {
+                blocked: 0,
+              }
+              modifiedPersonal.timeblocks[r][c] = personalBlock;
+            }
           });
         }
         else{
@@ -872,7 +879,9 @@ export default class Dashboard extends Component {
         }
       });
     });
-    return modifiedSchedule;
+    schedules.push(modifiedSchedule);
+    schedules.push(modifiedPersonal);
+    return schedules;
   }
 
   calendarOnCancelCallback = () => {
@@ -905,35 +914,38 @@ export default class Dashboard extends Component {
 
   // For left sidebar, remove team
   removeTeamCallback = async (index) => {
-    // console.log(this.state.teamDBCollection);
     await this.updateAllLists();
-    let teamToDelete = this.state.teamDBCollection[index];
-    const res = await deleteTeam(teamToDelete);
-    //for each member, remove the team from their team array
-    teamToDelete.teamMembers.forEach(async (member)=>{
-      let foundUser = await this.findUser(member.memberEmail.toLowerCase());
-      let newTeams = [];
-      foundUser.teams.forEach((team)=>{
-        // console.log(team, teamToDelete);
-        if(team.team_id !== teamToDelete._id){
-          console.log("Not this one", team.team_id, teamToDelete._id);
-          newTeams.push(team);
+    if(this.isManager(this.state.gapi_id, this.state.teamDBCollection[index].teamManager.gapi_id)){
+      let teamToDelete = this.state.teamDBCollection[index];
+      const res = await deleteTeam(teamToDelete);
+      //for each member, remove the team from their team array
+      teamToDelete.teamMembers.forEach(async (member)=>{
+        let foundUser = await this.findUser(member.memberEmail.toLowerCase());
+        let newTeams = [];
+        foundUser.teams.forEach((team)=>{
+          if(team.team_id !== teamToDelete._id){
+            newTeams.push(team);
+          }
+        });
+        const userToEdit = {
+          _id: foundUser._id,
+          invitedTeams: foundUser.invitedTeams,
+          teams: newTeams,
+          userName: foundUser.userName,
+          userEmail: foundUser.userEmail,
+          gapi_id: foundUser.gapi_id
         }
+        const res2 = await editUser(userToEdit);
       });
-      const userToEdit = {
-        _id: foundUser._id,
-        invitedTeams: foundUser.invitedTeams,
-        teams: newTeams,
-        userName: foundUser.userName,
-        userEmail: foundUser.userEmail,
-        gapi_id: foundUser.gapi_id
-      }
-      console.log("Edit: ", userToEdit);
-      const res2 = await editUser(userToEdit);
-    });
-    this.updateAllLists();
-    this.setState({ selectedTeam: 0 });
-
+      this.updateAllLists();
+      this.setState({ selectedTeam: 0 });
+      this.setState({teamConfirmModalText: "Team Removal Successful"});
+      this.toggleTeamConfirmModal();
+    }
+    else{ //Not team manager
+      this.toggleDenyAlertModal();
+      await this.updateAllLists();
+    }
   }
 
   // For left sidebar, remove member
@@ -942,24 +954,22 @@ export default class Dashboard extends Component {
     const currentTeam = this.state.teamDBCollection[this.state.selectedTeam];
     const auth = this.getGoogleAuthCredentials();
     let teamCalendar = currentTeam.teamCalendar;
-    let currUser;
     let availability = teamCalendar.availability;
     if(this.isManager(currentTeam.teamMembers[index].gapi_id, currentTeam.teamManager.gapi_id)){ //Removing manager
       if(this.isManager(this.state.gapi_id, currentTeam.teamManager.gapi_id)){ //Only manager can remove manager
-        this.removeTeamCallback(index);
+        this.removeTeamCallback(this.state.selectedTeam);
       }
       else{
         this.toggleDenyAlertModal();
+        await this.updateAllLists();
       }
     }
     else{
       if(currentTeam.teamMembers.length <= 1){ //Only user left in the team
-        this.removeTeamCallback(index);
+        this.removeTeamCallback(this.state.selectedTeam);
       }
       else if(currentTeam.teamMembers[index].gapi_id == auth.Ca){ //Removing yourself  
         let foundUser = await this.findUser(auth.wt.cu.toLowerCase())
-        // console.log(foundUser);
-        // foundUser.teams.pop(currentTeam._id);
         let newTeams = [];
         foundUser.teams.forEach((team)=>{
           if(team.team_id !== currentTeam._id){
@@ -1039,11 +1049,13 @@ export default class Dashboard extends Component {
         }
         //Backend call to editTeam () to db (here -> APIFunctions -> routes)
         const res = await editTeam(reqTeamToEdit);
+        await this.updateAllLists();
+        this.setState({ selectedTeam: 0 });
+        this.setState({teamConfirmModalText: "Removed Yourself Successfully"});
+        this.toggleTeamConfirmModal();
       }
       else{ //Removing another person, must be manager to do so
-        console.log("here");
         if(this.isManager(this.state.gapi_id, currentTeam.teamManager.gapi_id)){
-          console.log("here2");
           await this.updateAllLists();
           const memberToRemove = this.state.teamDBCollection[this.state.selectedTeam].teamMembers[index];
           //Basically filter out the memberToRemove from the teamMembers array to store into DB
@@ -1100,7 +1112,6 @@ export default class Dashboard extends Component {
             shifts: teamCalendar.shifts,
             name: teamCalendar.name,
           } 
-          console.log(teamCalendarToEdit);
           //Encapsulate the filtered array into data to edit the current entry
           const reqTeamToEdit = {
             _id: currentTeam._id,
@@ -1111,15 +1122,19 @@ export default class Dashboard extends Component {
           }
           //Backend call to editTeam () to db (here -> APIFunctions -> routes)
           const res = await editTeam(reqTeamToEdit);
+          await this.updateAllLists();
+          this.setState({ selectedTeam: 0 });
+          this.setState({teamConfirmModalText: "Member Removal Successful"});
+          this.toggleTeamConfirmModal();
         }
         else{
           this.toggleDenyAlertModal();
+          await this.updateAllLists();
         }
       }
     }
     // Refresh everything
-    this.updateAllLists();
-    this.setState({ selectedTeam: 0 });
+    await this.updateAllLists();
   }
 
   isManager = ( manager_id, test_id ) => {
@@ -1128,7 +1143,6 @@ export default class Dashboard extends Component {
 
     //Google Calendar add an event. onClick for Add Event Button
   handleAddEvent = () => {
-    console.log('Add event!');
     var event = {
       summary: 'CMPE 133 Sec 02',
       location: 'Home',
@@ -1167,7 +1181,7 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    let calendardata = require('./calendardatadummy.json');
+    // let calendardata = require('./calendardatadummy.json');
     return (
       <div className="full-viewport-hv">
         <div id="Dashboard">
@@ -1222,6 +1236,14 @@ export default class Dashboard extends Component {
                   // memberDescription={this.state.memberDescription}
                   // updateMemberName={this.updateMemberName}
                   // updateMemberDescription={this.updateMemberDescription}
+                />
+                <ConfirmationModal
+                  toggle={this.state.teamConfirmModalToggle}
+                  setToggle={this.toggleTeamConfirmModal}
+                  onConfirm={() => {}}
+                  header={this.state.teamConfirmModalText}
+                  subheader={<section><img style={{width: "2em", height: "2em", borderRadius: "50%"}} src={require('./img/confirm.png')}/></section>}
+                  confirmbuttontext={"Dismiss"}
                 />
                 <ConfirmationModal
                   toggle={this.state.confirmAddMemberAlertModalToggle}

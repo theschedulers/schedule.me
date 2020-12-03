@@ -1,25 +1,24 @@
 ## About the Project
 
-A group scheduler app where the calendar is interactive and any changes can be seen on other group members' screens!
+A group scheduler app where users form teams and input availabilities and shifts on a team calendar!
 
-## Node Dependencies to Download
+## Getting Started
 
-This project involves many node dependecies. I will list them here: Mongoose, Express, Concurrently, Axios, Morgan, Nodemon, React-Router-Dom, Bootstrap, Reactstrap.<br /><br />
-Assuming that you already have Node.js installed and everything, there are many ways to download the dependencies necessary to get it working. <br /><br />
+Choose how you would like to run our web application!
 
-First way is to clone this project and in your local terminal, run `npm install`. <br /><br />
+<b>Locally:</b> Install Node.js and make sure it's running, download the source code (master branch) from the repository, load the source code into an IDE (We used VS Code), then in your terminal at the source code file type `npm install` to install all used node dependencies. In order to actually get the Google API and MongoDB working for the application to run, you must have a working set of config variables. Obviously we won't share our config variables to the public. There is a config.example.json file that you can reference. Essentially you will need Google API client key and MongoDB Atlas cluster connections. To finally begin to run the application, use the command `npm run dev` in the terminal and make sure you have already navigated to your source code's file destination (not necessary if using VS Code's built-in terminal and you have the source code open there).
 
-Below is the code I used to install them all. This would be the second way.<br />
+<b>Heroku:</b> Go to our site and you're ready to go! Note that our application may not support huge amounts of data transfer due to the "free of charge" level of services we use (for both MongoDB and Heroku). It should be fine if you don't have more than 3 or so members and you're not filling out the entire grid. <b>If this is your first time logging in to our site with Google, you will encounter a "This App isn't Verified" notice after clicking on your desired Google account.</b> Simply click "Advanced" and "Go to sjsu-schedule-me.herokuapp.com (unsafe)" to continue the process. This is really just here to warn users of potential threats. We (a group of university students) would not go through the trouble of creating a cool web application just to steal your information. 
 
-`npm install mongoose express concurrently axios morgan -s`<br />
-`npm install -g nodemon`<br />
-`npm install react-router-dom`<br />
-`npm install --save bootstrap`<br />
-`npm install --save reactstrap react react-dom`
+## Some answers to some questions
+- If you run into any errors that will not allow you to do anything, contact us. The application is buggy and needs improvements 👍
+- If you cannot edit any shifts or anything on the team, it may be a payload error. The grid is very large and data transfers may not be working properly with large amounts of data ("free of charge" level of services).
+- If you want to export calendars, those are not quite done yet so 😶
+- Also try not to have multiple users edit things at the same time. It will work fine if you go one by one (sequentially), but may break if multiple users are editing the same data.
 
 ## When deploying to Heroku
 
-Make sure that you have Heroku connected to your GitHub account. This will make the process of connecting your application much easier as deployments will be through GitHub code that you push onto your repository.
+Make sure that you have Heroku connected to your GitHub account. This will make the process of connecting your application much easier as deployments will be through GitHub code that you push onto your repository. You will also need to bring in some Heroku build packs as well. These are the names of the buildpacks utilized: `https://buildpack-registry.s3.amazonaws.com/buildpacks/mars/create-react-app.tgz` and `heroku/nodejs`.
 
 ## Get your config vars ready
 There are only two config vars necessary to get your web app up and running completely. One is for MongoDB Atlas connection (`MONGODB_URI`) and the other is your env var for production and development (`NODE_ENV`). For the MongoDB Atlas URI, make sure you create a MongoDB atlas account, create a cluster, and there should be a button for you to connect it to your application. Make sure you follow all the steps and you should get a funky looking link to copy into the config vars section in Heroku. The env var has two options, "development" or "production". Usually you just keep it in production. 
