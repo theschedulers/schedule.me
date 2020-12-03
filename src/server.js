@@ -11,22 +11,22 @@ const BlogPostRoutes = require('./routes/BlogPost');
 const TeamRoutes = require('./routes/Team');
 const userRoutes = require('./routes/User.js');
 
-const config = require("./config/config.json")
+// const config = require("./config/config.json")
 
 //Use later
 //connect mongoDB with mongoose
-// mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/template', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useFindAndModify: false,
-// });
-
-//using this for now as local cloud db
-mongoose.connect(config.MONGODB_URI, {
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/template', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false,
 });
+
+//using this for now as local cloud db
+// mongoose.connect(config.MONGODB_URI, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useFindAndModify: false,
+// });
 
 //Check is mongoose is connected in your terminal
 mongoose.connection.on('connected', () => {

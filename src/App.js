@@ -8,7 +8,7 @@ import PrivateRoute from './routes/PrivateRoute';
 import HomePage from './pages/HomePage/HomePage';
 import Dashboard from './pages/Dashboard/Dashboard';
 import ErrorPage from './pages/ErrorPage';
-import {CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES} from './config/config.json';
+// import {CLIENT_ID, API_KEY, DISCOVERY_DOCS, SCOPES} from './config/config.json';
 
 //Test DB Functions
 import BlogPage from "./pages/BlogPage/BlogPage";
@@ -35,14 +35,14 @@ export default function App(props) {
   function initializeGapi() {
     window.gapi.client
       .init({
-        // apiKey: process.env.REACT_APP_API_KEY,
-        // clientId: process.env.REACT_APP_CLIENT_ID,
-        // discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
-        // scope: process.env.REACT_APP_SCOPES,
-        apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: [DISCOVERY_DOCS],
-        scope: SCOPES,
+        apiKey: process.env.REACT_APP_API_KEY,
+        clientId: process.env.REACT_APP_CLIENT_ID,
+        discoveryDocs: [process.env.REACT_APP_DISCOVERY_DOCS],
+        scope: process.env.REACT_APP_SCOPES,
+        // apiKey: API_KEY,
+        // clientId: CLIENT_ID,
+        // discoveryDocs: [DISCOVERY_DOCS],
+        // scope: SCOPES,
       })
       .then(() => {
         // console.log('Initialized');
