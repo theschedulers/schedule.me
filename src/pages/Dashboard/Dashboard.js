@@ -657,7 +657,7 @@ export default class Dashboard extends Component {
             userEmail: user.userEmail
           };
           const res2 = await editUser(reqUserToEdit);
-          this.updateAllLists();
+          await this.updateAllLists();
         }
       });
     }
