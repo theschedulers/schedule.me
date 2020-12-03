@@ -180,14 +180,15 @@ export default class Dashboard extends Component {
 
   updateAllLists = async () => {
     const res = await getTeams();
-    const auth = this.getGoogleAuthCredentials();
-    const user = await this.findUser(auth.wt.cu);
-    this.createNotifications(user);
     var userTeams = this.filterByUserGapi(res);
     this.setState({
       teamDBCollection: userTeams, personalTeams: this.resToPersonalTeamsArr(userTeams),
       personalMembers: this.resToPersonalMembersArr(userTeams), personalTeamCalendar: this.resToPersonalTeamCalendarArr(userTeams)
     });
+    const auth = this.getGoogleAuthCredentials();
+    const user = await this.findUser(auth.wt.cu);
+    this.createNotifications(user);
+
   }
 
   getGoogleAuthCredentials = () => {
@@ -529,6 +530,9 @@ export default class Dashboard extends Component {
       });
       this.setState({notifications: notifs});
     }
+    else{
+      this.setState({notifications: []});
+    }
   }
 
   removeNotifFromList = async (n) => {
@@ -548,7 +552,7 @@ export default class Dashboard extends Component {
     await this.handleTeamInvite(n);
     this.setState({teamConfirmModalText: "Invite Accepted"});
     this.toggleTeamConfirmModal();
-    this.updateAllLists();
+
   }
 
   handleDeclineInvite = async (n) => {
@@ -657,7 +661,7 @@ export default class Dashboard extends Component {
             userEmail: user.userEmail
           };
           const res2 = await editUser(reqUserToEdit);
-          await this.updateAllLists();
+          this.updateAllLists();
         }
       });
     }
