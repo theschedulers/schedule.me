@@ -4,27 +4,6 @@ import TabChooser from '../TabChooser/TabChooser';
 import './Calendar.css';
 
 export default class Calendar extends Component {
-  // state = {
-  //   month: this.props.month,
-  //   year: this.props.year,
-  //   day: this.props.day,
-
-  //   tabchoice: 0,
-  //   calendarchoice: this.props.calendarchoice ? this.props.calendarchoice : 0,
-
-  //   timeblocksinput: this.props.timeblocksinput,
-  //   timeblocksoutput: null, // This will contain the availability inputs
-
-  //   rowheaders: ["00:00", "01:00", "02:00", "03:00", "04:00",
-  //               "05:00", "06:00", "07:00", "08:00", "09:00",
-  //               "10:00", "11:00", "12:00", "13:00", "14:00",
-  //               "15:00", "16:00", "17:00", "18:00", "19:00",
-  //               "20:00", "21:00", "22:00", "23:00"],
-  //   colheaders: ["Sun", "Mon", "Tue", "Wed", "Thurs", "Fri", "Sat"],
-  //   submitcallback: this.props.submitcallback,
-  //   cancelcallback: this.props.cancelcallback,
-  // }
-
   constructor(props){
     super(props);
     this.state = {
@@ -53,7 +32,9 @@ export default class Calendar extends Component {
     if (this.props.inputmode == true)
       return (<h3 id="cleandar-header-title">{this.props.inputmodeheader}</h3>)
     else
-      return (<TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ tabchoice => this.setState({ tabchoice }) }></TabChooser>);
+      // return (<TabChooser left={"Team"} right={"Personal"} selected={0} valueUpdated={ tabchoice => this.setState({ tabchoice }) }></TabChooser>);
+      return (<TabChooser left={"Team"} right={"Personal"} selected={this.state.tabchoice} valueUpdated={ tabchoice => this.setState({tabchoice}) }></TabChooser>);
+
   }
 
   getDragFillGrid() {
@@ -85,125 +66,71 @@ export default class Calendar extends Component {
         availabilityinput = team = manageshiftinput = "none";
       }
     }
-    // return (<div>
-    //             <div style={{display: team}}>
-    //               <DragFillGrid
-    //                 id={1}
-    //                 rowheaders={this.state.rowheaders}
-    //                 colheaders={this.state.colheaders}
-    //                 rownum={24}
-    //                 colnum={7}
-    //                 timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-    //                 draggable={false}
-    //                 blockedcellsinput={[this.state.timeblocksinput[this.props.calendarchoice].schedule]}>
-    //               </DragFillGrid>
-    //             </div>
-    //             <div style={{display: personal}}>
-    //               <DragFillGrid
-    //                 id={2}
-    //                 rowheaders={this.state.rowheaders}
-    //                 colheaders={this.state.colheaders}
-    //                 rownum={24}
-    //                 colnum={7}
-    //                 timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-    //                 draggable={false}
-    //                 blockedcellsinput={[this.state.timeblocksinput[this.props.calendarchoice].personal]}>
-    //               </DragFillGrid>
-    //             </div>
-    //             <div style={{display: availabilityinput}}>
-    //               <DragFillGrid
-    //                 id={3}
-    //                 rowheaders={this.state.rowheaders}
-    //                 colheaders={this.state.colheaders}
-    //                 rownum={24}
-    //                 colnum={7}
-    //                 timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-    //                 draggable={true}
-    //                 blockedcellsinput={[this.state.timeblocksinput[this.props.calendarchoice].availability]}>
-    //               </DragFillGrid>
-    //             </div>
-    //             <div style={{display: manageshiftinput}}>
-    //               <DragFillGrid
-    //                 id={4}
-    //                 rowheaders={this.state.rowheaders}
-    //                 colheaders={this.state.colheaders}
-    //                 rownum={24}
-    //                 colnum={7}
-    //                 timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-    //                 draggable={true}
-    //                 blockedcellsinput={[this.state.timeblocksinput[this.props.calendarchoice].shifts]}
-    //                 confirmdrag={true}>
-    //               </DragFillGrid>
-    //             </div>
-    //           </div>);
       
-      if(this.props.timeblocksinput.length > 0 && this.props.timeblocksinput.length > this.props.calendarchoice && this.props.gapi_id !== ""){
-        // console.log(this.props.gapi_id, this.props.timeblocksinput);
-        let availability;
-        this.props.timeblocksinput[this.props.calendarchoice].availability.forEach(e => {
-          if(e.gapi_id === this.props.gapi_id){
-            availability = e;
-          }
-        });
-        let personalCalendar;
-        this.props.timeblocksinput[this.props.calendarchoice].personal.forEach(e => {
-          if(e.gapi_id === this.props.gapi_id){
-            personalCalendar = e;
-          }
-        });
-        // console.log(personalCalendar);
-        // console.log(availability);
-        return (<div>
-                <div style={{display: team}}>
-                  <DragFillGrid
-                    id={1}
-                    rowheaders={this.state.rowheaders}
-                    colheaders={this.state.colheaders}
-                    rownum={24}
-                    colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-                    draggable={false}
-                    blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].schedule]}>
-                  </DragFillGrid>
-                </div>
-                <div style={{display: personal}}>
-                  <DragFillGrid
-                    id={2}
-                    rowheaders={this.state.rowheaders}
-                    colheaders={this.state.colheaders}
-                    rownum={24}
-                    colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-                    draggable={false}
-                    blockedcellsinput={[personalCalendar]}>
-                  </DragFillGrid>
-                </div>
-                <div style={{display: availabilityinput}}>
-                  <DragFillGrid
-                    id={3}
-                    rowheaders={this.state.rowheaders}
-                    colheaders={this.state.colheaders}
-                    rownum={24}
-                    colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-                    draggable={true}
-                    blockedcellsinput={[availability]}>
-                  </DragFillGrid>
-                </div>
-                <div style={{display: manageshiftinput}}>
-                  <DragFillGrid
-                    id={4}
-                    rowheaders={this.state.rowheaders}
-                    colheaders={this.state.colheaders}
-                    rownum={24}
-                    colnum={7}
-                    timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
-                    draggable={true}
-                    blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].shifts]}
-                    confirmdrag={true}>
-                  </DragFillGrid>
-                </div>
-              </div>);
+    if(this.props.timeblocksinput.length > 0 && this.props.timeblocksinput.length > this.props.calendarchoice && this.props.gapi_id !== ""){
+      let availability;
+      this.props.timeblocksinput[this.props.calendarchoice].availability.forEach(e => {
+        if(e.gapi_id === this.props.gapi_id){
+          availability = e;
+        }
+      });
+      let personalCalendar;
+      this.props.timeblocksinput[this.props.calendarchoice].personal.forEach(e => {
+        if(e.gapi_id === this.props.gapi_id){
+          personalCalendar = e;
+        }
+      });
+      return (<div>
+              <div style={{display: team}}>
+                <DragFillGrid
+                  id={1}
+                  rowheaders={this.state.rowheaders}
+                  colheaders={this.state.colheaders}
+                  rownum={24}
+                  colnum={7}
+                  timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
+                  draggable={false}
+                  blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].schedule]}>
+                </DragFillGrid>
+              </div>
+              <div style={{display: personal}}>
+                <DragFillGrid
+                  id={2}
+                  rowheaders={this.state.rowheaders}
+                  colheaders={this.state.colheaders}
+                  rownum={24}
+                  colnum={7}
+                  timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
+                  draggable={false}
+                  blockedcellsinput={[personalCalendar]}>
+                </DragFillGrid>
+              </div>
+              <div style={{display: availabilityinput}}>
+                <DragFillGrid
+                  id={3}
+                  rowheaders={this.state.rowheaders}
+                  colheaders={this.state.colheaders}
+                  rownum={24}
+                  colnum={7}
+                  timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
+                  draggable={true}
+                  blockedcellsinput={[availability]}>
+                </DragFillGrid>
+              </div>
+              <div style={{display: manageshiftinput}}>
+                <DragFillGrid
+                  id={4}
+                  rowheaders={this.state.rowheaders}
+                  colheaders={this.state.colheaders}
+                  rownum={24}
+                  colnum={7}
+                  timeBlocksUpdated={ timeblocksoutput => this.setState({ timeblocksoutput }) }
+                  draggable={true}
+                  blockedcellsinput={[this.props.timeblocksinput[this.props.calendarchoice].shifts]}
+                  confirmdrag={true}>
+                </DragFillGrid>
+              </div>
+            </div>);
       }
   }
   
@@ -233,7 +160,8 @@ export default class Calendar extends Component {
       </div>
       <div id="calendar-footer" style={{visibility: (this.props.inputmode == true) ? "visible": "hidden" }}>
         <div id="timeblock-cancel-button" onClick={() => { this.state.cancelcallback() }}>Cancel</div>
-        <div id="timeblock-submit-button" onClick={() => { this.state.submitcallback(this.state.timeblocksoutput, this.state.tabchoice) }}>Submit</div>
+        {/* <div id="timeblock-submit-button" onClick={() => { this.state.submitcallback(this.state.timeblocksoutput, this.state.tabchoice) }}>Submit</div> */}
+        <div id="timeblock-submit-button" onClick={() => { this.state.submitcallback(this.state.timeblocksoutput, this.props.tabchoice) }}>Submit</div>
       </div>
     </div>
     );
