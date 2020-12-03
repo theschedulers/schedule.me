@@ -332,6 +332,20 @@ export default class Dashboard extends Component {
     this.toggleRequestTimeModal();
   }
 
+  // https://medium.com/@quynh.totuan/how-to-get-the-current-week-in-javascript-9e64d45a9a08
+  getCurrentWeek = () => {
+    let curr = new Date 
+    let week = []
+
+    for (let i = 0; i < 7; i++) {
+      let first = curr.getDate() - curr.getDay() + i 
+      let day = new Date(curr.setDate(first)).toISOString().slice(0, 10)
+      week.push(day)
+    }
+
+    return week;
+  }
+
   downloadICSFile = async () => {
     var personalCalendar = null;
     var teamname = this.state.personalTeams[this.state.selectedTeam] && this.state.personalTeams[this.state.selectedTeam].text;
@@ -340,6 +354,8 @@ export default class Dashboard extends Component {
         personalCalendar = {...e, teamname};
       }
     })
+
+    let week = this.getCurrentWeek();
 
     var timeblocks = [];
 
@@ -356,14 +372,14 @@ export default class Dashboard extends Component {
         if (recentchange == true && cellblocked == 1) {
           timeblocks.push({
             title: personalCalendar.teamname + " (ScheduleMe)" || "Work",
-            start: [2021, 1, i+3, index, 0],
+            start: [parseInt(week[i].substring(0, 4)), parseInt(week[i].substring(5, 7)), parseInt(week[i].substring(8)), index, 0],
             end: null,
             description: "Imported from ScheduleMe: Personal Schedule"
           })
           recentchange = false;
         }
         if (recentchange == true && cellblocked == 0) {
-          timeblocks[timeblocks.length - 1].end = [2021, 1, i+3, index, 0];
+          timeblocks[timeblocks.length - 1].end = [parseInt(week[i].substring(0, 4)), parseInt(week[i].substring(5, 7)), parseInt(week[i].substring(8)), index, 0];
           recentchange = false;
         }
       })
