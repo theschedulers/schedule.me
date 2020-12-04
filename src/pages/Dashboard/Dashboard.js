@@ -131,12 +131,8 @@ export default class Dashboard extends Component {
       }
       user = await this.findUser(auth.wt.cu);
       this.createNotifications(user);
-      // Invited teams, handle them
-      // this.handleTeamInvites();
     };
   }
-
-
 
   //Checks if user exists in db
   checkIfUserIsSaved = async (userEmail) => {
@@ -189,6 +185,10 @@ export default class Dashboard extends Component {
       teamDBCollection: userTeams, personalTeams: this.resToPersonalTeamsArr(userTeams),
       personalMembers: this.resToPersonalMembersArr(userTeams), personalTeamCalendar: this.resToPersonalTeamCalendarArr(userTeams)
     });
+    const auth = this.getGoogleAuthCredentials();
+    const user = await this.findUser(auth.wt.cu);
+    this.createNotifications(user);
+
   }
 
   getGoogleAuthCredentials = () => {
@@ -546,9 +546,12 @@ export default class Dashboard extends Component {
       });
       this.setState({notifications: notifs});
     }
+    else{
+      this.setState({notifications: []});
+    }
   }
 
-  removeNotifFromList = (n) => {
+  removeNotifFromList = async (n) => {
     //Remove from state list
     let notifList = []; 
     this.state.notifications.forEach(notif => {
@@ -561,10 +564,11 @@ export default class Dashboard extends Component {
 
   // For Profile Dropdown
   handleAcceptInvite = async (n) => {
-    this.removeNotifFromList(n);
-    this.handleTeamInvite(n);
+    await this.removeNotifFromList(n);
+    await this.handleTeamInvite(n);
     this.setState({teamConfirmModalText: "Invite Accepted"});
     this.toggleTeamConfirmModal();
+
   }
 
   handleDeclineInvite = async (n) => {
@@ -727,7 +731,7 @@ export default class Dashboard extends Component {
           };
           break;
         }
-        case "manageshift": {
+        case "manageshift": { //Manage shift, update personal with availability
           const auth = this.getGoogleAuthCredentials();
           const shifts = currentTeamCalendar.shifts;
 
@@ -813,6 +817,7 @@ export default class Dashboard extends Component {
     const res = await editTeam(reqTeamToEdit);
     // console.log(res);
     this.updateAllLists();
+    
   }
 
   getModifiedSchedule = (shifts, availability, schedule, personal, team) => {
@@ -855,20 +860,6 @@ export default class Dashboard extends Component {
               members: membersArr 
           };
           modifiedSchedule.timeblocks[r][c] = block;
-          membersArr.forEach((member) => {
-            if(member.gapi_id === this.state.gapi_id){
-              const personalBlock = {
-                blocked: 1 
-              };
-              modifiedPersonal.timeblocks[r][c] = personalBlock;
-            }
-            else{
-              const personalBlock = {
-                blocked: 0,
-              }
-              modifiedPersonal.timeblocks[r][c] = personalBlock;
-            }
-          });
         }
         else{
           const block = {
@@ -876,6 +867,22 @@ export default class Dashboard extends Component {
           }
           modifiedSchedule.timeblocks[r][c] = block;
           modifiedPersonal.timeblocks[r][c] = block;
+        }
+        let memberPresent = false;
+        membersArr.forEach((member) => {
+            if(member.gapi_id === this.state.gapi_id){
+              const personalBlock = {
+                blocked: 1 
+              };
+              modifiedPersonal.timeblocks[r][c] = personalBlock;
+              memberPresent = true;
+            }
+        });
+        if(!memberPresent){
+          const personalBlock = {
+                blocked: 0,
+          }
+          modifiedPersonal.timeblocks[r][c] = personalBlock;
         }
       });
     });
@@ -885,9 +892,8 @@ export default class Dashboard extends Component {
   }
 
   calendarOnCancelCallback = () => {
-    // console.log(this.state.teamDBCollection[this.state.selectedTeam]);
     this.setState({ inputmode: false });
-    // window.location.reload();
+    this.updateAllLists();
   }
 
   // For right sidebar
@@ -1200,6 +1206,7 @@ export default class Dashboard extends Component {
                 modalsubheader={"Are you sure you want to delete this team?"}
                 modalconfirmbuttontext={"Yes"}
                 modalcancelbuttontext={"No"}
+                updateLists = {this.updateAllLists}
               />
               <AddTeamModal
                 toggle={this.state.teamModalToggle}
@@ -1224,6 +1231,7 @@ export default class Dashboard extends Component {
                   modalsubheader={"Are you sure you want to remove this member?"}
                   modalconfirmbuttontext={"Yes"}
                   modalcancelbuttontext={"No"}
+                  updateLists = {this.updateAllLists}
                 />
                 <AddMemberModal
                   toggle={this.state.memberModalToggle}
@@ -1298,6 +1306,7 @@ export default class Dashboard extends Component {
                 handleViewRequest={this.handleViewRequest}
                 handleDeclineRequest={this.handleDeclineRequest}
                 handleDismissNotif={this.handleDismissNotif}
+                updateLists={this.updateAllLists}
               />
             </div>
             <div id="circle-icon-container">

@@ -11,14 +11,15 @@ class ProfileDropdown extends Component {
   };
 
   profileToggle = () => {
-    console.log("Toggled Profile Dropdown, from " + this.state.pDDOpen + " to " + !this.state.pDDOpen);
+    // console.log("Toggled Profile Dropdown, from " + this.state.pDDOpen + " to " + !this.state.pDDOpen);
     this.setState((state) => ({
       pDDOpen: !this.state.pDDOpen
     }));
+    this.props.updateLists();
   }
 
   notificationToggle = () => {
-    console.log("Toggled Notification Dropdown, from " + this.state.nDDOpen + " to " + !this.state.nDDOpen);
+    // console.log("Toggled Notification Dropdown, from " + this.state.nDDOpen + " to " + !this.state.nDDOpen);
     this.setState((state) => ({
       nDDOpen: !this.state.nDDOpen
     }));

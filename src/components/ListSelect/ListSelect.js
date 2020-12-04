@@ -28,6 +28,7 @@ export default class ListSelect extends Component {
       this.setState({ selected: e.target.getAttribute("item-index") });
       this.state.valueUpdated(e.target.getAttribute("item-index").replace(this.state.id, ''));
     }
+    this.props.updateLists();
   }
 
   removeListItem = () => {
