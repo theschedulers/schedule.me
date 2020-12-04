@@ -9,7 +9,6 @@
   width: 3em;
   height: 3em;
   border-radius: 100%;
-  background: #8eff9a;
 }
 
 #dashboard-notification-badge {
@@ -35,7 +34,6 @@
   width: 80px;
   height: 80px;
   border-radius: 100%;
-  background: #8eff9a;
 }
 
 #dropdown-username {

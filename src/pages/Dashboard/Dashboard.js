@@ -331,6 +331,26 @@ export default class Dashboard extends Component {
     this.toggleRequestTimeModal();
   }
 
+  // https://medium.com/@quynh.totuan/how-to-get-the-current-week-in-javascript-9e64d45a9a08 (Modified)
+  getCurrentWeek = () => {
+    let curr = new Date()
+    let week = []
+
+    let currentDay = curr.getDay();
+
+    for (var i = currentDay; i > 0; i--) {
+      curr.setDate(curr.getDate() - 1)
+    }
+
+    for (let i = 0; i < 7; i++) {
+      // https://stackoverflow.com/questions/23593052/format-javascript-date-as-yyyy-mm-dd
+      week.push(curr.toLocaleDateString('en-CA'))
+      curr.setDate(curr.getDate() + 1)
+    }
+
+    return week;
+  }
+
   downloadICSFile = async () => {
     var personalCalendar = null;
     var teamname = this.state.personalTeams[this.state.selectedTeam] && this.state.personalTeams[this.state.selectedTeam].text;
@@ -339,6 +359,8 @@ export default class Dashboard extends Component {
         personalCalendar = {...e, teamname};
       }
     })
+
+    let week = this.getCurrentWeek();
 
     var timeblocks = [];
 
@@ -355,14 +377,14 @@ export default class Dashboard extends Component {
         if (recentchange == true && cellblocked == 1) {
           timeblocks.push({
             title: personalCalendar.teamname + " (ScheduleMe)" || "Work",
-            start: [2021, 1, i+3, index, 0],
+            start: [parseInt(week[i].substring(0, 4)), parseInt(week[i].substring(5, 7)), parseInt(week[i].substring(8)), index, 0],
             end: null,
             description: "Imported from ScheduleMe: Personal Schedule"
           })
           recentchange = false;
         }
         if (recentchange == true && cellblocked == 0) {
-          timeblocks[timeblocks.length - 1].end = [2021, 1, i+3, index, 0];
+          timeblocks[timeblocks.length - 1].end = [parseInt(week[i].substring(0, 4)), parseInt(week[i].substring(5, 7)), parseInt(week[i].substring(8)), index, 0];
           recentchange = false;
         }
       })
@@ -1131,47 +1153,77 @@ export default class Dashboard extends Component {
     return (manager_id === test_id); 
   }
 
-    //Google Calendar add an event. onClick for Add Event Button
-  handleAddEvent = () => {
-    var event = {
-      summary: 'CMPE 133 Sec 02',
-      location: 'Home',
-      description: "Schedule Me Project Demo.",
-      start: {
-        dateTime: '2020-12-01T19:00:00-07:00',
-        timeZone: 'America/Los_Angeles',
-      },
-      end: {
-        dateTime: '2020-12-01T22:00:00-07:00',
-        timeZone: 'America/Los_Angeles',
-      },
-      recurrence: ['RRULE:FREQ=DAILY;COUNT=1'],
-      attendees: [
-        // {email: 'lpage@example.com'}, {email: 'sbrin@example.com'}
-      ],
-      reminders: {
-        useDefault: false,
-        overrides: [
-          {method: 'email', minutes: 24 * 60},
-          {method: 'popup', minutes: 10},
-        ],
-      },
-    };
+  //Google Calendar add an event. onClick for Add Event Button
+  handleAddEvents = () => {
+    var personalCalendar = null;
+    var teamname = this.state.personalTeams[this.state.selectedTeam] && this.state.personalTeams[this.state.selectedTeam].text;
+    this.state.personalTeamCalendar[this.state.selectedTeam] && this.state.personalTeamCalendar[this.state.selectedTeam].personal.forEach(e => {
+      if(e.gapi_id == this.state.gapi_id){
+        personalCalendar = {...e, teamname};
+      }
+    })
 
-    var request = window.gapi.client.calendar.events.insert({
-      calendarId: 'primary',
-      resource: event,
-    });
-    request.execute();
-    this.toggleExportCalendarModal();
-    // request.execute((event) => {
-    //   console.log(event);
-    // });
+    let week = this.getCurrentWeek();
 
+    var timeblocks = [];
+
+    for (var i = 0; i < personalCalendar.timeblocks[0].length; i ++) {
+      var cellblocked = 0;
+      var recentchange = false;
+
+      personalCalendar.timeblocks.map((row, index) => {
+        if (cellblocked !== row[i].blocked) {
+          cellblocked = row[i].blocked;
+          recentchange = true;
+        }
+
+        if (recentchange == true && cellblocked == 1) {
+          var starttime = parseInt(index) > 9 ? index : ("0" + index);
+          timeblocks.push({
+            summary: personalCalendar.teamname + " (ScheduleMe)" || "Work",
+            start: {
+              dateTime: week[i] + "T" + starttime + ":00:00",
+              timeZone: 'America/Los_Angeles',
+            },
+            end: null,
+            description: "Imported from ScheduleMe: Personal Schedule",
+            recurrence: ['RRULE:FREQ=DAILY;COUNT=1'],
+            reminders: {
+              useDefault: false,
+              overrides: [
+                {method: 'email', minutes: 24 * 60},
+                {method: 'popup', minutes: 10},
+              ],
+            },
+          })
+          recentchange = false;
+        }
+        if (recentchange == true && cellblocked == 0) {
+          var endtime = parseInt(index) > 9 ? index : ("0" + index);
+          timeblocks[timeblocks.length - 1].end = {
+            dateTime: week[i] + "T" + endtime + ":00:00",
+            timeZone: 'America/Los_Angeles',
+          };
+          recentchange = false;
+        }
+      })
+    }
+
+    const batch = window.gapi.client.newBatch();
+
+    timeblocks.map((block) => {
+      batch.add(window.gapi.client.calendar.events.insert({
+        'calendarId': 'primary',
+        'resource': block
+      }))
+    })
+
+    batch.then(() => {
+      this.toggleExportCalendarModal();
+    })
   }
 
   render() {
-    // let calendardata = require('./calendardatadummy.json');
     return (
       <div className="full-viewport-hv">
         <div id="Dashboard">
@@ -1296,7 +1348,7 @@ export default class Dashboard extends Component {
             <div id="circle-icon-container">
               <CircleIcon title={"Add/Edit Availability"} width={"3em"} height={"3em"} callback={this.editAvailability} icon={require('./img/addeditav.svg')}></CircleIcon>
               <CircleIcon title={"Request Time off"} width={"3em"} height={"3em"} callback={this.onRequestTimeOffCallBack} icon={require('./img/timeoff.svg')}></CircleIcon>
-              <CircleIcon title={"Export to Google Calendar"} width={"3em"} height={"3em"} callback={this.handleAddEvent} icon={require('./img/google.png')}></CircleIcon>
+              <CircleIcon title={"Export to Google Calendar"} width={"3em"} height={"3em"} callback={this.handleAddEvents} icon={require('./img/google.png')}></CircleIcon>
               <CircleIcon title={"Export Calendar"} width={"3em"} height={"3em"} callback={this.downloadICSFile} icon={require('./img/download.svg')}></CircleIcon>
               <CircleIcon title={"Manage Shifts"} width={"3em"} height={"3em"} callback={this.manageShifts} icon={require('./img/pencil.svg')}></CircleIcon>
 
