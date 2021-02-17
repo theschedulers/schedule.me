@@ -103,33 +103,33 @@ export default class Dashboard extends Component {
     this.createDefaultTimeblocks();
     const auth = this.getGoogleAuthCredentials();
     this.setState({gapi_id: auth.Ca});
-    this.setState({email: auth.wt.cu});
-    const userIsSaved = await this.checkIfUserIsSaved(auth.wt.cu);
+    this.setState({email: auth.Es.kt});
+    const userIsSaved = await this.checkIfUserIsSaved(auth.Es.kt);
     if(!userIsSaved){
       const reqUserToAdd = {
-        gapi_id: auth.wt.BT,
-        userName: auth.wt.Ad,
-        userEmail: auth.wt.cu,
+        gapi_id: auth.Es.wR,
+        userName: auth.Es.sd,
+        userEmail: auth.Es.kt,
         teams: [],
         invitedTeams: [],
       };
       this.addUserToCollection(reqUserToAdd);
     }
     else{
-      let user = await this.findUser(auth.wt.cu);
+      let user = await this.findUser(auth.Es.kt);
       if(user.gapi_id === ""){
         //Edit user profile
         const reqUserToEdit = {
           _id: user._id,
-          gapi_id: auth.wt.BT,
-          userName: auth.wt.Ad,
-          userEmail: auth.wt.cu,
+          gapi_id: auth.Es.wR,
+          userName: auth.Es.sd,
+          userEmail: auth.Es.kt,
           teams: user.teams,
           invitedTeams: user.invitedTeams,
         };
         const res = await editUser(reqUserToEdit);
       }
-      user = await this.findUser(auth.wt.cu);
+      user = await this.findUser(auth.Es.kt);
       this.createNotifications(user);
     };
   }
@@ -186,7 +186,7 @@ export default class Dashboard extends Component {
       personalMembers: this.resToPersonalMembersArr(userTeams), personalTeamCalendar: this.resToPersonalTeamCalendarArr(userTeams)
     });
     const auth = this.getGoogleAuthCredentials();
-    const user = await this.findUser(auth.wt.cu);
+    const user = await this.findUser(auth.Es.kt);
     this.createNotifications(user);
 
   }
@@ -436,8 +436,8 @@ export default class Dashboard extends Component {
     //Just one member here (yourself)
     const userProfile = {
       gapi_id: auth.Ca,
-      memberEmail: auth.wt.cu.toLowerCase(),
-      memberName: auth.wt.Ad,
+      memberEmail: auth.Es.kt.toLowerCase(),
+      memberName: auth.Es.sd,
       memberDescription: userDescription,
       memberPhoto: userPhoto || this.state.defaultMemberPhoto
     }
@@ -456,7 +456,7 @@ export default class Dashboard extends Component {
     }
     //Backend call to addTeam() to db (here -> APIFunctions -> routes)
     const res = await addTeam(reqTeamToAdd);
-    const user = await this.findUser(auth.wt.cu);
+    const user = await this.findUser(auth.Es.kt);
     let teams = user.teams || [];
     const newTeam = {
       team_id: res._id 
@@ -613,7 +613,7 @@ export default class Dashboard extends Component {
   handleTeamInvite = async (n) => {
     const auth = this.getGoogleAuthCredentials();
     var userPhoto = auth.getBasicProfile().getImageUrl()
-    const user = await this.findUser(auth.wt.cu);
+    const user = await this.findUser(auth.Es.kt);
     if(user.invitedTeams.length > 0){
       //for each invitedTeam, transfer to team
       let invitedTeams = user.invitedTeams;
@@ -981,7 +981,7 @@ export default class Dashboard extends Component {
         this.removeTeamCallback(this.state.selectedTeam);
       }
       else if(currentTeam.teamMembers[index].gapi_id == auth.Ca){ //Removing yourself  
-        let foundUser = await this.findUser(auth.wt.cu.toLowerCase())
+        let foundUser = await this.findUser(auth.Es.kt.toLowerCase())
         let newTeams = [];
         foundUser.teams.forEach((team)=>{
           if(team.team_id !== currentTeam._id){
